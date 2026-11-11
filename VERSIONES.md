@@ -10,6 +10,7 @@ identificadores completos y las fechas exactas se pueden consultar con
 | 2026-11-10 | `animacion-cinematografica-propuesta` | Propuesta pendiente de aprobación: apertura de 6,5 segundos con brillo del sello, solapa 3D, salida progresiva de tarjeta, destellos discretos y revelación escalonada de portada. |
 | 2026-11-10 | `sin-boton-bajo-sobre-propuesta` | Propuesta pendiente de aprobación: se retira únicamente el botón verde con doble flecha situado bajo el sobre; el sobre continúa siendo el disparador de apertura. |
 | 2026-11-10 | `sin-boton-de-portada-propuesta` | Corrección pendiente de aprobación: se restaura el botón bajo el sobre y se retira únicamente el botón de la portada que desplazaba la página hacia abajo. |
+| 2026-11-10 | `sin-boton-bajo-sobre-correccion` | Corrección pendiente de aprobación: según la captura, se retira el botón bajo el sobre y se conserva el botón de navegación de la portada. |
 
 ## Convención para cambios futuros
 
