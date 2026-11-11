@@ -1,0 +1,28 @@
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Dependencias, registros y cachés locales
+node_modules/
+.cache/
+.tmp/
+tmp/
+temp/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Respaldos comprimidos y copias temporales
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.bak
+*.tmp
