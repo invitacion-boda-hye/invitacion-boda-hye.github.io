@@ -247,6 +247,8 @@ body.envelope-active {
   transform-style: preserve-3d;
   backface-visibility: hidden;
   z-index: 8;
+  will-change: transform, filter;
+  transition: transform 1.5s cubic-bezier(.2,.72,.2,1), filter 1.1s ease;
 }
 
 .envelope-flap::after {
@@ -296,7 +298,8 @@ body.envelope-active {
   opacity: 0;
   transform: translateY(7px) scale(.98);
   z-index: 2;
-  transition: opacity .2s ease, transform 1.2s cubic-bezier(.22,.8,.22,1), box-shadow .8s ease;
+  will-change: transform, opacity;
+  transition: opacity .55s ease, transform 2s cubic-bezier(.22,.8,.22,1), box-shadow 1s ease;
 }
 
 .letter-border {
@@ -368,6 +371,42 @@ body.envelope-active {
   line-height: 1.45;
 }
 
+.letter-tag,
+.letter-names,
+.letter-rule,
+.letter-date,
+.letter-message {
+  opacity: 0;
+  transform: translateY(9px);
+  transition: opacity .55s ease, transform .7s cubic-bezier(.22,.8,.22,1);
+}
+
+.envelope-sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .45s ease;
+}
+
+.envelope-sparkles i {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #e2b95f;
+  box-shadow: 0 0 7px rgba(213, 161, 51, .65);
+  opacity: 0;
+  transform: scale(.45);
+}
+
+.envelope-sparkles i:nth-child(1) { top: 23%; left: 29%; }
+.envelope-sparkles i:nth-child(2) { top: 17%; right: 26%; }
+.envelope-sparkles i:nth-child(3) { top: 38%; left: 17%; }
+.envelope-sparkles i:nth-child(4) { top: 32%; right: 15%; }
+.envelope-sparkles i:nth-child(5) { top: 11%; left: 52%; }
+
 .envelope-seal {
   top: 53%;
   width: 82px;
@@ -376,6 +415,8 @@ body.envelope-active {
   border: 1px solid rgba(104, 63, 7, .63);
   background: radial-gradient(circle at 31% 25%, #ffe9a6 0 7%, #d99d2b 42%, #a36308 74%, #704105 100%);
   box-shadow: 0 4px 10px rgba(73, 43, 3, .36), inset 0 2px 3px rgba(255,255,255,.45), inset 0 -4px 7px rgba(89,53,0,.32);
+  will-change: transform, opacity;
+  transition: opacity .45s ease, transform .55s cubic-bezier(.22,.8,.22,1), box-shadow .35s ease;
 }
 
 .envelope-seal::before {
@@ -493,19 +534,34 @@ body.envelope-active {
   left: 2px;
 }
 
-/* Secuencia: sello y cordón se desvanecen, solapa se abre, tarjeta sale. */
+/* Secuencia: magia, apertura 3D, sorpresa y revelación (6,5 segundos). */
+.envelope-screen.step-magic .envelope-seal {
+  animation: seal-gleam .8s ease-in-out 1;
+}
+
+@keyframes seal-gleam {
+  0%, 100% {
+    box-shadow: 0 4px 10px rgba(73, 43, 3, .36), inset 0 2px 3px rgba(255,255,255,.45), inset 0 -4px 7px rgba(89,53,0,.32);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  48% {
+    box-shadow: 0 5px 18px rgba(218, 165, 57, .68), 0 0 18px rgba(255, 218, 131, .52), inset 0 2px 5px rgba(255,255,255,.75), inset 0 -4px 7px rgba(89,53,0,.28);
+    transform: translate(-50%, -50%) scale(1.045);
+  }
+}
+
 .envelope-screen.step-flap-open .envelope-intro,
 .envelope-screen.step-flap-open .envelope-prompt {
   opacity: 0;
   transform: translateY(-8px);
 }
 
-.envelope-screen.step-flap-open .envelope-seal {
+.envelope-screen.step-seal-release .envelope-seal {
   opacity: 0;
-  transform: translate(-50%, -70%) scale(.55) rotate(10deg);
+  transform: translate(-50%, -68%) scale(.58) rotate(8deg);
 }
 
-.envelope-screen.step-flap-open .envelope-cord {
+.envelope-screen.step-seal-release .envelope-cord {
   opacity: 0;
   transform: translate(-50%, -11px) scale(.8);
 }
@@ -515,31 +571,84 @@ body.envelope-active {
 }
 
 .envelope-screen.step-flap-open .envelope-flap {
-  transform: rotateX(-172deg);
+  filter: drop-shadow(0 -9px 12px rgba(86, 57, 17, .18));
+  transform: rotateX(-165deg);
   z-index: 1;
 }
 
 .envelope-screen.step-letter-out .envelope-letter {
   opacity: 1;
   transform: translateY(-175px) scale(1.02);
-  z-index: 20;
+  /* La parte inferior sigue detrás del bolsillo: no atraviesa el sobre. */
+  z-index: 4;
   box-shadow: 0 24px 48px rgba(72, 53, 27, .25);
 }
 
+.envelope-screen.step-letter-out .envelope-sparkles {
+  opacity: .72;
+}
+
+.envelope-screen.step-letter-out .envelope-sparkles i {
+  animation: sparkle-gold 1.35s ease-in-out 2 both;
+}
+
+.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(2) { animation-delay: .18s; }
+.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(3) { animation-delay: .34s; }
+.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(4) { animation-delay: .12s; }
+.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(5) { animation-delay: .46s; }
+
+@keyframes sparkle-gold {
+  0%, 100% { opacity: 0; transform: scale(.45); }
+  45% { opacity: .88; transform: scale(1); }
+}
+
+.envelope-screen.step-letter-out .letter-tag {
+  opacity: 1;
+  transform: none;
+  transition-delay: .28s;
+}
+
+.envelope-screen.step-letter-out .letter-names {
+  opacity: 1;
+  transform: none;
+  transition-delay: .48s;
+}
+
+.envelope-screen.step-letter-out .letter-rule,
+.envelope-screen.step-letter-out .letter-date {
+  opacity: 1;
+  transform: none;
+  transition-delay: .68s;
+}
+
+.envelope-screen.step-letter-out .letter-message {
+  opacity: 1;
+  transform: none;
+  transition-delay: .86s;
+}
+
 .envelope-screen.step-card-focus .envelope-letter {
-  transform: translateY(-104px) scale(1.35);
+  transform: translateY(-175px) scale(1.28);
+  z-index: 20;
   box-shadow: 0 32px 68px rgba(72,53,27,.22);
+  transition-duration: 1.65s, 1.65s, 1s;
 }
 
 .envelope-screen.step-card-focus .envelope-box {
   opacity: 0;
   transform: scale(.95);
-  transition: opacity .55s ease, transform .65s ease;
+  transition: opacity .9s ease .25s, transform .9s ease .25s;
 }
 
 .envelope-screen.step-card-focus .envelope-floral {
   opacity: 0;
-  transition: opacity .4s ease;
+  transition: opacity .8s ease .2s;
+}
+
+.envelope-screen.step-hero-reveal .envelope-container {
+  opacity: 0;
+  transform: translateY(-7px) scale(.99);
+  transition: opacity 1.05s ease, transform 1.05s ease;
 }
 
 /* Portada final: conserva la composición de la referencia, ya sin el sobre. */
@@ -704,6 +813,35 @@ body.qa-preview-open .hero {
   display: none;
 }
 
+/* La portada se escribe suavemente mientras desaparece la última capa del sobre. */
+.hero-inner > * {
+  will-change: transform, opacity;
+  transition: opacity .5s ease, transform .65s cubic-bezier(.22,.8,.22,1);
+}
+
+body:not(.invitation-revealed) .hero-inner > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+body.invitation-revealed .hero-inner > * {
+  opacity: 1;
+  transform: none;
+}
+
+body.invitation-revealed .hero-names { transition-delay: .04s; }
+body.invitation-revealed .hero-divider { transition-delay: .16s; }
+body.invitation-revealed .hero-invitation { transition-delay: .28s; }
+body.invitation-revealed .hero h1 { transition-delay: .42s; }
+body.invitation-revealed .hero .date { transition-delay: .54s; }
+body.invitation-revealed .hero-buttons { transition-delay: .64s; }
+
+body.qa-preview-open .hero-inner > * {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
 @media (max-width: 680px) {
   .envelope-screen {
     padding: 13px 11px;
@@ -863,8 +1001,18 @@ body.qa-preview-open .hero {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .envelope-screen,
   .envelope-screen *,
   .hero {
+    transition-duration: .01ms !important;
+  }
+
+  .envelope-seal,
+  .envelope-sparkles i {
+    animation: none !important;
+  }
+
+  .hero-inner > * {
     transition-duration: .01ms !important;
   }
 }

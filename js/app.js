@@ -11,10 +11,13 @@ const envelopeTrigger = document.getElementById('envelopeTrigger');
 const envelopePrompt = document.getElementById('envelopePrompt');
 
 let isEnvelopeOpening = false;
+const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
 function openEnvelopeSequence() {
   if (isEnvelopeOpening) return;
   isEnvelopeOpening = true;
+  envelopeTrigger?.setAttribute('disabled', '');
+  envelopePrompt?.setAttribute('tabindex', '-1');
 
   // Se ejecuta directamente desde el gesto del invitado para que los navegadores
   // móviles permitan la reproducción. Si falla, el sobre continúa y el botón
@@ -26,23 +29,35 @@ function openEnvelopeSequence() {
     }
   }
 
-  // Paso 1: Apertura suave de solapa y desvanecimiento del sello.
-  envelopeScreen.classList.add('step-flap-open');
+  // Secuencia cinematográfica (6,5 s): magia, solapa, tarjeta y portada.
+  // Para quien prefiere menos movimiento se mantienen los mismos estados,
+  // pero se presentan casi de inmediato.
+  const timing = reduceEnvelopeMotion
+    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, finish: 90 }
+    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5450, finish: 6500 };
 
-  // Paso 2: La tarjeta interior emerge del sobre.
+  envelopeScreen.classList.add('step-magic');
+
+  setTimeout(() => {
+    envelopeScreen.classList.add('step-seal-release');
+  }, timing.release);
+
+  setTimeout(() => {
+    envelopeScreen.classList.add('step-flap-open');
+  }, timing.flap);
+
   setTimeout(() => {
     envelopeScreen.classList.add('step-letter-out');
-  }, 520);
+  }, timing.letter);
 
-  // Paso 3: La misma tarjeta toma el foco y crece hacia la portada.
   setTimeout(() => {
     envelopeScreen.classList.add('step-card-focus');
-  }, 1750);
+  }, timing.focus);
 
-  // Paso 4: La portada, con la misma paleta y composición, continúa la tarjeta.
   setTimeout(() => {
     document.body.classList.add('invitation-revealed');
-  }, 2660);
+    envelopeScreen.classList.add('step-hero-reveal', 'opened');
+  }, timing.reveal);
 
   setTimeout(() => {
     envelopeScreen.classList.add('opened');

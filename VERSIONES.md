@@ -7,6 +7,7 @@ identificadores completos y las fechas exactas se pueden consultar con
 | Fecha | Nombre / etiqueta | Descripción |
 | --- | --- | --- |
 | 2026-11-10 | `sobre-verde-aprobado` | Estado base aprobado: pantalla de bienvenida verde, sobre marfil cerrado, flores botánicas, animación y música locales preservadas. |
+| 2026-11-10 | `animacion-cinematografica-propuesta` | Propuesta pendiente de aprobación: apertura de 6,5 segundos con brillo del sello, solapa 3D, salida progresiva de tarjeta, destellos discretos y revelación escalonada de portada. |
 
 ## Convención para cambios futuros
 
