@@ -1,4 +1,4 @@
-INVITACIÓN WEB - ELISBE Y HECTOR
+INVITACIÓN WEB - HECTOR Y ELISBE
 
 1. Abre index.html en tu navegador para ver la invitación.
 2. Cambia los valores del objeto CONFIG al final de index.html:
@@ -7,7 +7,7 @@ INVITACIÓN WEB - ELISBE Y HECTOR
    - ceremoniaMaps y recepcionMaps: URLs reales de Google Maps.
    - datosBancarios: datos bancarios exactos para regalos.
 3. Coloca tu música autorizada como assets/musica.mp3. La reproducción requiere que el invitado pulse el botón.
-4. Reemplaza las tres tarjetas de galería por imágenes reales: por ejemplo <img src="assets/foto1.jpg" alt="Elisbe y Hector" style="width:100%;height:100%;object-fit:cover">.
+4. Reemplaza las tres tarjetas de galería por imágenes reales: por ejemplo <img src="assets/foto1.jpg" alt="Hector y Elisbe" style="width:100%;height:100%;object-fit:cover">.
 5. Revisa y completa horarios del itinerario y código de vestimenta.
 6. Para publicar gratis, sube la carpeta completa a Netlify Drop o a un repositorio conectado a Vercel.
 

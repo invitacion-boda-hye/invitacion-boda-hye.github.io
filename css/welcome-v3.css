@@ -20,9 +20,21 @@ body.envelope-active {
   display: grid;
   place-items: center;
   padding: 22px;
+  background: transparent;
+}
+
+/* Fondo propio, separado de la tarjeta: así puede revelarse la portada sin
+   ocultar el elemento compartido que está saliendo del sobre. */
+.envelope-screen::after {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
   background:
     radial-gradient(circle at 50% 44%, rgba(255, 255, 255, .75), transparent 43%),
     var(--welcome-ivory);
+  content: '';
+  opacity: 1;
+  transition: opacity 1.15s ease;
 }
 
 .envelope-screen::before {
@@ -635,9 +647,11 @@ body.envelope-active {
 }
 
 .envelope-screen.step-card-focus .envelope-box {
-  opacity: 0;
+  opacity: 1;
   transform: scale(.95);
-  transition: opacity .9s ease .25s, transform .9s ease .25s;
+  /* La tarjeta vive dentro de esta caja: no se puede desvanecer su padre o
+     desaparecería antes de completar el relevo hacia la portada. */
+  transition: transform .9s ease .25s;
 }
 
 .envelope-screen.step-card-focus .envelope-floral {
@@ -645,10 +659,28 @@ body.envelope-active {
   transition: opacity .8s ease .2s;
 }
 
-.envelope-screen.step-hero-reveal .envelope-container {
+.envelope-screen.step-card-focus .envelope-pocket-left,
+.envelope-screen.step-card-focus .envelope-pocket-right,
+.envelope-screen.step-card-focus .envelope-front-pocket,
+.envelope-screen.step-card-focus .envelope-flap,
+.envelope-screen.step-card-focus .envelope-paper-grain {
   opacity: 0;
-  transform: translateY(-7px) scale(.99);
-  transition: opacity 1.05s ease, transform 1.05s ease;
+  transition: opacity .72s ease .22s;
+}
+
+/* La portada aparece mientras la misma tarjeta aún se mantiene visible. */
+.envelope-screen.step-hero-reveal .envelope-container {
+  pointer-events: none;
+}
+
+.envelope-screen.step-hero-reveal::after {
+  opacity: 0;
+}
+
+.envelope-screen.step-card-handoff .envelope-letter {
+  opacity: 0;
+  transform: translateY(-175px) scale(1.36);
+  transition: opacity .42s ease, transform .55s cubic-bezier(.22,.8,.22,1);
 }
 
 /* Portada final: conserva la composición de la referencia, ya sin el sobre. */
@@ -669,6 +701,81 @@ body.qa-preview-open .envelope-screen {
 body.qa-preview-open .hero {
   opacity: 1 !important;
   transition: none;
+}
+
+/* Control independiente de la música para el recorrido automático. */
+.auto-tour-control {
+  position: fixed;
+  right: 22px;
+  bottom: 88px;
+  z-index: 102;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.86);
+  border-radius: 50%;
+  background: linear-gradient(145deg, #91a977, #507142);
+  box-shadow: 0 7px 18px rgba(54,75,47,.25), inset 0 1px 0 rgba(255,255,255,.28);
+  color: #fffdf5;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity .28s ease, transform .28s ease, box-shadow .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.auto-tour-control:not([hidden]) {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.auto-tour-control:hover,
+.auto-tour-control:focus-visible {
+  box-shadow: 0 9px 22px rgba(54,75,47,.33), inset 0 1px 0 rgba(255,255,255,.34);
+}
+
+.auto-tour-control:focus-visible {
+  outline: 2px solid #cda84a;
+  outline-offset: 3px;
+}
+
+.auto-tour-control:disabled {
+  cursor: default;
+  opacity: .68;
+}
+
+.auto-tour-icon {
+  position: relative;
+  display: block;
+  width: 15px;
+  height: 18px;
+}
+
+.auto-tour-control.is-active .auto-tour-icon::before,
+.auto-tour-control.is-active .auto-tour-icon::after {
+  position: absolute;
+  top: 1px;
+  width: 4px;
+  height: 16px;
+  border-radius: 2px;
+  background: currentColor;
+  content: '';
+}
+
+.auto-tour-control.is-active .auto-tour-icon::before { left: 1px; }
+.auto-tour-control.is-active .auto-tour-icon::after { right: 1px; }
+
+.auto-tour-control.is-paused .auto-tour-icon {
+  width: 0;
+  height: 0;
+  margin-left: 3px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 14px solid currentColor;
 }
 
 .hero {
@@ -959,6 +1066,15 @@ body.qa-preview-open .hero-inner > * {
     transform: translateY(-75px) scale(1.28);
   }
 
+  .envelope-screen.step-card-handoff .envelope-letter {
+    transform: translateY(-75px) scale(1.36);
+  }
+
+  .auto-tour-control {
+    right: 16px;
+    bottom: 82px;
+  }
+
   .letter-floral {
     width: 120px;
   }
@@ -1014,5 +1130,9 @@ body.qa-preview-open .hero-inner > * {
 
   .hero-inner > * {
     transition-duration: .01ms !important;
+  }
+
+  .auto-tour-control {
+    display: none !important;
   }
 }

@@ -1,6 +1,6 @@
 /**
  * Configuración global de la invitación
- * Elisbe & Hector - 9 de enero de 2027
+ * Hector & Elisbe - 9 de enero de 2027
  */
 const CONFIG = {
   // Fecha y hora del evento en formato ISO (zona horaria -03:00)

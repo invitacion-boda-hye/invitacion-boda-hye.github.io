@@ -1,6 +1,6 @@
 /**
  * Lógica funcional de la invitación
- * Elisbe & Hector
+ * Hector & Elisbe
  */
 
 // ============================================================================
@@ -33,8 +33,8 @@ function openEnvelopeSequence() {
   // Para quien prefiere menos movimiento se mantienen los mismos estados,
   // pero se presentan casi de inmediato.
   const timing = reduceEnvelopeMotion
-    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, finish: 90 }
-    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5450, finish: 6500 };
+    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, handoff: 82, finish: 100 }
+    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5250, handoff: 6100, finish: 6500 };
 
   envelopeScreen.classList.add('step-magic');
 
@@ -56,8 +56,13 @@ function openEnvelopeSequence() {
 
   setTimeout(() => {
     document.body.classList.add('invitation-revealed');
-    envelopeScreen.classList.add('step-hero-reveal', 'opened');
+    envelopeScreen.classList.add('step-hero-reveal');
   }, timing.reveal);
+
+  setTimeout(() => {
+    // La portada ya está presente: sólo ahora cedemos la tarjeta compartida.
+    envelopeScreen.classList.add('step-card-handoff');
+  }, timing.handoff);
 
   setTimeout(() => {
     envelopeScreen.classList.add('opened');
@@ -66,7 +71,8 @@ function openEnvelopeSequence() {
     // Desactivamos completamente de accesibilidad para que no interfiera en la navegación
     envelopeScreen.setAttribute('aria-hidden', 'true');
     envelopeTrigger?.setAttribute('tabindex', '-1');
-  }, 2920);
+    startAutoTourAfterReveal();
+  }, timing.finish);
 }
 
 if (envelopeTrigger) {
@@ -187,7 +193,7 @@ const calendarBtn = document.getElementById('calendar');
 if (calendarBtn) {
   calendarBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const title = encodeURIComponent('Matrimonio de Elisbe y Hector');
+    const title = encodeURIComponent('Matrimonio de Hector y Elisbe');
     const dates = '20270109/20270110';
     const details = encodeURIComponent('Celebración de nuestro matrimonio. Horarios por confirmar.');
     const location = encodeURIComponent('Capilla Inmaculada Corazón de María / Quincho Ayuwun, Puerto Montt');
@@ -210,7 +216,7 @@ if (rsvpForm) {
 
     if (!name || !attendance) return;
 
-    const txt = `Confirmación de matrimonio - Elisbe y Hector\nNombre: ${name}\nAsistencia: ${attendance}\nNúmero de personas: ${attendance === 'Sí' ? people : '0'}\nMensaje: ${message || 'Sin mensaje'}`;
+    const txt = `Confirmación de matrimonio - Hector y Elisbe\nNombre: ${name}\nAsistencia: ${attendance}\nNúmero de personas: ${attendance === 'Sí' ? people : '0'}\nMensaje: ${message || 'Sin mensaje'}`;
 
     if (!CONFIG.telefonoWhatsApp) {
       if (navigator.clipboard) {
@@ -294,5 +300,145 @@ if (audio && mb) {
     }
   });
 }
+
+// ============================================================================
+// RECORRIDO AUTOMÁTICO — INDEPENDIENTE DE LA MÚSICA
+// ============================================================================
+const autoTourButton = document.getElementById('autoTourButton');
+let autoTourFrame = 0;
+let autoTourStartTimer = 0;
+let autoTourLastFrame = 0;
+let autoTourActive = false;
+let autoTourReady = false;
+let autoTourFinished = false;
+let autoTourScrolling = false;
+let autoTourPosition = 0;
+
+function updateAutoTourControl() {
+  if (!autoTourButton) return;
+
+  const canUseAutoTour = autoTourReady && !reduceEnvelopeMotion;
+  autoTourButton.hidden = !canUseAutoTour;
+  autoTourButton.disabled = autoTourFinished;
+  autoTourButton.classList.toggle('is-active', autoTourActive);
+  autoTourButton.classList.toggle('is-paused', !autoTourActive);
+  autoTourButton.classList.toggle('is-finished', autoTourFinished);
+  autoTourButton.setAttribute('aria-pressed', String(autoTourActive));
+
+  if (autoTourFinished) {
+    autoTourButton.setAttribute('aria-label', 'Recorrido automático finalizado');
+    autoTourButton.setAttribute('title', 'Recorrido automático finalizado');
+  } else if (autoTourActive) {
+    autoTourButton.setAttribute('aria-label', 'Pausar recorrido automático');
+    autoTourButton.setAttribute('title', 'Pausar recorrido automático');
+  } else {
+    autoTourButton.setAttribute('aria-label', 'Reanudar recorrido automático');
+    autoTourButton.setAttribute('title', 'Reanudar recorrido automático');
+  }
+}
+
+function autoTourLimit() {
+  return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+}
+
+function autoTourSpeed() {
+  // La velocidad baja levemente sobre bloques de texto para que se puedan leer.
+  const sections = [...document.querySelectorAll('main section, footer')];
+  const currentSection = sections.find((section) => {
+    const rect = section.getBoundingClientRect();
+    return rect.top < window.innerHeight * .6 && rect.bottom > window.innerHeight * .35;
+  });
+  return currentSection?.classList.contains('alternate') ? 19 : 24;
+}
+
+function pauseAutoTour() {
+  if (!autoTourActive) return;
+  autoTourActive = false;
+  cancelAnimationFrame(autoTourFrame);
+  autoTourFrame = 0;
+  updateAutoTourControl();
+}
+
+function finishAutoTour() {
+  autoTourActive = false;
+  autoTourFinished = true;
+  cancelAnimationFrame(autoTourFrame);
+  autoTourFrame = 0;
+  updateAutoTourControl();
+}
+
+function runAutoTour(now) {
+  if (!autoTourActive) return;
+
+  const limit = autoTourLimit();
+  if (window.scrollY >= limit - 1) {
+    finishAutoTour();
+    return;
+  }
+
+  const elapsed = Math.min(64, now - autoTourLastFrame) / 1000;
+  autoTourLastFrame = now;
+  autoTourPosition = Math.min(limit, autoTourPosition + autoTourSpeed() * elapsed);
+
+  autoTourScrolling = true;
+  window.scrollTo(0, autoTourPosition);
+  requestAnimationFrame(() => { autoTourScrolling = false; });
+  autoTourFrame = requestAnimationFrame(runAutoTour);
+}
+
+function resumeAutoTour() {
+  if (reduceEnvelopeMotion || autoTourFinished || autoTourActive) return;
+  if (window.scrollY >= autoTourLimit() - 1) {
+    finishAutoTour();
+    return;
+  }
+  autoTourActive = true;
+  autoTourPosition = window.scrollY;
+  autoTourLastFrame = performance.now();
+  updateAutoTourControl();
+  autoTourFrame = requestAnimationFrame(runAutoTour);
+}
+
+function startAutoTourAfterReveal() {
+  if (reduceEnvelopeMotion || autoTourReady) return;
+  autoTourReady = true;
+  updateAutoTourControl();
+  clearTimeout(autoTourStartTimer);
+  // La portada permanece en calma dos segundos antes de iniciar el recorrido.
+  autoTourStartTimer = window.setTimeout(resumeAutoTour, 2000);
+}
+
+function isInteractiveTourTarget(target) {
+  return target instanceof Element && Boolean(target.closest(
+    'a, button, input, select, textarea, label, summary, [role="button"], [contenteditable="true"]'
+  ));
+}
+
+autoTourButton?.addEventListener('click', (event) => {
+  event.stopPropagation();
+  if (autoTourActive) pauseAutoTour();
+  else resumeAutoTour();
+});
+
+// Un toque libre alterna pausa/reanudación. Los controles y enlaces siguen
+// siendo completamente suyos: sólo detienen el recorrido, nunca su acción.
+document.addEventListener('click', (event) => {
+  if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
+  if (autoTourActive) pauseAutoTour();
+  else resumeAutoTour();
+});
+
+document.addEventListener('wheel', () => pauseAutoTour(), { passive: true });
+document.addEventListener('touchmove', () => pauseAutoTour(), { passive: true });
+document.addEventListener('keydown', (event) => {
+  if (isInteractiveTourTarget(event.target)) return;
+  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
+    pauseAutoTour();
+  }
+});
+
+window.addEventListener('scroll', () => {
+  if (autoTourReady && autoTourActive && !autoTourScrolling) pauseAutoTour();
+}, { passive: true });
 
 

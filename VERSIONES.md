@@ -11,6 +11,7 @@ identificadores completos y las fechas exactas se pueden consultar con
 | 2026-11-10 | `sin-boton-bajo-sobre-propuesta` | Propuesta pendiente de aprobación: se retira únicamente el botón verde con doble flecha situado bajo el sobre; el sobre continúa siendo el disparador de apertura. |
 | 2026-11-10 | `sin-boton-de-portada-propuesta` | Corrección pendiente de aprobación: se restaura el botón bajo el sobre y se retira únicamente el botón de la portada que desplazaba la página hacia abajo. |
 | 2026-11-10 | `sin-boton-bajo-sobre-correccion` | Corrección pendiente de aprobación: según la captura, se retira el botón bajo el sobre y se conserva el botón de navegación de la portada. |
+| 2026-11-10 | `apertura-y-recorrido-hector-elisbe-propuesta` | Propuesta pendiente de aprobación: relevo continuo de tarjeta a portada en 6,5 s, recorrido automático pausables sin afectar música y corrección global del orden a Hector & Elisbe. |
 
 ## Convención para cambios futuros
 
