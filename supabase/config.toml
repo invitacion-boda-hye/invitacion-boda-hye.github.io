@@ -1,0 +1,10 @@
+# La verificación de JWT se mantiene activa en ambas funciones. La función
+# pública exige además el enlace aleatorio y límites de solicitudes; la función
+# administrativa valida una sesión de Supabase Auth y su pertenencia a
+# rsvp_admins.
+
+[functions.public-rsvp]
+verify_jwt = true
+
+[functions.admin-rsvp]
+verify_jwt = true

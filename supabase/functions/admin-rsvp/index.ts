@@ -1,0 +1,110 @@
+import { loadRuntimeConfig } from "../_shared/config.ts";
+import {
+  allowedCorsHeaders,
+  AppError,
+  cleanGroupName,
+  json,
+  newInvitationToken,
+  publicErrorResponse,
+  readJson,
+  requirePassCount,
+  requireUuid,
+  sha256Hex,
+} from "../_shared/security.ts";
+import { DatabaseError, databaseErrorResponse, requireAuthenticatedAdmin, rpc } from "../_shared/supabase.ts";
+
+function invitationUrl(baseUrl: string, token: string): string {
+  return `${baseUrl}/#i=${encodeURIComponent(token)}`;
+}
+
+async function withFreshToken<T>(
+  operation: (tokenHash: string) => Promise<T>,
+): Promise<{ value: T; token: string }> {
+  // Una colisión de 256 bits es extraordinariamente improbable, pero se vuelve
+  // manejable y sin filtrar detalles si el índice único llegara a detectarla.
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const token = newInvitationToken();
+    try {
+      return { value: await operation(await sha256Hex(token)), token };
+    } catch (error) {
+      if (!(error instanceof DatabaseError) || error.databaseCode !== "23505") {
+        throw error;
+      }
+    }
+  }
+  throw new AppError(500, "TOKEN_GENERATION_FAILED");
+}
+
+Deno.serve(async (request) => {
+  let headers: HeadersInit = { "Content-Type": "application/json; charset=utf-8" };
+  try {
+    headers = allowedCorsHeaders(request);
+    if (request.method === "OPTIONS") return new Response(null, { status: 204, headers });
+    if (request.method !== "POST") throw new AppError(405, "METHOD_NOT_ALLOWED");
+
+    const body = await readJson(request);
+    const action = body.action;
+    if (typeof action !== "string") throw new AppError(400, "REQUEST_INVALID");
+
+    const config = loadRuntimeConfig(action === "createInvitation" || action === "regenerateInvitation");
+    const adminUserId = await requireAuthenticatedAdmin(request, config);
+
+    if (action === "createInvitation") {
+      const groupName = cleanGroupName(body.groupName);
+      const maxPasses = requirePassCount(body.maxPasses);
+      const created = await withFreshToken((tokenHash) => rpc<unknown>(config, "rsvp_admin_create_invitation", {
+        p_group_name: groupName,
+        p_max_passes: maxPasses,
+        p_token_hash: tokenHash,
+        p_actor_user_id: adminUserId,
+      }));
+      return json({ invitation: created.value, invitationUrl: invitationUrl(config.publicInvitationUrl, created.token) }, 201, headers);
+    }
+
+    if (action === "regenerateInvitation") {
+      const invitationId = requireUuid(body.invitationId, "ADMIN_INVITATION_ARGUMENT_INVALID");
+      const regenerated = await withFreshToken((tokenHash) => rpc<unknown>(config, "rsvp_admin_regenerate_token", {
+        p_invitation_id: invitationId,
+        p_token_hash: tokenHash,
+        p_actor_user_id: adminUserId,
+      }));
+      return json({ invitation: regenerated.value, invitationUrl: invitationUrl(config.publicInvitationUrl, regenerated.token) }, 200, headers);
+    }
+
+    if (action === "revokeInvitation") {
+      const invitationId = requireUuid(body.invitationId, "ADMIN_INVITATION_ARGUMENT_INVALID");
+      const invitation = await rpc<unknown>(config, "rsvp_admin_revoke_invitation", {
+        p_invitation_id: invitationId,
+        p_actor_user_id: adminUserId,
+      });
+      return json({ invitation }, 200, headers);
+    }
+
+    if (action === "updateSettings") {
+      if (typeof body.capacity !== "number" || !Number.isInteger(body.capacity)) {
+        throw new AppError(400, "ADMIN_CAPACITY_INVALID");
+      }
+      if (body.rsvpDeadline !== null && body.rsvpDeadline !== undefined && typeof body.rsvpDeadline !== "string") {
+        throw new AppError(400, "REQUEST_INVALID");
+      }
+      const settings = await rpc<unknown>(config, "rsvp_admin_update_event_settings", {
+        p_capacity: body.capacity,
+        p_rsvp_deadline: body.rsvpDeadline ?? null,
+        p_actor_user_id: adminUserId,
+      });
+      return json({ settings }, 200, headers);
+    }
+
+    if (action === "summary") {
+      const summary = await rpc<unknown>(config, "rsvp_admin_dashboard_summary", {
+        p_actor_user_id: adminUserId,
+      });
+      return json({ summary }, 200, headers);
+    }
+
+    throw new AppError(400, "REQUEST_INVALID");
+  } catch (error) {
+    const mapped = databaseErrorResponse(error);
+    return publicErrorResponse(mapped ?? error, headers);
+  }
+});

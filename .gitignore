@@ -26,3 +26,8 @@ yarn-error.log*
 *.zip
 *.bak
 *.tmp
+
+# Secretos locales para Supabase y otros servicios. El ejemplo sí se versiona.
+.env
+.env.*
+!.env.example
