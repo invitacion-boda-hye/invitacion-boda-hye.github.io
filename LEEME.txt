@@ -1,0 +1,18 @@
+INVITACIÓN WEB - ELISBE Y HECTOR
+
+1. Abre index.html en tu navegador para ver la invitación.
+2. Cambia los valores del objeto CONFIG al final de index.html:
+   - fecha: fecha y hora de la ceremonia en formato ISO, con zona -03:00.
+   - telefonoWhatsApp: número receptor en formato internacional, por ejemplo 569XXXXXXXX (reemplazar X).
+   - ceremoniaMaps y recepcionMaps: URLs reales de Google Maps.
+   - datosBancarios: datos bancarios exactos para regalos.
+3. Coloca tu música autorizada como assets/musica.mp3. La reproducción requiere que el invitado pulse el botón.
+4. Reemplaza las tres tarjetas de galería por imágenes reales: por ejemplo <img src="assets/foto1.jpg" alt="Elisbe y Hector" style="width:100%;height:100%;object-fit:cover">.
+5. Revisa y completa horarios del itinerario y código de vestimenta.
+6. Para publicar gratis, sube la carpeta completa a Netlify Drop o a un repositorio conectado a Vercel.
+
+NOTAS:
+- El formulario RSVP abre WhatsApp si configuras el teléfono; no almacena datos en una base de datos.
+- Si no hay teléfono, copia el mensaje para enviarlo manualmente.
+- El evento de calendario está marcado como día completo hasta confirmar horarios.
+- La web no incluye fotografías ni música de terceros.
