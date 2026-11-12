@@ -736,6 +736,43 @@ body.invitation-revealed .hero { opacity:1; }
   margin: 0;
 }
 
+/* Nuestra historia: columna editorial lista para acompañarse de una foto familiar. */
+.story-section .wrap {
+  width: min(760px, 90%);
+}
+
+.story-section h2 {
+  margin-bottom: 12px;
+  color: var(--dark);
+}
+
+.story-section .leaf {
+  margin: 0 auto 25px;
+  color: var(--sage);
+}
+
+.story-copy {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.story-copy p {
+  max-width: none;
+  margin: 0;
+  color: #566451;
+  font: 400 clamp(1rem, 1.45vw, 1.1rem)/1.72 'DM Sans', sans-serif;
+}
+
+@media (max-width: 600px) {
+  .story-section .wrap { width: min(100% - 34px, 680px); }
+  .story-section .leaf { margin-bottom: 21px; }
+  .story-copy { gap: 16px; }
+  .story-copy p { font-size: 1rem; line-height: 1.68; }
+}
+
 /* Itinerario: una secuencia de momentos conectados, como un diagrama de flujo. */
 .flow-timeline {
   display: grid;
