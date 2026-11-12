@@ -364,9 +364,9 @@ body.envelope-active {
 }
 
 .letter-date {
-  margin-top: 14px;
   color: var(--welcome-green);
-  font-size: .64rem;
+  /* Mínimo de 16 px para que se lea bien también en teléfono. */
+  font-size: clamp(1rem, 3.8vw, 1.2rem);
   font-weight: 600;
   letter-spacing: .25em;
 }
