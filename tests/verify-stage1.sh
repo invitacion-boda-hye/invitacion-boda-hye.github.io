@@ -64,7 +64,7 @@ rg -q "rsvp_admin_assign_seat" "$tables_migration"
 rg -q "rsvp_admin_release_seat" "$tables_migration"
 rg -q "rsvp_admin_export_guest_data" "$tables_migration"
 [[ "$(rg -c "security definer" "$tables_migration")" -eq "$(rg -c "set search_path = ''" "$tables_migration")" ]]
-rg -q "sum(capacity).*54" "supabase/tests/002_guest_tables_invariants.sql"
+rg -q "sum\(capacity\)::integer.*54" "supabase/tests/002_guest_tables_invariants.sql"
 
 security_definer_count="$(rg -c "security definer" "$migration")"
 empty_search_path_count="$(rg -c "set search_path = ''" "$migration")"
