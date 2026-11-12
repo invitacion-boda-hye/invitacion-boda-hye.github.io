@@ -11,7 +11,7 @@ import {
   requireUuid,
   sha256Hex,
 } from "../_shared/security.ts";
-import { adminRead, DatabaseError, databaseErrorResponse, requireAuthenticatedAdmin, rpc } from "../_shared/supabase.ts";
+import { DatabaseError, databaseErrorResponse, requireAuthenticatedAdmin, rpc } from "../_shared/supabase.ts";
 
 function invitationUrl(baseUrl: string, token: string): string {
   return `${baseUrl}/#i=${encodeURIComponent(token)}`;
@@ -103,11 +103,47 @@ Deno.serve(async (request) => {
     }
 
     if (action === "listInvitations") {
-      const invitations = await adminRead<unknown[]>(
-        config,
-        "invitations?select=id,group_name,max_passes,is_active,rsvp_state,updated_at,rsvp_responses(confirmed_count,is_attending)&order=created_at.asc",
-      );
-      return json({ invitations }, 200, headers);
+      const data = await rpc<unknown>(config, "rsvp_admin_get_guest_data", { p_actor_user_id: adminUserId });
+      return json({ data }, 200, headers);
+    }
+
+    if (action === "assignSeat") {
+      const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+      const attendeeId = requireUuid(body.attendeeId, "ADMIN_ATTENDEE_ARGUMENT_INVALID");
+      if (typeof body.seatNumber !== "number" || !Number.isInteger(body.seatNumber)) {
+        throw new AppError(400, "ADMIN_SEAT_ARGUMENT_INVALID");
+      }
+      const data = await rpc<unknown>(config, "rsvp_admin_assign_seat", {
+        p_table_id: tableId, p_seat_number: body.seatNumber, p_attendee_id: attendeeId, p_actor_user_id: adminUserId,
+      });
+      return json({ data }, 200, headers);
+    }
+
+    if (action === "releaseSeat") {
+      const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+      if (typeof body.seatNumber !== "number" || !Number.isInteger(body.seatNumber)) {
+        throw new AppError(400, "ADMIN_SEAT_ARGUMENT_INVALID");
+      }
+      const data = await rpc<unknown>(config, "rsvp_admin_release_seat", {
+        p_table_id: tableId, p_seat_number: body.seatNumber, p_actor_user_id: adminUserId,
+      });
+      return json({ data }, 200, headers);
+    }
+
+    if (action === "updateTableCapacity") {
+      const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+      if (typeof body.capacity !== "number" || !Number.isInteger(body.capacity)) {
+        throw new AppError(400, "ADMIN_TABLE_CAPACITY_INVALID");
+      }
+      const data = await rpc<unknown>(config, "rsvp_admin_update_table_capacity", {
+        p_table_id: tableId, p_capacity: body.capacity, p_actor_user_id: adminUserId,
+      });
+      return json({ data }, 200, headers);
+    }
+
+    if (action === "exportGuestData") {
+      const rows = await rpc<unknown>(config, "rsvp_admin_export_guest_data", { p_actor_user_id: adminUserId });
+      return json({ rows }, 200, headers);
     }
 
     throw new AppError(400, "REQUEST_INVALID");

@@ -10,7 +10,7 @@ function setup({ failure, response } = {}) {
   function element() {
     return {
       value: '', hidden: false, textContent: '', children: [], listeners: {}, resets: 0,
-      classList: { toggle() {} },
+      style: {}, classList: { toggle() {}, contains() { return false; } },
       append(...children) { this.children.push(...children); },
       replaceChildren(...children) { this.children = children; },
       addEventListener(name, callback) { this.listeners[name] = callback; },
@@ -24,17 +24,19 @@ function setup({ failure, response } = {}) {
   }
   const calls = [];
   const storage = new Map();
+  get('adminDashboard').hidden = true;
   const context = vm.createContext({
-    document: { getElementById: get, createElement: element },
+    document: { getElementById: get, createElement: element, querySelectorAll: () => [] },
+    confirm: () => true, prompt: () => null, window: { print() {} }, URL: { createObjectURL: () => 'blob:synthetic', revokeObjectURL() {} }, Blob: class {},
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
       signIn: async () => ({ access_token: 'synthetic-session' }),
       adminRequest: async (action) => {
         calls.push(action);
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
-        if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48 } };
+        if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0 } };
         if (action === 'createInvitation') return { invitationUrl: 'https://example.invalid/#i=synthetic' };
-        return { invitations: [{ group_name: 'Familia de prueba', max_passes: 3, is_active: true, rsvp_state: 'attending', rsvp_responses: response || { is_attending: true, confirmed_count: 2 } }] };
+        return { data: { invitations: [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
       }
     }
   });
@@ -59,7 +61,7 @@ test('login exitoso carga métricas y familias tras finalizar el despacho del ev
   assert.equal(app.get('adminLogin').hidden, true);
   assert.equal(app.get('loginMessage').textContent, '');
   assert.equal(app.get('loginForm').resets, 1);
-  assert.equal(app.get('adminMetrics').children.length, 8);
+  assert.equal(app.get('adminMetrics').children.length, 5);
 });
 
 test('crear familia refresca el panel después del await', async () => {
@@ -70,11 +72,10 @@ test('crear familia refresca el panel después del await', async () => {
   assert.equal(app.get('dashboardMessage').textContent, '');
 });
 
-test('respuesta uno a uno de PostgREST conserva los confirmados', async () => {
+test('la carga de familias usa la respuesta administrativa normalizada', async () => {
   const app = setup();
   await app.submit('loginForm');
-  const row = app.get('adminFamilyList').children[0];
-  assert.equal(row.children[0].children[1].textContent, '2 confirmados de 3 pases');
+  assert.equal(app.get('familyList').children.length, 1);
 });
 
 test('un 403 de membresía se distingue de un fallo local y cierra el acceso', async () => {

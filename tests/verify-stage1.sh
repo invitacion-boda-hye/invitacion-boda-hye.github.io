@@ -17,6 +17,8 @@ required_files=(
   "supabase/functions/.env.example"
   "SUPABASE_SETUP.md"
   "supabase/tests/001_rsvp_invariants.sql"
+  "supabase/migrations/202611120002_guest_tables.sql"
+  "supabase/tests/002_guest_tables_invariants.sql"
 )
 
 for file in "${required_files[@]}"; do
@@ -34,7 +36,8 @@ rg -q 'SUPABASE_PUBLISHABLE_KEYS' "supabase/functions/_shared/config.ts"
 rg -q 'SUPABASE_SECRET_KEYS' "supabase/functions/_shared/config.ts"
 rg -q 'ADMIN_MEMBERSHIP_CHECK_FAILED' "supabase/functions/_shared/supabase.ts"
 rg -q 'listInvitations' "supabase/functions/admin-rsvp/index.ts"
-rg -q 'adminRead' "supabase/functions/_shared/supabase.ts"
+rg -q 'rsvp_admin_get_guest_data' "supabase/functions/admin-rsvp/index.ts"
+rg -q 'assignSeat' "supabase/functions/admin-rsvp/index.ts"
 rg -q 'ORIGIN_NOT_ALLOWED' "admin/admin.js"
 
 migration="supabase/migrations/202611110001_rsvp_schema_and_security.sql"
@@ -53,6 +56,15 @@ if rg -q "extensions.gen_random_uuid|create extension if not exists pgcrypto" "$
   echo "La migración no debe depender de pgcrypto para UUID" >&2
   exit 1
 fi
+
+tables_migration="supabase/migrations/202611120002_guest_tables.sql"
+rg -q "event_tables" "$tables_migration"
+rg -q "rsvp_seat_assignments" "$tables_migration"
+rg -q "rsvp_admin_assign_seat" "$tables_migration"
+rg -q "rsvp_admin_release_seat" "$tables_migration"
+rg -q "rsvp_admin_export_guest_data" "$tables_migration"
+[[ "$(rg -c "security definer" "$tables_migration")" -eq "$(rg -c "set search_path = ''" "$tables_migration")" ]]
+rg -q "sum(capacity).*54" "supabase/tests/002_guest_tables_invariants.sql"
 
 security_definer_count="$(rg -c "security definer" "$migration")"
 empty_search_path_count="$(rg -c "set search_path = ''" "$migration")"

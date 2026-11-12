@@ -184,3 +184,26 @@ las barreras de seguridad, la configuración JWT y que la invitación conserve
 sus controles de música y recorrido. Las pruebas remotas deben hacerse primero
 con una familia de prueba creada en un entorno no productivo o bajo supervisión,
 porque incluso una consulta pública actualiza el límite de solicitudes.
+
+## 9. Mesas y carteleras (migración pendiente de revisión)
+
+[`202611120002_guest_tables.sql`](supabase/migrations/202611120002_guest_tables.sql)
+crea seis mesas (54 sillas físicas) y mantiene esa capacidad separada del
+límite RSVP de 50. Guarda cada asignación con historial de liberación, impide
+sillas o asistentes duplicados y libera una silla si una familia modifica su
+respuesta y se reemplaza su asistente.
+
+La migración no modifica familias, confirmaciones ni la capacidad RSVP. RLS
+queda activo y solo las funciones administrativas, tras comprobar Auth y
+`rsvp_admins`, pueden leer o cambiar distribuciones. Antes de aplicarla en el
+proyecto, revisa y ejecuta las pruebas locales:
+
+```bash
+supabase db reset
+supabase test db
+node tests/admin-flow.test.cjs
+```
+
+Después de aprobar la migración, aplícala una sola vez con `supabase db push`
+y despliega únicamente `admin-rsvp`. Nunca reutilices `db push` para las
+migraciones que ya aparezcan como aplicadas.
