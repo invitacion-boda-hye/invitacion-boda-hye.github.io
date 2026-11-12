@@ -703,81 +703,6 @@ body.qa-preview-open .hero {
   transition: none;
 }
 
-/* Control independiente de la música para el recorrido automático. */
-.auto-tour-control {
-  position: fixed;
-  right: 22px;
-  bottom: 88px;
-  z-index: 102;
-  display: grid;
-  width: 48px;
-  height: 48px;
-  place-items: center;
-  padding: 0;
-  border: 1px solid rgba(255,255,255,.86);
-  border-radius: 50%;
-  background: linear-gradient(145deg, #91a977, #507142);
-  box-shadow: 0 7px 18px rgba(54,75,47,.25), inset 0 1px 0 rgba(255,255,255,.28);
-  color: #fffdf5;
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(8px);
-  pointer-events: none;
-  transition: opacity .28s ease, transform .28s ease, box-shadow .2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.auto-tour-control:not([hidden]) {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
-}
-
-.auto-tour-control:hover,
-.auto-tour-control:focus-visible {
-  box-shadow: 0 9px 22px rgba(54,75,47,.33), inset 0 1px 0 rgba(255,255,255,.34);
-}
-
-.auto-tour-control:focus-visible {
-  outline: 2px solid #cda84a;
-  outline-offset: 3px;
-}
-
-.auto-tour-control:disabled {
-  cursor: default;
-  opacity: .68;
-}
-
-.auto-tour-icon {
-  position: relative;
-  display: block;
-  width: 15px;
-  height: 18px;
-}
-
-.auto-tour-control.is-active .auto-tour-icon::before,
-.auto-tour-control.is-active .auto-tour-icon::after {
-  position: absolute;
-  top: 1px;
-  width: 4px;
-  height: 16px;
-  border-radius: 2px;
-  background: currentColor;
-  content: '';
-}
-
-.auto-tour-control.is-active .auto-tour-icon::before { left: 1px; }
-.auto-tour-control.is-active .auto-tour-icon::after { right: 1px; }
-
-.auto-tour-control.is-paused .auto-tour-icon {
-  width: 0;
-  height: 0;
-  margin-left: 3px;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-  border-left: 14px solid currentColor;
-}
-
 .hero {
   isolation: isolate;
   position: relative;
@@ -894,32 +819,6 @@ body.qa-preview-open .hero {
   letter-spacing: .28em;
 }
 
-.hero-buttons {
-  position: relative;
-  margin-top: 30px !important;
-}
-
-.hero .button {
-  display: grid;
-  place-items: center;
-  width: 92px;
-  height: 48px;
-  min-width: 0;
-  padding: 0;
-  overflow: visible;
-  border: 2px solid rgba(255,255,255,.95);
-  border-radius: 999px;
-  background: linear-gradient(180deg, #5f8f3a, #164827);
-  box-shadow: 0 5px 10px rgba(7, 58, 32, .22), inset 0 1px rgba(255,255,255,.38);
-}
-
-.hero .button::before,
-.hero .button::after,
-.hero-buttons::before,
-.hero-buttons::after {
-  display: none;
-}
-
 /* La portada se escribe suavemente mientras desaparece la última capa del sobre. */
 .hero-inner > * {
   will-change: transform, opacity;
@@ -941,7 +840,6 @@ body.invitation-revealed .hero-divider { transition-delay: .16s; }
 body.invitation-revealed .hero-invitation { transition-delay: .28s; }
 body.invitation-revealed .hero h1 { transition-delay: .42s; }
 body.invitation-revealed .hero .date { transition-delay: .54s; }
-body.invitation-revealed .hero-buttons { transition-delay: .64s; }
 
 body.qa-preview-open .hero-inner > * {
   opacity: 1 !important;
@@ -1070,11 +968,6 @@ body.qa-preview-open .hero-inner > * {
     transform: translateY(-75px) scale(1.36);
   }
 
-  .auto-tour-control {
-    right: 16px;
-    bottom: 82px;
-  }
-
   .letter-floral {
     width: 120px;
   }
@@ -1132,7 +1025,4 @@ body.qa-preview-open .hero-inner > * {
     transition-duration: .01ms !important;
   }
 
-  .auto-tour-control {
-    display: none !important;
-  }
 }
