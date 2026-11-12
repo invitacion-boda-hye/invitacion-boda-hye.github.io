@@ -34,3 +34,6 @@ yarn-error.log*
 
 # Metadatos locales del enlace de Supabase; no contienen parte del código fuente.
 supabase/.temp/
+
+# Respaldos locales que contienen datos personales del RSVP.
+backups/

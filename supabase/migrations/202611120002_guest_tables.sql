@@ -130,6 +130,10 @@ create or replace function public.rsvp_admin_assign_seat(
 declare v_seat public.event_table_seats%rowtype; v_invitation_id uuid; v_full_name text;
 begin
   perform private.assert_rsvp_admin(p_actor_user_id);
+  -- Mismo primer candado que el ajuste de capacidad: evita que una silla sea
+  -- asignada mientras otro administrador la desactiva al reducir una mesa.
+  perform 1 from public.event_tables where id = p_table_id and is_active for update;
+  if not found then raise exception using errcode = 'P0001', message = 'ADMIN_TABLE_NOT_FOUND'; end if;
   select s.* into v_seat from public.event_table_seats s
   where s.table_id = p_table_id and s.seat_number = p_seat_number and s.is_active for update;
   if not found then raise exception using errcode = 'P0001', message = 'ADMIN_SEAT_NOT_FOUND'; end if;
@@ -154,6 +158,8 @@ create or replace function public.rsvp_admin_release_seat(
 declare v_seat_id uuid;
 begin
   perform private.assert_rsvp_admin(p_actor_user_id);
+  perform 1 from public.event_tables where id = p_table_id and is_active for update;
+  if not found then raise exception using errcode = 'P0001', message = 'ADMIN_TABLE_NOT_FOUND'; end if;
   select id into v_seat_id from public.event_table_seats
   where table_id = p_table_id and seat_number = p_seat_number for update;
   if not found then raise exception using errcode = 'P0001', message = 'ADMIN_SEAT_NOT_FOUND'; end if;
