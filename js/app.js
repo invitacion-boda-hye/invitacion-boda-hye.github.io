@@ -203,38 +203,6 @@ if (calendarBtn) {
 }
 
 // ============================================================================
-// FORMULARIO DE CONFIRMACIÓN (RSVP) VÍA WHATSAPP
-// ============================================================================
-const rsvpForm = document.getElementById('rsvp');
-if (rsvpForm) {
-  rsvpForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('guest').value.trim();
-    const attendance = document.getElementById('attendance').value;
-    const people = document.getElementById('people').value;
-    const message = document.getElementById('message').value.trim();
-
-    if (!name || !attendance) return;
-
-    const txt = `Confirmación de matrimonio - Hector y Elisbe\nNombre: ${name}\nAsistencia: ${attendance}\nNúmero de personas: ${attendance === 'Sí' ? people : '0'}\nMensaje: ${message || 'Sin mensaje'}`;
-
-    if (!CONFIG.telefonoWhatsApp) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(txt)
-          .then(() => alert('Confirmación copiada. Configura el número de WhatsApp para habilitar el envío directo.'))
-          .catch(() => prompt('Copia este mensaje:', txt));
-      } else {
-        prompt('Copia este mensaje:', txt);
-      }
-      return;
-    }
-
-    const cleanPhone = CONFIG.telefonoWhatsApp.replace(/\D/g, '');
-    window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(txt)}`, '_blank', 'noopener');
-  });
-}
-
-// ============================================================================
 // REPRODUCCIÓN DE MÚSICA DE FONDO (Requiere interacción explícita)
 // ============================================================================
 const audio = document.getElementById('music');

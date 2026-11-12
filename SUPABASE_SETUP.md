@@ -1,8 +1,9 @@
-# Configuración futura de Supabase — RSVP de Hector & Elisbe
+# Configuración de Supabase — RSVP de Hector & Elisbe
 
-Esta etapa deja preparada la base de datos y las Edge Functions, pero **no se
-ha conectado a ningún proyecto Supabase, no se han usado credenciales reales y
-la invitación pública aún no llama a estas funciones**.
+La base de datos ya puede instalarse mediante la migración y el sitio contiene
+la integración local del formulario familiar y un panel privado. Esta guía no
+autoriza publicar la invitación ni volver a aplicar una migración ya instalada.
+Las claves privadas siguen fuera del repositorio y del navegador.
 
 ## Datos que se deben decidir antes de conectar
 
@@ -54,7 +55,7 @@ Variables propias necesarias en la función:
 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEYS` y `SUPABASE_SECRET_KEYS` los
 proporciona la plataforma. El último nunca llega al navegador.
 
-## 3. Aplicar la base de datos cuando esté aprobado
+## 3. Aplicar la base de datos (solo si aún no está instalada)
 
 Los siguientes comandos son una guía para el momento de la configuración; no
 se ejecutaron durante esta etapa:
@@ -62,7 +63,7 @@ se ejecutaron durante esta etapa:
 ```bash
 supabase login
 supabase link --project-ref TU_PROJECT_REF
-supabase db push
+supabase db push # no ejecutar si la migración ya figura como aplicada
 supabase functions deploy public-rsvp
 supabase functions deploy admin-rsvp
 ```
@@ -127,7 +128,32 @@ anterior y conserva la familia y su respuesta.
 - Los comentarios no se interpretan como una cifra oficial ni se guardan en la
   bitácora de auditoría.
 
-## 7. Pruebas posteriores a la conexión
+## 7. Activar la integración web sin exponer secretos
+
+Antes de abrir el formulario en un dominio, configura en **Edge Functions →
+Secrets** los dos valores propios de este proyecto:
+
+```text
+ALLOWED_ORIGINS=https://DOMINIO-DE-LA-INVITACION
+PUBLIC_INVITATION_URL=https://DOMINIO-DE-LA-INVITACION
+```
+
+Usa el origen exacto, sin ruta ni barra final. Añade el dominio con `www` solo
+si también lo utilizarás, separado por una coma. No definas un comodín. La
+función pública no necesita una clave del navegador: valida el token familiar
+en el servidor. El panel privado sí necesita la clave **publishable** para
+iniciar sesión con Supabase Auth; completa `publishableKey` en
+[`js/rsvp-config.js`](js/rsvp-config.js) únicamente al preparar una copia de
+despliegue. Esa clave es pública por diseño; nunca sustituyas el campo por una
+credencial de servidor.
+
+El formulario consume solo `public-rsvp`; el panel consume solo `admin-rsvp`.
+Ninguno consulta tablas desde el navegador. Ambos deben alojarse bajo el mismo
+origen incluido en `ALLOWED_ORIGINS`. La página `admin/` incluye
+`noindex,nofollow`, pero deberá protegerse además con control de acceso de la
+plataforma de alojamiento si se publica.
+
+## 8. Pruebas posteriores a la conexión
 
 Con una instalación local de Supabase y Docker disponibles:
 
@@ -143,5 +169,14 @@ La prueba de base de datos está en
 La prueba manual de dos sesiones para concurrencia está documentada en
 [`supabase/tests/CONCURRENCY_TEST.md`](supabase/tests/CONCURRENCY_TEST.md).
 
-La etapa siguiente conectará el formulario existente a `public-rsvp` y creará
-el panel visual en `admin/`, sin introducir claves privadas en el frontend.
+Además de las pruebas de base de datos, ejecuta desde el repositorio:
+
+```bash
+bash tests/verify-stage1.sh
+```
+
+Esta comprobación no contacta Supabase ni modifica datos: revisa la estructura,
+las barreras de seguridad, la configuración JWT y que la invitación conserve
+sus controles de música y recorrido. Las pruebas remotas deben hacerse primero
+con una familia de prueba creada en un entorno no productivo o bajo supervisión,
+porque incluso una consulta pública actualiza el límite de solicitudes.

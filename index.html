@@ -266,27 +266,43 @@
       <div class="wrap reveal">
         <div class="eyebrow gold">Contamos contigo</div>
         <h2>Confirma tu asistencia</h2>
-        <p>Nos ayudará mucho saber si podremos compartir este día contigo.</p>
-        <form class="form" id="rsvp">
-          <label for="guest">Nombre y apellido</label>
-          <input id="guest" required maxlength="100" placeholder="Tu nombre completo">
+        <p id="rsvpIntro">Nos ayudará mucho saber si podremos compartir este día contigo.</p>
+        <div class="rsvp-state" id="rsvpLoading" role="status">Preparando tu confirmación…</div>
+        <div class="rsvp-state" id="rsvpNoLink" hidden>
+          Esta sección se habilita desde el enlace personalizado de tu familia.
+        </div>
+        <div class="rsvp-state is-error" id="rsvpError" role="alert" hidden></div>
 
-          <label for="attendance">¿Nos acompañarás?</label>
-          <select id="attendance" required>
-            <option value="">Seleccionar</option>
-            <option value="Sí">Sí, asistiré</option>
-            <option value="No">No podré asistir</option>
-          </select>
+        <div id="rsvpExperience" hidden>
+          <div class="rsvp-family" aria-live="polite">
+            <span class="rsvp-family-label">Invitación para</span>
+            <strong id="rsvpGroupName">Tu familia</strong>
+            <span id="rsvpPasses">Esta invitación incluye hasta 1 persona.</span>
+          </div>
 
-          <label for="people">Número de asistentes (incluyéndote)</label>
-          <input id="people" type="number" min="1" max="20" value="1" required>
+          <form class="form rsvp-form" id="rsvp" novalidate>
+            <fieldset class="rsvp-choice">
+              <legend>¿Nos acompañarán en nuestro matrimonio?</legend>
+              <label><input type="radio" name="attendance" value="yes" required> Sí, asistiremos.</label>
+              <label><input type="radio" name="attendance" value="no" required> No podremos asistir.</label>
+            </fieldset>
 
-          <label for="message">Mensaje para los novios (opcional)</label>
-          <textarea id="message" maxlength="500" placeholder="Déjanos un mensaje bonito"></textarea>
+            <div id="rsvpAttendingFields" hidden>
+              <label for="people">Personas que asistirán</label>
+              <select id="people" required></select>
+              <div id="attendeeFields" class="rsvp-attendees"></div>
+            </div>
 
-          <button class="button" type="submit">Enviar confirmación por WhatsApp</button>
-          <p class="note">En esta primera versión se abrirá WhatsApp con el mensaje listo para enviar. No se guardan datos automáticamente.</p>
-        </form>
+            <label for="message">Comentario para los novios <span>(opcional)</span></label>
+            <textarea id="message" maxlength="500" placeholder="Déjanos un mensaje bonito"></textarea>
+            <p class="rsvp-warning" id="rsvpCommentWarning" hidden></p>
+
+            <button class="button" id="rsvpSubmit" type="submit">Confirmar nuestra asistencia</button>
+            <p class="note" id="rsvpHelp">Podrás volver a este enlace para modificar tu respuesta mientras el plazo esté vigente.</p>
+          </form>
+
+          <div class="rsvp-thanks" id="rsvpThanks" hidden aria-live="polite"></div>
+        </div>
       </div>
     </section>
   </main>
@@ -301,6 +317,9 @@
 
   <!-- Scripts: configuración y lógica funcional -->
   <script src="js/config.js?v=20261109-sage-recovered"></script>
+  <script src="js/rsvp-config.js?v=20261111-rsvp"></script>
   <script src="js/app.js?v=20261109-sage-recovered"></script>
+  <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
+  <script src="js/rsvp.js?v=20261111-rsvp"></script>
 </body>
 </html>

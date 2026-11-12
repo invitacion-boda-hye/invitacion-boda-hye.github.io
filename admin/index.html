@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Administración RSVP | Hector & Elisbe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css?v=20261111-rsvp">
+  <link rel="stylesheet" href="admin.css?v=20261111-rsvp">
+</head>
+<body class="admin-page">
+  <main class="admin-shell">
+    <header class="admin-header">
+      <span class="admin-kicker">Hector &amp; Elisbe · 09.01.2027</span>
+      <h1>Administración RSVP</h1>
+      <p>Control privado de confirmaciones y cupos.</p>
+    </header>
+
+    <section class="admin-card" id="adminLogin">
+      <h2>Acceso privado</h2>
+      <p>Ingresa con una cuenta autorizada de Supabase Auth.</p>
+      <form id="loginForm" class="form">
+        <label for="adminEmail">Correo electrónico</label>
+        <input id="adminEmail" type="email" autocomplete="email" required>
+        <label for="adminPassword">Contraseña</label>
+        <input id="adminPassword" type="password" autocomplete="current-password" required>
+        <button class="button" type="submit">Ingresar</button>
+        <p class="admin-message" id="loginMessage" role="alert"></p>
+      </form>
+    </section>
+
+    <section id="adminDashboard" hidden>
+      <div class="admin-toolbar"><button class="button outline" id="logoutButton" type="button">Cerrar sesión</button></div>
+      <div class="admin-metrics" id="adminMetrics" aria-live="polite"></div>
+
+      <div class="admin-grid">
+        <section class="admin-card">
+          <h2>Crear familia</h2>
+          <form id="createInvitationForm" class="form">
+            <label for="groupName">Nombre de la familia o grupo</label>
+            <input id="groupName" maxlength="160" required placeholder="Familia Álvarez Coyazo">
+            <label for="maxPasses">Pases asignados</label>
+            <input id="maxPasses" type="number" min="1" max="1000" value="1" required>
+            <button class="button" type="submit">Crear enlace personalizado</button>
+          </form>
+          <div class="admin-link-result" id="linkResult" hidden>
+            <strong>Enlace listo para compartir</strong>
+            <input id="generatedLink" readonly aria-label="Enlace personalizado generado">
+            <button class="button outline" id="copyLink" type="button">Copiar enlace</button>
+            <p>Por seguridad, este enlace se muestra solo ahora. Si se pierde, podrás regenerarlo cuando el listado administrativo esté habilitado.</p>
+          </div>
+        </section>
+
+        <section class="admin-card">
+          <h2>Configuración del evento</h2>
+          <form id="settingsForm" class="form">
+            <label for="eventCapacity">Capacidad máxima</label>
+            <input id="eventCapacity" type="number" min="1" max="1000" required>
+            <label for="rsvpDeadline">Fecha límite de confirmación <span>(opcional)</span></label>
+            <input id="rsvpDeadline" type="datetime-local">
+            <button class="button" type="submit">Guardar configuración</button>
+          </form>
+          <p class="admin-message" id="dashboardMessage" role="status"></p>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="../js/rsvp-config.js?v=20261111-rsvp"></script>
+  <script src="../js/rsvp-client.js?v=20261111-rsvp"></script>
+  <script src="admin.js?v=20261111-rsvp"></script>
+</body>
+</html>

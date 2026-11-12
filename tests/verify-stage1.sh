@@ -9,6 +9,11 @@ required_files=(
   "supabase/functions/public-rsvp/index.ts"
   "supabase/functions/admin-rsvp/index.ts"
   "supabase/functions/_shared/security_test.ts"
+  "js/rsvp-config.js"
+  "js/rsvp-client.js"
+  "js/rsvp.js"
+  "admin/index.html"
+  "admin/admin.js"
   "supabase/functions/.env.example"
   "SUPABASE_SETUP.md"
   "supabase/tests/001_rsvp_invariants.sql"
@@ -60,9 +65,16 @@ if rg -n "SUPABASE_(SECRET|SERVICE_ROLE)|sb_secret" index.html js css admin 2>/d
   exit 1
 fi
 
-# Esta primera etapa no puede modificar la invitación aprobada ni introducir un panel visual.
-if git status --porcelain | cut -c4- | rg -q '^(index\.html|css/|js/|admin/)'; then
-  echo "La etapa 1 modificó diseño o panel antes de tiempo" >&2
+# La integración no puede retirar los elementos de la invitación aprobada.
+rg -q 'id="envelopeScreen"' index.html
+rg -q 'id="musicButton"' index.html
+rg -q 'id="autoTourButton"' index.html
+rg -q 'assets/musica.mp3' index.html
+rg -q 'pauseAutoTour' js/app.js
+rg -q 'RSVP_API.publicRequest' js/rsvp.js
+rg -q 'admin-rsvp' js/rsvp-config.js
+if rg -q 'wa\.me' js/app.js; then
+  echo "El RSVP no debe conservar el envío por WhatsApp" >&2
   exit 1
 fi
 

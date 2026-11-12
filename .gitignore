@@ -31,3 +31,6 @@ yarn-error.log*
 .env
 .env.*
 !.env.example
+
+# Metadatos locales del enlace de Supabase; no contienen parte del código fuente.
+supabase/.temp/
