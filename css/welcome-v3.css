@@ -364,6 +364,7 @@ body.envelope-active {
 }
 
 .letter-date {
+  margin-top: 14px;
   color: var(--welcome-green);
   font-size: .64rem;
   font-weight: 600;
