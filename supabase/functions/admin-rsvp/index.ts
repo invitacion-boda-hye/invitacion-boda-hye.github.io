@@ -80,6 +80,14 @@ Deno.serve(async (request) => {
       return json({ invitation }, 200, headers);
     }
 
+    if (action === "resetInvitation" || action === "deleteInvitation") {
+      const invitationId = requireUuid(body.invitationId, "ADMIN_INVITATION_ARGUMENT_INVALID");
+      const result = await rpc<unknown>(config, action === "resetInvitation" ? "rsvp_admin_reset_invitation" : "rsvp_admin_delete_invitation", {
+        p_invitation_id: invitationId, p_actor_user_id: adminUserId,
+      });
+      return json({ result }, 200, headers);
+    }
+
     if (action === "updateSettings") {
       if (typeof body.capacity !== "number" || !Number.isInteger(body.capacity)) {
         throw new AppError(400, "ADMIN_CAPACITY_INVALID");
