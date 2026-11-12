@@ -153,6 +153,10 @@ origen incluido en `ALLOWED_ORIGINS`. La página `admin/` incluye
 `noindex,nofollow`, pero deberá protegerse además con control de acceso de la
 plataforma de alojamiento si se publica.
 
+`admin-rsvp` usa `verify_jwt = false` para devolver errores controlados desde
+el handler, pero no es pública: valida el JWT contra Supabase Auth y luego la
+pertenencia del UUID a `rsvp_admins` antes de toda operación.
+
 ## 8. Pruebas posteriores a la conexión
 
 Con una instalación local de Supabase y Docker disponibles:

@@ -5,7 +5,7 @@
  */
 const RSVP_CONFIG = Object.freeze({
   supabaseUrl: 'https://ldgybrbdbpbfbgarglkt.supabase.co',
-  publishableKey: '',
+  publishableKey: 'sb_publishable_3ldS2unOiB9ceF3ZfAm96A_7psdZO8M',
   publicFunction: 'public-rsvp',
   adminFunction: 'admin-rsvp'
 });

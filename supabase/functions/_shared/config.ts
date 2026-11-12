@@ -13,7 +13,7 @@ function requireEnvironment(name: string): string {
   return value;
 }
 
-function readSupabaseKey(pluralName: string, legacyName: string): string {
+function readSupabaseKey(pluralName: string, singularName: string, legacyName: string): string {
   const plural = Deno.env.get(pluralName);
   if (plural) {
     try {
@@ -25,6 +25,11 @@ function readSupabaseKey(pluralName: string, legacyName: string): string {
       throw new AppError(500, "SERVER_CONFIGURATION_ERROR");
     }
   }
+
+  // El runtime reciente admite esta variante singular al ejecutar funciones
+  // fuera de la plataforma. No la configuramos como secreto del proyecto.
+  const singular = Deno.env.get(singularName)?.trim();
+  if (singular) return singular;
 
   // Compatibilidad para desarrollo local con proyectos Supabase antiguos.
   return requireEnvironment(legacyName);
@@ -38,8 +43,8 @@ export function loadRuntimeConfig(requirePublicInvitationUrl = false): RuntimeCo
 
   return {
     supabaseUrl: requireEnvironment("SUPABASE_URL").replace(/\/+$/u, ""),
-    publishableKey: readSupabaseKey("SUPABASE_PUBLISHABLE_KEYS", "SUPABASE_ANON_KEY"),
-    secretKey: readSupabaseKey("SUPABASE_SECRET_KEYS", "SUPABASE_SERVICE_ROLE_KEY"),
+    publishableKey: readSupabaseKey("SUPABASE_PUBLISHABLE_KEYS", "SUPABASE_PUBLISHABLE_KEY", "SUPABASE_ANON_KEY"),
+    secretKey: readSupabaseKey("SUPABASE_SECRET_KEYS", "SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY"),
     publicInvitationUrl: publicInvitationUrl.replace(/\/+$/u, ""),
   };
 }

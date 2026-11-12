@@ -73,7 +73,12 @@ export async function requireAuthenticatedAdmin(
   );
   const membership = await parseResponseBody(membershipResponse);
 
-  if (!membershipResponse.ok || !Array.isArray(membership) || membership.length !== 1) {
+  // No convertir un fallo de infraestructura o de la clave de servidor en un
+  // falso "no autorizado": eso ocultaba la causa real detrás de un 403.
+  if (!membershipResponse.ok || !Array.isArray(membership)) {
+    throw new AppError(503, "ADMIN_MEMBERSHIP_CHECK_FAILED");
+  }
+  if (membership.length !== 1) {
     throw new AppError(403, "ADMIN_FORBIDDEN");
   }
 
@@ -94,6 +99,7 @@ export function databaseErrorResponse(error: unknown): AppError | null {
     RSVP_COMMENT_TOO_LONG: [400, "RSVP_COMMENT_TOO_LONG"],
     RSVP_PAYLOAD_INVALID: [400, "RSVP_PAYLOAD_INVALID"],
     ADMIN_UNAUTHORIZED: [403, "ADMIN_FORBIDDEN"],
+    ADMIN_MEMBERSHIP_CHECK_FAILED: [503, "ADMIN_MEMBERSHIP_CHECK_FAILED"],
     ADMIN_INVITATION_NOT_FOUND: [404, "ADMIN_INVITATION_NOT_FOUND"],
     ADMIN_PASSES_EXCEED_CAPACITY: [400, "ADMIN_PASSES_EXCEED_CAPACITY"],
     ADMIN_REACTIVATION_CAPACITY_EXCEEDED: [409, "ADMIN_REACTIVATION_CAPACITY_EXCEEDED"],

@@ -24,12 +24,16 @@ for file in "${required_files[@]}"; do
 done
 
 rg -q -U '^\[functions\.public-rsvp\]\nverify_jwt = false$' "supabase/config.toml"
-rg -q -U '^\[functions\.admin-rsvp\]\nverify_jwt = true$' "supabase/config.toml"
+rg -q -U '^\[functions\.admin-rsvp\]\nverify_jwt = false$' "supabase/config.toml"
 rg -q 'type JsonRecord' "supabase/functions/_shared/supabase.ts"
 rg -q 'requireInvitationToken' "supabase/functions/public-rsvp/index.ts"
 rg -q 'rsvp_submit' "supabase/functions/public-rsvp/index.ts"
 rg -q 'requireAuthenticatedAdmin' "supabase/functions/admin-rsvp/index.ts"
 rg -q 'rsvp_admins' "supabase/functions/_shared/supabase.ts"
+rg -q 'SUPABASE_PUBLISHABLE_KEYS' "supabase/functions/_shared/config.ts"
+rg -q 'SUPABASE_SECRET_KEYS' "supabase/functions/_shared/config.ts"
+rg -q 'ADMIN_MEMBERSHIP_CHECK_FAILED' "supabase/functions/_shared/supabase.ts"
+rg -q 'ORIGIN_NOT_ALLOWED' "admin/admin.js"
 
 migration="supabase/migrations/202611110001_rsvp_schema_and_security.sql"
 rg -q "token_hash char\\(64\\)" "$migration"
