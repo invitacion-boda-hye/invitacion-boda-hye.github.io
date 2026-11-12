@@ -2,11 +2,10 @@
 --
 -- Esta migración no contiene credenciales ni tokens de invitación. Los enlaces
 -- personalizados se generan en la Edge Function y aquí se almacena solamente
--- su hash SHA-256 irreversible.
+-- su hash SHA-256 irreversible. PostgreSQL aporta gen_random_uuid() en
+-- pg_catalog, por lo que no dependemos del esquema de ninguna extensión.
 
 begin;
-
-create extension if not exists pgcrypto with schema extensions;
 
 create schema if not exists private;
 revoke all on schema private from public;
@@ -40,7 +39,7 @@ create table if not exists public.rsvp_admins (
 );
 
 create table if not exists public.invitations (
-  id uuid primary key default extensions.gen_random_uuid(),
+  id uuid primary key default pg_catalog.gen_random_uuid(),
   group_name text not null check (char_length(btrim(group_name)) between 1 and 160),
   max_passes integer not null check (max_passes between 1 and 1000),
   token_hash char(64) not null unique check (token_hash ~ '^[0-9a-f]{64}$'),
@@ -57,7 +56,7 @@ create index if not exists invitations_state_idx on public.invitations (is_activ
 create index if not exists invitations_group_name_idx on public.invitations using gin (to_tsvector('simple', group_name));
 
 create table if not exists public.rsvp_responses (
-  id uuid primary key default extensions.gen_random_uuid(),
+  id uuid primary key default pg_catalog.gen_random_uuid(),
   invitation_id uuid not null unique references public.invitations(id) on delete restrict,
   is_attending boolean not null,
   confirmed_count integer not null check (confirmed_count >= 0),
@@ -73,7 +72,7 @@ create table if not exists public.rsvp_responses (
 create index if not exists rsvp_responses_attendance_idx on public.rsvp_responses (is_attending, confirmed_count);
 
 create table if not exists public.rsvp_attendees (
-  id uuid primary key default extensions.gen_random_uuid(),
+  id uuid primary key default pg_catalog.gen_random_uuid(),
   response_id uuid not null references public.rsvp_responses(id) on delete cascade,
   full_name text not null check (
     char_length(full_name) between 3 and 160
@@ -463,16 +462,47 @@ security definer
 set search_path = ''
 as $$
 declare
+  v_settings public.event_settings%rowtype;
   v_invitation public.invitations%rowtype;
+  v_active_confirmed integer := 0;
+  v_reactivation_count integer := 0;
 begin
   perform private.assert_rsvp_admin(p_actor_user_id);
   if p_token_hash is null or p_token_hash !~ '^[0-9a-f]{64}$' then
     raise exception using errcode = 'P0001', message = 'ADMIN_INVITATION_ARGUMENT_INVALID';
   end if;
 
+  -- Mismo orden que rsvp_submit: primero el evento y luego la invitación.
+  -- Así una reactivación no puede competir con una confirmación pública.
+  select * into v_settings from public.event_settings where id = true for update;
+  if not found then
+    raise exception using errcode = 'P0001', message = 'EVENT_SETTINGS_MISSING';
+  end if;
+
   select * into v_invitation from public.invitations where id = p_invitation_id for update;
   if not found then
     raise exception using errcode = 'P0001', message = 'ADMIN_INVITATION_NOT_FOUND';
+  end if;
+
+  if v_invitation.max_passes > v_settings.capacity then
+    raise exception using errcode = 'P0001', message = 'ADMIN_PASSES_EXCEED_CAPACITY';
+  end if;
+
+  if not v_invitation.is_active then
+    select coalesce(max(response.confirmed_count) filter (where response.is_attending), 0)::integer
+    into v_reactivation_count
+    from public.rsvp_responses as response
+    where response.invitation_id = v_invitation.id;
+
+    select coalesce(sum(response.confirmed_count) filter (where response.is_attending), 0)::integer
+    into v_active_confirmed
+    from public.rsvp_responses as response
+    join public.invitations as invitation on invitation.id = response.invitation_id
+    where invitation.is_active = true;
+
+    if v_active_confirmed + v_reactivation_count > v_settings.capacity then
+      raise exception using errcode = 'P0001', message = 'ADMIN_REACTIVATION_CAPACITY_EXCEEDED';
+    end if;
   end if;
 
   update public.invitations
@@ -512,19 +542,32 @@ security definer
 set search_path = ''
 as $$
 declare
+  v_settings public.event_settings%rowtype;
   v_invitation public.invitations%rowtype;
 begin
   perform private.assert_rsvp_admin(p_actor_user_id);
 
-  update public.invitations
-  set is_active = false,
-      revoked_at = clock_timestamp()
+  -- Aunque revocar solo libere cupos, adquiere el mismo primer candado que las
+  -- demás operaciones de capacidad para evitar órdenes de bloqueo cruzadas.
+  select * into v_settings from public.event_settings where id = true for update;
+  if not found then
+    raise exception using errcode = 'P0001', message = 'EVENT_SETTINGS_MISSING';
+  end if;
+
+  select * into v_invitation
+  from public.invitations
   where id = p_invitation_id
-  returning * into v_invitation;
+  for update;
 
   if not found then
     raise exception using errcode = 'P0001', message = 'ADMIN_INVITATION_NOT_FOUND';
   end if;
+
+  update public.invitations
+  set is_active = false,
+      revoked_at = clock_timestamp()
+  where id = v_invitation.id
+  returning * into v_invitation;
 
   insert into public.rsvp_audit_log (
     invitation_id, actor_kind, actor_admin_id, action
@@ -548,6 +591,7 @@ as $$
 declare
   v_settings public.event_settings%rowtype;
   v_confirmed integer;
+  v_max_active_passes integer;
 begin
   perform private.assert_rsvp_admin(p_actor_user_id);
   if p_capacity is null or p_capacity not between 1 and 1000 then
@@ -564,8 +608,15 @@ begin
   join public.invitations as invitation on invitation.id = response.invitation_id
   where invitation.is_active = true;
 
+  select coalesce(max(invitation.max_passes) filter (where invitation.is_active), 0)::integer
+  into v_max_active_passes
+  from public.invitations as invitation;
+
   if p_capacity < v_confirmed then
     raise exception using errcode = 'P0001', message = 'ADMIN_CAPACITY_BELOW_CONFIRMED';
+  end if;
+  if p_capacity < v_max_active_passes then
+    raise exception using errcode = 'P0001', message = 'ADMIN_CAPACITY_BELOW_ASSIGNED_PASSES';
   end if;
 
   update public.event_settings

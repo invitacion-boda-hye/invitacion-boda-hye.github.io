@@ -18,7 +18,10 @@ la invitación pública aún no llama a estas funciones**.
 
 La capacidad inicial ya queda definida en **50 personas**. El endpoint
 administrativo preparado permite modificarla, pero nunca por debajo de las
-personas ya confirmadas.
+personas ya confirmadas ni de los pases de la familia activa con más cupos.
+La suma de pases asignados puede ser superior a la capacidad: es una métrica
+distinta y permite invitar más familias de las que finalmente confirmarán. Solo
+los asistentes confirmados consumen cupos.
 
 ## 1. Crear el proyecto y obtener las claves correctas
 
@@ -116,8 +119,9 @@ anterior y conserva la familia y su respuesta.
 - Resolver un enlace se limita a 30 solicitudes por 10 minutos y enviar una
   respuesta a 8 por 10 minutos. Las claves de límite se guardan hasheadas.
 - Las cantidades, pases, nombres completos y plazo se validan en PostgreSQL.
-- `event_settings` se bloquea con `FOR UPDATE` durante cada confirmación. Así,
-  las solicitudes concurrentes no pueden superar la capacidad.
+- `event_settings` se bloquea con `FOR UPDATE` durante cada confirmación,
+  revocación o reactivación. Así, las solicitudes concurrentes no pueden
+  superar la capacidad ni reactivar una familia con cupos ya ocupados.
 - Una sola respuesta está permitida por familia. Al modificarla, se actualiza
   esa misma respuesta y se reemplaza su lista de asistentes de forma atómica.
 - Los comentarios no se interpretan como una cifra oficial ni se guardan en la

@@ -23,8 +23,17 @@ rg -q "token_hash char\\(64\\)" "$migration"
 rg -q "for update" "$migration"
 rg -q "enable row level security" "$migration"
 rg -q "RSVP_CAPACITY_EXCEEDED" "$migration"
+rg -q "ADMIN_REACTIVATION_CAPACITY_EXCEEDED" "$migration"
+rg -q "ADMIN_CAPACITY_BELOW_ASSIGNED_PASSES" "$migration"
+rg -q "ADMIN_REACTIVATION_CAPACITY_EXCEEDED" "supabase/tests/001_rsvp_invariants.sql"
+rg -q "ADMIN_CAPACITY_BELOW_ASSIGNED_PASSES" "supabase/tests/001_rsvp_invariants.sql"
 rg -q "rsvp_submit" "$migration"
 rg -q "rsvp_admin_regenerate_token" "$migration"
+rg -q "pg_catalog.gen_random_uuid" "$migration"
+if rg -q "extensions.gen_random_uuid|create extension if not exists pgcrypto" "$migration"; then
+  echo "La migración no debe depender de pgcrypto para UUID" >&2
+  exit 1
+fi
 
 security_definer_count="$(rg -c "security definer" "$migration")"
 empty_search_path_count="$(rg -c "set search_path = ''" "$migration")"
