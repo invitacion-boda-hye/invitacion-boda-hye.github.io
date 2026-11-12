@@ -1,4 +1,4 @@
-import { AppError, isJsonRecord, requireUuid } from "./security.ts";
+import { AppError, isJsonRecord, requireUuid, type JsonRecord } from "./security.ts";
 import type { RuntimeConfig } from "./config.ts";
 
 export class DatabaseError extends Error {

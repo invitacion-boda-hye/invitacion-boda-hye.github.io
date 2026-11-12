@@ -18,6 +18,14 @@ for file in "${required_files[@]}"; do
   [[ -f "$file" ]] || { echo "Falta: $file" >&2; exit 1; }
 done
 
+rg -q -U '^\[functions\.public-rsvp\]\nverify_jwt = false$' "supabase/config.toml"
+rg -q -U '^\[functions\.admin-rsvp\]\nverify_jwt = true$' "supabase/config.toml"
+rg -q 'type JsonRecord' "supabase/functions/_shared/supabase.ts"
+rg -q 'requireInvitationToken' "supabase/functions/public-rsvp/index.ts"
+rg -q 'rsvp_submit' "supabase/functions/public-rsvp/index.ts"
+rg -q 'requireAuthenticatedAdmin' "supabase/functions/admin-rsvp/index.ts"
+rg -q 'rsvp_admins' "supabase/functions/_shared/supabase.ts"
+
 migration="supabase/migrations/202611110001_rsvp_schema_and_security.sql"
 rg -q "token_hash char\\(64\\)" "$migration"
 rg -q "for update" "$migration"
