@@ -272,7 +272,6 @@ if (audio && mb) {
 // ============================================================================
 // RECORRIDO AUTOMÁTICO — INDEPENDIENTE DE LA MÚSICA
 // ============================================================================
-const autoTourButton = document.getElementById('autoTourButton');
 let autoTourFrame = 0;
 let autoTourStartTimer = 0;
 let autoTourLastFrame = 0;
@@ -281,29 +280,6 @@ let autoTourReady = false;
 let autoTourFinished = false;
 let autoTourScrolling = false;
 let autoTourPosition = 0;
-
-function updateAutoTourControl() {
-  if (!autoTourButton) return;
-
-  const canUseAutoTour = autoTourReady && !reduceEnvelopeMotion;
-  autoTourButton.hidden = !canUseAutoTour;
-  autoTourButton.disabled = autoTourFinished;
-  autoTourButton.classList.toggle('is-active', autoTourActive);
-  autoTourButton.classList.toggle('is-paused', !autoTourActive);
-  autoTourButton.classList.toggle('is-finished', autoTourFinished);
-  autoTourButton.setAttribute('aria-pressed', String(autoTourActive));
-
-  if (autoTourFinished) {
-    autoTourButton.setAttribute('aria-label', 'Recorrido automático finalizado');
-    autoTourButton.setAttribute('title', 'Recorrido automático finalizado');
-  } else if (autoTourActive) {
-    autoTourButton.setAttribute('aria-label', 'Pausar recorrido automático');
-    autoTourButton.setAttribute('title', 'Pausar recorrido automático');
-  } else {
-    autoTourButton.setAttribute('aria-label', 'Reanudar recorrido automático');
-    autoTourButton.setAttribute('title', 'Reanudar recorrido automático');
-  }
-}
 
 function autoTourLimit() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -324,7 +300,6 @@ function pauseAutoTour() {
   autoTourActive = false;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
-  updateAutoTourControl();
 }
 
 function finishAutoTour() {
@@ -332,7 +307,6 @@ function finishAutoTour() {
   autoTourFinished = true;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
-  updateAutoTourControl();
 }
 
 function runAutoTour(now) {
@@ -363,14 +337,12 @@ function resumeAutoTour() {
   autoTourActive = true;
   autoTourPosition = window.scrollY;
   autoTourLastFrame = performance.now();
-  updateAutoTourControl();
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
 function startAutoTourAfterReveal() {
   if (reduceEnvelopeMotion || autoTourReady) return;
   autoTourReady = true;
-  updateAutoTourControl();
   clearTimeout(autoTourStartTimer);
   // La portada permanece en calma dos segundos antes de iniciar el recorrido.
   autoTourStartTimer = window.setTimeout(resumeAutoTour, 2000);
@@ -382,14 +354,9 @@ function isInteractiveTourTarget(target) {
   ));
 }
 
-autoTourButton?.addEventListener('click', (event) => {
-  event.stopPropagation();
-  if (autoTourActive) pauseAutoTour();
-  else resumeAutoTour();
-});
-
-// Un toque libre alterna pausa/reanudación. Los controles y enlaces siguen
-// siendo completamente suyos: sólo detienen el recorrido, nunca su acción.
+// Un toque libre con el dedo alterna pausa/reanudación. Los controles y
+// enlaces siguen siendo completamente suyos: sólo detienen el recorrido,
+// nunca su acción.
 document.addEventListener('click', (event) => {
   if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
   if (autoTourActive) pauseAutoTour();
