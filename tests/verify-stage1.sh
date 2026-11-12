@@ -26,6 +26,17 @@ rg -q "RSVP_CAPACITY_EXCEEDED" "$migration"
 rg -q "rsvp_submit" "$migration"
 rg -q "rsvp_admin_regenerate_token" "$migration"
 
+security_definer_count="$(rg -c "security definer" "$migration")"
+empty_search_path_count="$(rg -c "set search_path = ''" "$migration")"
+[[ "$security_definer_count" -eq "$empty_search_path_count" ]] || {
+  echo "Cada función SECURITY DEFINER debe usar un search_path vacío" >&2
+  exit 1
+}
+if rg -q "set search_path = public, private, pg_catalog" "$migration"; then
+  echo "Se encontró un search_path inseguro en una función SECURITY DEFINER" >&2
+  exit 1
+fi
+
 # La clave de servidor debe permanecer estrictamente fuera de los recursos web.
 if rg -n "SUPABASE_(SECRET|SERVICE_ROLE)|sb_secret" index.html js css admin 2>/dev/null; then
   echo "Se detectó una clave privada en recursos del navegador" >&2

@@ -140,7 +140,7 @@ create or replace function private.assert_rsvp_admin(p_user_id uuid)
 returns void
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 begin
   if p_user_id is null
@@ -162,7 +162,7 @@ create or replace function public.rsvp_take_rate_limit(
 returns boolean
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_attempts integer;
@@ -196,7 +196,7 @@ create or replace function public.rsvp_resolve_invitation(p_token_hash text)
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_result jsonb;
@@ -256,7 +256,7 @@ create or replace function public.rsvp_submit(
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_settings public.event_settings%rowtype;
@@ -407,7 +407,7 @@ create or replace function public.rsvp_admin_create_invitation(
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_settings public.event_settings%rowtype;
@@ -460,7 +460,7 @@ create or replace function public.rsvp_admin_regenerate_token(
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_invitation public.invitations%rowtype;
@@ -509,7 +509,7 @@ create or replace function public.rsvp_admin_revoke_invitation(
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_invitation public.invitations%rowtype;
@@ -543,7 +543,7 @@ create or replace function public.rsvp_admin_update_event_settings(
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_settings public.event_settings%rowtype;
@@ -586,7 +586,7 @@ create or replace function public.rsvp_admin_dashboard_summary(p_actor_user_id u
 returns jsonb
 language plpgsql
 security definer
-set search_path = public, private, pg_catalog
+set search_path = ''
 as $$
 declare
   v_settings public.event_settings%rowtype;
