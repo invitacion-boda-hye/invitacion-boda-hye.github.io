@@ -305,7 +305,9 @@ body.envelope-active {
   padding: 8px;
   border: 1px solid rgba(190, 136, 44, .74);
   border-radius: 1px;
-  background: #fffbf3;
+  /* Mantiene el mismo marfil de la portada para que la carta no cambie de
+     color cuando crece durante la apertura. */
+  background: #fffef9;
   box-shadow: 0 8px 21px rgba(72, 53, 27, .14);
   opacity: 0;
   transform: translateY(7px) scale(.98);
@@ -321,9 +323,9 @@ body.envelope-active {
   gap: 6px;
   height: 100%;
   overflow: hidden;
-  padding: 24px 18px;
+  padding: 28px 20px;
   border: 1px solid rgba(17, 74, 45, .28);
-  background: radial-gradient(circle at 50% 42%, #fffef9 0, #fcf3e4 100%);
+  background: radial-gradient(circle at 50% 42%, #fffef9 0, #faf5eb 100%);
 }
 
 .letter-floral {
@@ -344,16 +346,9 @@ body.envelope-active {
   bottom: -73px;
 }
 
-.letter-tag {
-  color: var(--welcome-gold);
-  font-size: .57rem;
-  letter-spacing: .28em;
-  text-transform: uppercase;
-}
-
 .letter-names {
   color: var(--welcome-green);
-  font: 500 clamp(1.4rem, 3vw, 2.15rem)/.95 'Cormorant Garamond', serif;
+  font: 500 clamp(1.75rem, 3.5vw, 2.6rem)/.95 'Cormorant Garamond', serif;
 }
 
 .letter-names i {
@@ -370,24 +365,30 @@ body.envelope-active {
 
 .letter-date {
   color: var(--welcome-green);
-  font-size: .53rem;
+  font-size: .64rem;
   font-weight: 600;
   letter-spacing: .25em;
 }
 
 .letter-message {
-  max-width: 240px;
-  margin: 4px auto 0;
-  color: #58705d;
-  font-size: .62rem;
-  line-height: 1.45;
+  max-width: 300px;
+  margin: 5px auto 0;
+  color: var(--welcome-green);
+  font: italic 500 clamp(1rem, 2.1vw, 1.45rem)/1.08 'Cormorant Garamond', serif;
 }
 
-.letter-tag,
+.letter-love {
+  margin: 0;
+  color: var(--welcome-green);
+  font: 400 clamp(3.7rem, 7vw, 5.35rem)/.68 'Allura', cursive;
+  text-shadow: 0 1px 0 rgba(255,255,255,.86), 0 2px 4px rgba(14, 64, 38, .15);
+}
+
 .letter-names,
 .letter-rule,
 .letter-date,
-.letter-message {
+.letter-message,
+.letter-love {
   opacity: 0;
   transform: translateY(9px);
   transition: opacity .55s ease, transform .7s cubic-bezier(.22,.8,.22,1);
@@ -614,33 +615,39 @@ body.envelope-active {
   45% { opacity: .88; transform: scale(1); }
 }
 
-.envelope-screen.step-letter-out .letter-tag {
+.envelope-screen.step-letter-out .letter-names {
   opacity: 1;
   transform: none;
   transition-delay: .28s;
 }
 
-.envelope-screen.step-letter-out .letter-names {
+.envelope-screen.step-letter-out .letter-rule {
   opacity: 1;
   transform: none;
   transition-delay: .48s;
 }
 
-.envelope-screen.step-letter-out .letter-rule,
-.envelope-screen.step-letter-out .letter-date {
+.envelope-screen.step-letter-out .letter-message {
+  opacity: 1;
+  transform: none;
+  transition-delay: .58s;
+}
+
+.envelope-screen.step-letter-out .letter-love {
   opacity: 1;
   transform: none;
   transition-delay: .68s;
 }
 
-.envelope-screen.step-letter-out .letter-message {
+.envelope-screen.step-letter-out .letter-date {
   opacity: 1;
   transform: none;
-  transition-delay: .86s;
+  transition-delay: .78s;
 }
 
 .envelope-screen.step-card-focus .envelope-letter {
-  transform: translateY(-175px) scale(1.28);
+  /* Conserva la posición de salida: sólo crece de forma natural, sin saltar. */
+  transform: translateY(-175px) scale(1.18);
   z-index: 20;
   box-shadow: 0 32px 68px rgba(72,53,27,.22);
   transition-duration: 1.65s, 1.65s, 1s;
@@ -679,7 +686,7 @@ body.envelope-active {
 
 .envelope-screen.step-card-handoff .envelope-letter {
   opacity: 0;
-  transform: translateY(-175px) scale(1.36);
+  transform: translateY(-175px) scale(1.22);
   transition: opacity .42s ease, transform .55s cubic-bezier(.22,.8,.22,1);
 }
 
@@ -961,11 +968,11 @@ body.qa-preview-open .hero-inner > * {
   }
 
   .envelope-screen.step-card-focus .envelope-letter {
-    transform: translateY(-75px) scale(1.28);
+    transform: translateY(-112px) scale(1.18);
   }
 
   .envelope-screen.step-card-handoff .envelope-letter {
-    transform: translateY(-75px) scale(1.36);
+    transform: translateY(-112px) scale(1.22);
   }
 
   .letter-floral {
