@@ -319,11 +319,12 @@ body.envelope-active {
 .letter-border {
   position: relative;
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: 6px;
   height: 100%;
   overflow: hidden;
-  padding: 28px 20px;
+  /* Reserva un margen superior real para que los nombres no se recorten. */
+  padding: 34px 18px 18px;
   border: 1px solid rgba(17, 74, 45, .28);
   background: radial-gradient(circle at 50% 42%, #fffef9 0, #faf5eb 100%);
 }
@@ -348,7 +349,7 @@ body.envelope-active {
 
 .letter-names {
   color: var(--welcome-green);
-  font: 500 clamp(1.75rem, 3.5vw, 2.6rem)/.95 'Cormorant Garamond', serif;
+  font: 500 clamp(1.45rem, 3vw, 2.15rem)/.95 'Cormorant Garamond', serif;
 }
 
 .letter-names i {
@@ -381,7 +382,7 @@ body.envelope-active {
 .letter-love {
   margin: 0;
   color: var(--welcome-green);
-  font: 400 clamp(3.7rem, 7vw, 5.35rem)/.68 'Allura', cursive;
+  font: 400 clamp(3.1rem, 6vw, 4.45rem)/.72 'Allura', cursive;
   text-shadow: 0 1px 0 rgba(255,255,255,.86), 0 2px 4px rgba(14, 64, 38, .15);
 }
 
@@ -856,6 +857,14 @@ body.qa-preview-open .hero-inner > * {
 }
 
 @media (max-width: 680px) {
+  .letter-border {
+    gap: 4px;
+    padding: 28px 15px 14px;
+  }
+
+  .letter-names { font-size: clamp(1.35rem, 6.2vw, 1.75rem); }
+  .letter-love { font-size: clamp(3rem, 14vw, 3.9rem); }
+
   .envelope-screen {
     padding: 13px 11px;
   }
