@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a3b18a">
+  <meta name="description" content="Nuestra boda — Hector & Elisbe · 09/01/2027.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://invitacion-boda-hye.github.io/">
+  <meta property="og:title" content="Nuestra boda | Hector & Elisbe">
+  <meta property="og:description" content="Nuestra boda — 09/01/2027.">
+  <meta property="og:image" content="https://invitacion-boda-hye.github.io/assets/referencia-floral-el-isbe-hector.png">
+  <meta property="og:image:alt" content="Invitación de boda de Hector y Elisbe">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nuestra boda | Hector & Elisbe">
+  <meta name="twitter:description" content="Nuestra boda — 09/01/2027.">
+  <meta name="twitter:image" content="https://invitacion-boda-hye.github.io/assets/referencia-floral-el-isbe-hector.png">
+  <title>Nuestra boda | Hector & Elisbe</title>
+
+  <!-- Tipografías de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Hojas de estilo modularizadas -->
+  <link rel="stylesheet" href="css/styles.css?v=20261110-envelope-v3">
+  <link rel="stylesheet" href="css/welcome-v3.css?v=20261110-reference-match">
+</head>
+<body class="envelope-active">
+
+  <!-- ========================================================================
+       SOBRE ANIMADO DE BIENVENIDA (ETAPA 2)
+       ======================================================================== -->
+  <aside class="envelope-screen" id="envelopeScreen" aria-label="Pantalla de bienvenida e invitación">
+    <img class="welcome-floral welcome-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+    <img class="welcome-floral welcome-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+
+    <div class="envelope-container">
+      <div class="envelope-intro">
+        <div class="envelope-subtitle">Hector &amp; Elisbe</div>
+        <div class="reference-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
+        <h2 class="envelope-title">Una invitación para celebrar el</h2>
+        <div class="envelope-love">amor</div>
+      </div>
+
+      <!-- Sobre interactivo con solapa, sello y carta -->
+      <button class="envelope-wrapper" id="envelopeTrigger" type="button" aria-label="Abrir sobre de invitación de Hector y Elisbe">
+        <div class="envelope-box">
+          <div class="envelope-paper-grain" aria-hidden="true"></div>
+          <img class="envelope-floral envelope-floral-left" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+          <img class="envelope-floral envelope-floral-right" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+          <!-- Fondo interior y solapas laterales -->
+          <div class="envelope-pocket-left"></div>
+          <div class="envelope-pocket-right"></div>
+
+          <!-- Carta que emerge al abrir -->
+          <div class="envelope-letter" id="envelopeLetter">
+            <div class="letter-border">
+              <img class="letter-floral letter-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+              <span class="letter-tag">Nuestra boda</span>
+              <div class="letter-names"><span>Hector</span><i>&amp;</i><span>Elisbe</span></div>
+              <div class="letter-rule" aria-hidden="true"></div>
+              <div class="letter-date">09 · 01 · 2027</div>
+              <p class="letter-message">Hay momentos que se vuelven inolvidables cuando se comparten.</p>
+              <img class="letter-floral letter-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+            </div>
+          </div>
+
+          <div class="envelope-sparkles" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+
+          <!-- Bolsillo frontal -->
+          <div class="envelope-front-pocket"></div>
+
+          <!-- Solapa superior plegable -->
+          <div class="envelope-flap" id="envelopeFlap"></div>
+          <span class="envelope-seam envelope-seam-left" aria-hidden="true"></span>
+          <span class="envelope-seam envelope-seam-right" aria-hidden="true"></span>
+
+          <!-- Sello de cera dorado con iniciales -->
+          <div class="envelope-seal" id="envelopeSeal" aria-hidden="true">
+            <div class="envelope-seal-inner">
+              <span class="envelope-seal-initials">E & H</span>
+              <span class="envelope-seal-leaf">❦</span>
+            </div>
+          </div>
+          <div class="envelope-cord" aria-hidden="true"></div>
+        </div>
+      </button>
+
+    </div>
+  </aside>
+
+  <!-- Botón flotante de música y reproductor -->
+  <div class="music-player-container" aria-label="Reproductor de música">
+    <button class="music" id="musicButton" aria-label="Reproducir o pausar música" title="Música de fondo">
+      <span class="music-icon" id="musicIcon" aria-hidden="true">♫</span>
+      <span class="music-bars" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+    </button>
+    <div class="music-toast" id="musicToast" role="status" aria-live="polite"></div>
+  </div>
+  <audio id="music" loop preload="auto">
+    <source src="assets/musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <button class="auto-tour-control is-paused" id="autoTourButton" type="button" aria-label="Reanudar recorrido automático" title="Reanudar recorrido automático" aria-pressed="false" hidden>
+    <span class="auto-tour-icon" aria-hidden="true"></span>
+  </button>
+
+  <!-- Hero principal de la invitación -->
+  <header class="hero" id="hero">
+    <img class="hero-floral hero-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+    <img class="hero-floral hero-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+    <div class="hero-inner">
+      <div class="hero-names">Hector <span>&amp;</span> Elisbe</div>
+      <div class="reference-divider hero-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
+      <div class="hero-invitation">Una invitación para celebrar el</div>
+      <h1>amor</h1>
+      <div class="date">09 · 01 · 2027</div>
+      <div class="buttons hero-buttons">
+        <a class="button" href="#historia" aria-label="Descubrir nuestra invitación"><span class="chevrons" aria-hidden="true"></span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Sección: Nuestra Historia -->
+    <section id="historia" class="center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Con mucho amor</div>
+        <h2>Nuestra historia</h2>
+        <div class="leaf">❧</div>
+        <p>Dos caminos, una historia y un nuevo capítulo que queremos celebrar junto a ustedes.</p>
+        <p class="note">Aquí podremos agregar nuestra historia personal.</p>
+      </div>
+    </section>
+
+    <!-- Sección: Cuenta Regresiva -->
+    <section class="alternate center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Falta muy poquito</div>
+        <h2>Cuenta regresiva</h2>
+        <div class="count" id="countdown">
+          <div><strong id="days">--</strong><small>Días</small></div>
+          <div><strong id="hours">--</strong><small>Horas</small></div>
+          <div><strong id="minutes">--</strong><small>Minutos</small></div>
+          <div><strong id="seconds">--</strong><small>Segundos</small></div>
+        </div>
+        <p>9 de enero de 2027 · Puerto Montt, Chile</p>
+      </div>
+    </section>
+
+    <!-- Sección: Lugares (Ceremonia y Celebración) -->
+    <section class="center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Te esperamos</div>
+        <h2>El gran día</h2>
+        <div class="grid">
+          <!-- Ceremonia religiosa -->
+          <article class="panel">
+            <div class="symbol">♧</div>
+            <h3>Ceremonia</h3>
+            <p><strong>Capilla Inmaculada Corazón de María</strong><br>Volcán Michimavida 296–310, Puerto Montt</p>
+            <p class="note">Horario por confirmar</p>
+            <a class="button outline" id="ceremonyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
+          </article>
+
+          <!-- Celebración -->
+          <article class="panel">
+            <div class="symbol">✧</div>
+            <h3>Celebración</h3>
+            <p><strong>Quincho Ayuwun</strong><br>Quillaipe km 22, Carretera Austral, Puerto Montt</p>
+            <p class="note">Horario por confirmar</p>
+            <a class="button outline" id="partyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
+          </article>
+        </div>
+        <p style="margin-top:30px">
+          <a class="button outline" id="calendar" href="#">Agregar al calendario</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Sección: Itinerario -->
+    <section class="alternate center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Momentos especiales</div>
+        <h2>Itinerario</h2>
+        <div class="timeline">
+          <div class="event">
+            <div class="dot">💍</div>
+            <div>
+              <h3>Ceremonia</h3>
+              <p>Hora por confirmar</p>
+            </div>
+          </div>
+          <div class="event">
+            <div class="dot">🥂</div>
+            <div>
+              <h3>Brindis</h3>
+              <p>Hora por confirmar</p>
+            </div>
+          </div>
+          <div class="event">
+            <div class="dot">📷</div>
+            <div>
+              <h3>Fotografías</h3>
+              <p>Hora por confirmar</p>
+            </div>
+          </div>
+          <div class="event">
+            <div class="dot">🍽</div>
+            <div>
+              <h3>Cena</h3>
+              <p>Hora por confirmar</p>
+            </div>
+          </div>
+          <div class="event">
+            <div class="dot">♫</div>
+            <div>
+              <h3>Baile y celebración</h3>
+              <p>Hora por confirmar</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección: Galería de Fotos -->
+    <section class="center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Nuestros recuerdos</div>
+        <h2>Galería de fotos</h2>
+        <p>Un pequeño recorrido por nuestra historia.</p>
+        <div class="photo-grid">
+          <div class="photo">Nuestra foto 1</div>
+          <div class="photo">Nuestra foto 2</div>
+          <div class="photo">Nuestra foto 3</div>
+        </div>
+        <p class="note">Reemplazar con fotos de Hector y Elisbe en la carpeta assets.</p>
+      </div>
+    </section>
+
+    <!-- Sección: Código de Vestimenta -->
+    <section class="alternate center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Una noche especial</div>
+        <h2>Código de vestimenta</h2>
+        <div class="leaf">✧</div>
+        <h3>Elegante</h3>
+        <p>Los detalles de vestimenta se confirmarán próximamente.</p>
+      </div>
+    </section>
+
+    <!-- Sección: Regalos y Datos Bancarios -->
+    <section class="center">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Tu presencia es nuestro regalo</div>
+        <h2>Regalos</h2>
+        <p>Lo más importante es celebrar contigo. Si deseas hacernos un regalo, aquí podrás consultar los datos para una transferencia.</p>
+        <div class="panel" style="max-width:500px;margin:auto">
+          <p id="bankDetails">Datos bancarios por confirmar.</p>
+          <button class="button outline" id="copyBank" disabled>Copiar datos bancarios</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección: Confirmación de Asistencia (RSVP) -->
+    <section class="alternate center" id="confirmar">
+      <div class="wrap reveal">
+        <div class="eyebrow gold">Contamos contigo</div>
+        <h2>Confirma tu asistencia</h2>
+        <p id="rsvpIntro">Nos ayudará mucho saber si podremos compartir este día contigo.</p>
+        <div class="rsvp-state" id="rsvpLoading" role="status">Preparando tu confirmación…</div>
+        <div class="rsvp-state" id="rsvpNoLink" hidden>
+          Esta sección se habilita desde el enlace personalizado de tu familia.
+        </div>
+        <div class="rsvp-state is-error" id="rsvpError" role="alert" hidden></div>
+
+        <div id="rsvpExperience" hidden>
+          <div class="rsvp-family" aria-live="polite">
+            <span class="rsvp-family-label">Invitación para</span>
+            <strong id="rsvpGroupName">Tu familia</strong>
+            <span id="rsvpPasses">Esta invitación incluye hasta 1 persona.</span>
+          </div>
+
+          <form class="form rsvp-form" id="rsvp" novalidate>
+            <fieldset class="rsvp-choice">
+              <legend>¿Nos acompañarán en nuestro matrimonio?</legend>
+              <label><input type="radio" name="attendance" value="yes" required> Sí, asistiremos.</label>
+              <label><input type="radio" name="attendance" value="no" required> No podremos asistir.</label>
+            </fieldset>
+
+            <div id="rsvpAttendingFields" hidden>
+              <label for="people">Personas que asistirán</label>
+              <select id="people" required></select>
+              <div id="attendeeFields" class="rsvp-attendees"></div>
+            </div>
+
+            <label for="message">Comentario para los novios <span>(opcional)</span></label>
+            <textarea id="message" maxlength="500" placeholder="Déjanos un mensaje bonito"></textarea>
+            <p class="rsvp-warning" id="rsvpCommentWarning" hidden></p>
+
+            <button class="button" id="rsvpSubmit" type="submit">Confirmar nuestra asistencia</button>
+            <p class="note" id="rsvpHelp">Podrás volver a este enlace para modificar tu respuesta mientras el plazo esté vigente.</p>
+          </form>
+
+          <div class="rsvp-thanks" id="rsvpThanks" hidden aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="footer">
+    <div class="eyebrow">Con todo nuestro amor</div>
+    <h2>Hector & Elisbe</h2>
+    <p>9 de enero de 2027</p>
+    <div class="leaf">❦</div>
+  </footer>
+
+  <!-- Scripts: configuración y lógica funcional -->
+  <script src="js/config.js?v=20261109-sage-recovered"></script>
+  <script src="js/rsvp-config.js?v=20261111-rsvp"></script>
+  <script src="js/app.js?v=20261109-sage-recovered"></script>
+  <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
+  <script src="js/rsvp.js?v=20261111-rsvp"></script>
+</body>
+</html>
