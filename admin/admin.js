@@ -13,6 +13,12 @@
     ADMIN_FORBIDDEN: 'Tu cuenta no está autorizada como administradora.',
     ADMIN_AUTH_REQUIRED: 'Tu sesión no es válida. Vuelve a iniciar sesión.',
     ADMIN_MEMBERSHIP_CHECK_FAILED: 'No fue posible verificar los permisos administrativos. Intenta nuevamente más tarde.',
+    ADMIN_DATA_READ_FAILED: 'No fue posible consultar las familias en el servidor.',
+    DATABASE_ERROR: 'No fue posible consultar los datos del evento en el servidor.',
+    NETWORK_ERROR: 'No se pudo conectar con el servidor. Revisa la conexión y el origen autorizado del panel.',
+    HTTP_403: 'El servidor rechazó la solicitud (HTTP 403).',
+    HTTP_401: 'El servidor rechazó la sesión (HTTP 401). Vuelve a iniciar sesión.',
+    INVALID_RESPONSE: 'El servidor devolvió una respuesta inesperada.',
     ORIGIN_NOT_ALLOWED: 'Este origen no está autorizado para usar el panel.',
     SERVER_CONFIGURATION_ERROR: 'La configuración segura del panel no está disponible todavía.',
     ADMIN_PASSES_EXCEED_CAPACITY: 'Los pases no pueden superar la capacidad total.',
@@ -49,7 +55,8 @@
       return;
     }
     const rows = invitations.map((invitation) => {
-      const response = Array.isArray(invitation.rsvp_responses) ? invitation.rsvp_responses[0] : null;
+      const response = Array.isArray(invitation.rsvp_responses)
+        ? invitation.rsvp_responses[0] : invitation.rsvp_responses;
       const row = document.createElement('div');
       const details = document.createElement('div');
       const name = document.createElement('strong');
@@ -90,6 +97,8 @@
     } catch (error) {
       accessToken = '';
       sessionStorage.removeItem('rsvp-admin-access-token');
+      dashboard.hidden = true;
+      loginSection.hidden = false;
       tell(loginMessage, error);
     }
   }
@@ -97,13 +106,14 @@
   document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     tell(loginMessage);
-    const button = event.currentTarget.querySelector('button');
+    const form = event.currentTarget;
+    const button = form.querySelector('button');
     button.disabled = true;
     try {
       const session = await RSVP_API.signIn(document.getElementById('adminEmail').value.trim(), document.getElementById('adminPassword').value);
       accessToken = session.access_token;
       sessionStorage.setItem('rsvp-admin-access-token', accessToken);
-      event.currentTarget.reset();
+      form.reset();
       await showDashboard();
     } catch (error) { tell(loginMessage, error); }
     finally { button.disabled = false; }
@@ -113,14 +123,15 @@
   });
   document.getElementById('createInvitationForm').addEventListener('submit', async (event) => {
     event.preventDefault(); tell(dashboardMessage);
-    const button = event.currentTarget.querySelector('button'); button.disabled = true;
+    const form = event.currentTarget;
+    const button = form.querySelector('button'); button.disabled = true;
     try {
       const result = await RSVP_API.adminRequest('createInvitation', {
         groupName: document.getElementById('groupName').value.trim(), maxPasses: Number(document.getElementById('maxPasses').value)
       }, accessToken);
       document.getElementById('generatedLink').value = result.invitationUrl;
       document.getElementById('linkResult').hidden = false;
-      event.currentTarget.reset();
+      form.reset();
       await loadDashboard();
     } catch (error) { tell(dashboardMessage, error); }
     finally { button.disabled = false; }

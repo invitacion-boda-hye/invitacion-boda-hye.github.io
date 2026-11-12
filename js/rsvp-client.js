@@ -8,15 +8,21 @@ const RSVP_API = (() => {
   async function request(url, body, headers = {}) {
     const response = await fetch(url, {
       method: 'POST',
+      cache: 'no-store',
       headers: { 'Content-Type': 'application/json', ...headers },
       body: JSON.stringify(body)
-    });
-    const payload = await response.json().catch(() => ({}));
+    }).catch(() => { throw new Error('NETWORK_ERROR'); });
+    const payload = await response.json().catch(() => null);
     if (!response.ok) {
-      const error = new Error(payload.error || 'REQUEST_FAILED');
+      // Preserve machine codes only; never display arbitrary server bodies or
+      // credentials returned by an upstream proxy.
+      const code = typeof payload?.error === 'string' && /^[A-Z][A-Z0-9_]{0,79}$/.test(payload.error)
+        ? payload.error : `HTTP_${response.status}`;
+      const error = new Error(code);
       error.status = response.status;
       throw error;
     }
+    if (!payload || typeof payload !== 'object') throw new Error('INVALID_RESPONSE');
     return payload;
   }
 
