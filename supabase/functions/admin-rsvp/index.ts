@@ -11,7 +11,7 @@ import {
   requireUuid,
   sha256Hex,
 } from "../_shared/security.ts";
-import { DatabaseError, databaseErrorResponse, requireAuthenticatedAdmin, rpc } from "../_shared/supabase.ts";
+import { adminRead, DatabaseError, databaseErrorResponse, requireAuthenticatedAdmin, rpc } from "../_shared/supabase.ts";
 
 function invitationUrl(baseUrl: string, token: string): string {
   return `${baseUrl}/#i=${encodeURIComponent(token)}`;
@@ -100,6 +100,14 @@ Deno.serve(async (request) => {
         p_actor_user_id: adminUserId,
       });
       return json({ summary }, 200, headers);
+    }
+
+    if (action === "listInvitations") {
+      const invitations = await adminRead<unknown[]>(
+        config,
+        "invitations?select=id,group_name,max_passes,is_active,rsvp_state,updated_at,rsvp_responses(confirmed_count,is_attending)&order=created_at.asc",
+      );
+      return json({ invitations }, 200, headers);
     }
 
     throw new AppError(400, "REQUEST_INVALID");

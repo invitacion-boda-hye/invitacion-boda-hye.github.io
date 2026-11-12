@@ -4,6 +4,7 @@
   const loginMessage = document.getElementById('loginMessage');
   const dashboardMessage = document.getElementById('dashboardMessage');
   const metrics = document.getElementById('adminMetrics');
+  const familyList = document.getElementById('adminFamilyList');
   let accessToken = sessionStorage.getItem('rsvp-admin-access-token') || '';
 
   const errorMessages = {
@@ -36,9 +37,40 @@
     const date = new Date(value);
     return Number.isNaN(date.valueOf()) ? '' : date.toISOString().slice(0, 16);
   }
+  function invitationState(invitation, response) {
+    if (!invitation.is_active) return 'Revocada';
+    if (invitation.rsvp_state === 'declined') return 'No asistirán';
+    if (invitation.rsvp_state === 'attending') return 'Confirmada';
+    return 'Pendiente';
+  }
+  function renderInvitations(invitations) {
+    if (!invitations.length) {
+      familyList.textContent = 'Aún no hay familias creadas.';
+      return;
+    }
+    const rows = invitations.map((invitation) => {
+      const response = Array.isArray(invitation.rsvp_responses) ? invitation.rsvp_responses[0] : null;
+      const row = document.createElement('div');
+      const details = document.createElement('div');
+      const name = document.createElement('strong');
+      const passes = document.createElement('span');
+      const state = document.createElement('span');
+      name.textContent = invitation.group_name;
+      const confirmed = response?.is_attending ? Number(response.confirmed_count || 0) : 0;
+      passes.textContent = `${confirmed} confirmado${confirmed === 1 ? '' : 's'} de ${invitation.max_passes} pase${invitation.max_passes === 1 ? '' : 's'}`;
+      state.textContent = invitationState(invitation, response);
+      row.className = 'admin-family'; state.className = 'admin-family-state';
+      details.append(name, passes); row.append(details, state);
+      return row;
+    });
+    familyList.replaceChildren(...rows);
+  }
   async function loadDashboard() {
-    const result = await RSVP_API.adminRequest('summary', {}, accessToken);
-    const summary = result.summary;
+    const [summaryResult, invitationsResult] = await Promise.all([
+      RSVP_API.adminRequest('summary', {}, accessToken),
+      RSVP_API.adminRequest('listInvitations', {}, accessToken)
+    ]);
+    const summary = summaryResult.summary;
     metrics.replaceChildren(...[
       metric('Capacidad máxima', summary.capacity), metric('Pases asignados', summary.assignedPasses),
       metric('Personas confirmadas', summary.confirmedPeople), metric('Cupos disponibles', summary.availableCapacity),
@@ -47,6 +79,7 @@
     ]);
     document.getElementById('eventCapacity').value = summary.capacity;
     document.getElementById('rsvpDeadline').value = localDate(summary.rsvpDeadline);
+    renderInvitations(invitationsResult.invitations || []);
   }
   async function showDashboard() {
     try {

@@ -46,6 +46,17 @@ export async function rpc<T>(
   return body as T;
 }
 
+// Esta lectura se usa solo después de validar sesión y membresía administrativa.
+// La ruta es interna y fijada en código, nunca procede del navegador.
+export async function adminRead<T>(config: RuntimeConfig, path: string): Promise<T> {
+  const response = await fetch(`${config.supabaseUrl}/rest/v1/${path}`, {
+    headers: { "apikey": config.secretKey },
+  });
+  const body = await parseResponseBody(response);
+  if (!response.ok) throw new AppError(503, "ADMIN_DATA_READ_FAILED");
+  return body as T;
+}
+
 export async function requireAuthenticatedAdmin(
   request: Request,
   config: RuntimeConfig,
@@ -100,6 +111,7 @@ export function databaseErrorResponse(error: unknown): AppError | null {
     RSVP_PAYLOAD_INVALID: [400, "RSVP_PAYLOAD_INVALID"],
     ADMIN_UNAUTHORIZED: [403, "ADMIN_FORBIDDEN"],
     ADMIN_MEMBERSHIP_CHECK_FAILED: [503, "ADMIN_MEMBERSHIP_CHECK_FAILED"],
+    ADMIN_DATA_READ_FAILED: [503, "ADMIN_DATA_READ_FAILED"],
     ADMIN_INVITATION_NOT_FOUND: [404, "ADMIN_INVITATION_NOT_FOUND"],
     ADMIN_PASSES_EXCEED_CAPACITY: [400, "ADMIN_PASSES_EXCEED_CAPACITY"],
     ADMIN_REACTIVATION_CAPACITY_EXCEEDED: [409, "ADMIN_REACTIVATION_CAPACITY_EXCEEDED"],

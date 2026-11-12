@@ -33,6 +33,8 @@ rg -q 'rsvp_admins' "supabase/functions/_shared/supabase.ts"
 rg -q 'SUPABASE_PUBLISHABLE_KEYS' "supabase/functions/_shared/config.ts"
 rg -q 'SUPABASE_SECRET_KEYS' "supabase/functions/_shared/config.ts"
 rg -q 'ADMIN_MEMBERSHIP_CHECK_FAILED' "supabase/functions/_shared/supabase.ts"
+rg -q 'listInvitations' "supabase/functions/admin-rsvp/index.ts"
+rg -q 'adminRead' "supabase/functions/_shared/supabase.ts"
 rg -q 'ORIGIN_NOT_ALLOWED' "admin/admin.js"
 
 migration="supabase/migrations/202611110001_rsvp_schema_and_security.sql"
