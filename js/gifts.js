@@ -4,6 +4,8 @@
 
   const experience = document.getElementById('giftExperience');
   const card = document.getElementById('giftCard');
+  const backdrop = document.getElementById('giftBackdrop');
+  const close = document.getElementById('giftClose');
   const form = document.getElementById('giftForm');
   const name = document.getElementById('giftGiverName');
   const message = document.getElementById('giftMessage');
@@ -16,7 +18,6 @@
   const transferDate = document.getElementById('transferDate');
   const reportTransfer = document.getElementById('reportTransfer');
   const transferStatus = document.getElementById('transferStatus');
-  const familyRef = document.getElementById('giftFamilyRef');
   const token = new URLSearchParams(location.hash.slice(1)).get('i') || null;
   const bankText = 'Titular: Elisbe Sanchez\nBanco: BancoEstado\nTipo de cuenta: CuentaRUT\nNúmero de cuenta: 27299305\nRUT: 27.299.305-K\nCorreo: elisbesanchez@gmail.com';
   const errorMessages = { RATE_LIMITED: 'Espera unos minutos antes de intentar nuevamente.', GIFT_MESSAGE_INVALID: 'Escribe un mensaje de hasta 500 caracteres para enviarlo.', GIFT_TRANSFER_INVALID: 'Indica el nombre del remitente y la fecha de transferencia.', INVITATION_INVALID: 'El enlace de invitación ya no está disponible.' };
@@ -28,32 +29,37 @@
     sessionStorage.setItem(idKey, value);
     return value;
   })();
-  let familyResolved = false;
+  let returnFocus = null;
 
   function announce(target, value, isError = false) {
     target.textContent = value;
     target.classList.toggle('is-error', isError);
   }
-  async function loadFamilyReference() {
-    if (familyResolved || !token) return;
-    familyResolved = true;
-    try {
-      const result = await RSVP_API.publicRequest({ action: 'resolve', token });
-      const groupName = result?.invitation?.invitation?.groupName;
-      if (groupName) { familyRef.textContent = `Invitación asociada a: ${groupName}.`; familyRef.hidden = false; }
-    } catch { /* La referencia es opcional y nunca bloquea el regalo. */ }
-  }
   function openGift() {
+    returnFocus = document.activeElement;
     experience.classList.add('is-open');
     box.setAttribute('aria-expanded', 'true');
     card.hidden = false;
-    loadFamilyReference();
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) card.querySelector('h3')?.focus?.({ preventScroll: true });
+    backdrop.hidden = false;
+    document.body.classList.add('gift-dialog-open');
+    name.focus({ preventScroll: true });
+  }
+  function closeGift() {
+    experience.classList.remove('is-open');
+    box.setAttribute('aria-expanded', 'false');
+    card.hidden = true;
+    backdrop.hidden = true;
+    document.body.classList.remove('gift-dialog-open');
+    document.getElementById('giftIntro').hidden = false;
+    bank.hidden = true;
+    form.reset();
+    [status, copyStatus, transferStatus].forEach((item) => announce(item, ''));
+    (returnFocus instanceof HTMLElement ? returnFocus : box).focus({ preventScroll: true });
   }
   function openBank() {
     document.getElementById('giftIntro').hidden = true;
     bank.hidden = false;
-    bank.querySelector('h3')?.focus?.({ preventScroll: true });
+    close.focus({ preventScroll: true });
   }
   async function submit(action, body, button, target) {
     button.disabled = true;
@@ -68,6 +74,19 @@
   }
 
   box.addEventListener('click', openGift);
+  close.addEventListener('click', closeGift);
+  backdrop.addEventListener('click', closeGift);
+  document.addEventListener('keydown', (event) => {
+    if (card.hidden) return;
+    if (event.key === 'Escape') { event.preventDefault(); closeGift(); return; }
+    if (event.key !== 'Tab') return;
+    const focusable = [...card.querySelectorAll('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), summary')]
+      .filter((item) => item.getClientRects().length > 0);
+    const first = focusable[0], last = focusable.at(-1);
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  });
   form.addEventListener('submit', (event) => { event.preventDefault(); openBank(); });
   sendMessage.addEventListener('click', async () => {
     const dedication = message.value.trim();
