@@ -1,7 +1,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const login = $('adminLogin'), dashboard = $('adminDashboard'), message = $('dashboardMessage'), loginMessage = $('loginMessage');
-  const state = { token: sessionStorage.getItem('rsvp-admin-access-token') || '', summary: null, data: { invitations: [], tables: [] }, pendingSeat: null };
+  const state = { token: sessionStorage.getItem('rsvp-admin-access-token') || '', summary: null, data: { invitations: [], tables: [] }, gifts: [], pendingSeat: null };
   const errorText = { ADMIN_FORBIDDEN: 'Tu cuenta no está autorizada como administradora.', ADMIN_AUTH_REQUIRED: 'Tu sesión no es válida. Vuelve a iniciar sesión.', ORIGIN_NOT_ALLOWED: 'Este origen no está autorizado para usar el panel.', ADMIN_SEAT_OCCUPIED: 'Esa silla acaba de ser ocupada.', ADMIN_ATTENDEE_ALREADY_SEATED: 'Este invitado ya tiene una silla.', ADMIN_ATTENDEE_NOT_ELIGIBLE: 'Este invitado ya no está confirmado.', ADMIN_TABLE_CAPACITY_OCCUPIED: 'No puedes reducir una mesa con sillas ocupadas.', ADMIN_SEAT_EMPTY: 'Esta silla ya está libre.', NETWORK_ERROR: 'No se pudo conectar con el servidor.', DATABASE_ERROR: 'No se pudo consultar el evento.' };
   const tell = (target, error) => { target.textContent = error ? (errorText[error.message] || 'No fue posible completar la operación.') : ''; target.classList.toggle('is-error', Boolean(error)); };
   const text = (tag, value, className = '') => { const node = document.createElement(tag); node.textContent = value; if (className) node.className = className; return node; };
@@ -12,11 +12,12 @@
 
   async function api(action, payload = {}) { return RSVP_API.adminRequest(action, payload, state.token); }
   async function refresh() {
-    const [summaryResult, guestResult] = await Promise.all([api('summary'), api('listInvitations')]);
+    const [summaryResult, guestResult, giftResult] = await Promise.all([api('summary'), api('listInvitations'), api('listGifts')]);
     state.summary = summaryResult.summary; state.data = guestResult.data || { invitations: [], tables: [] };
+    state.gifts = giftResult.gifts || [];
     render();
   }
-  function render() { renderSummary(); renderFamilies(); renderTables(); renderPrintBoards(); }
+  function render() { renderSummary(); renderFamilies(); renderTables(); renderGifts(); renderPrintBoards(); }
   function renderSummary() {
     const s = state.summary; if (!s) return;
     $('adminMetrics').replaceChildren(metric('Capacidad RSVP', s.capacity), metric('Confirmados', s.confirmedPeople), metric('Disponibles', s.availableCapacity), metric('Familias pendientes', s.pendingFamilies), metric('Rechazadas', s.declinedFamilies));
@@ -47,6 +48,22 @@
   function renderTables() {
     const unassigned = confirmedWithoutSeat(); $('unassignedList').replaceChildren(...(unassigned.length ? unassigned.map(a => text('span', `${a.fullName} · ${a.family}`, 'unassigned-item')) : [text('span', 'Todos los confirmados tienen mesa.', 'unassigned-item')]));
     const tables = state.data.tables.map((table) => { const card = document.createElement('article'); card.className = `table-card${table.isHeadTable ? ' head' : ''}`; const top = document.createElement('div'); top.className = 'table-top'; const capacity = text('button', `${table.capacity} sillas`, 'mini-btn'); capacity.type = 'button'; capacity.addEventListener('click', () => updateTableCapacity(table)); top.append(text('strong', table.name), capacity); const seats = document.createElement('div'); seats.className = 'seat-grid'; table.seats.filter(s => s.isActive).forEach((seat) => { const button = document.createElement('button'); button.type = 'button'; button.className = `seat${seat.assignment ? ' occupied' : ''}`; button.append(text('span', `Silla ${seat.seatNumber}`, 'number'), text('span', seat.assignment?.fullName || 'Libre')); button.addEventListener('click', () => seat.assignment ? releaseSeat(table, seat) : openSeatDialog(table, seat)); seats.append(button); }); card.append(top, seats); return card; }); $('tableLayout').replaceChildren(...tables);
+  }
+  function giftStatusName(value) { return ({ message_received: 'Mensaje recibido', transfer_reported: 'Transferencia informada', transfer_verified: 'Transferencia verificada' })[value] || 'Mensaje recibido'; }
+  function renderGifts() {
+    const rows = state.gifts.map((gift) => {
+      const row = document.createElement('article'); row.className = 'gift-admin-row';
+      const top = document.createElement('div'); top.className = 'gift-admin-top';
+      const date = gift.createdAt ? new Intl.DateTimeFormat('es-CL', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(gift.createdAt)) : 'Sin fecha';
+      const person = gift.giverName || 'Nombre no indicado'; const family = gift.family ? ` · ${gift.family}` : '';
+      top.append(text('strong', person), text('span', giftStatusName(gift.status), `gift-status ${gift.status}`));
+      const details = document.createElement('div'); details.className = 'gift-admin-details'; details.append(text('span', `${date}${family}`));
+      if (gift.dedication) details.append(text('p', gift.dedication));
+      if (gift.status !== 'message_received') details.append(text('span', `Remitente informado: ${gift.transferSender || 'No indicado'} · ${gift.transferDate || 'Sin fecha'}`));
+      if (gift.status === 'transfer_reported') { const verify = text('button', 'Marcar como verificada', 'mini-btn'); verify.type = 'button'; verify.addEventListener('click', async () => { if (!confirm('¿Confirmas que revisaste esta transferencia en el banco?')) return; try { const result = await api('verifyGift', { giftId: gift.id }); state.gifts = result.gifts || []; renderGifts(); tell(message); } catch (error) { tell(message, error); } }); details.append(verify); }
+      row.append(top, details); return row;
+    });
+    $('giftAdminList').replaceChildren(...(rows.length ? rows : [text('p', 'Aún no hay mensajes ni transferencias informadas.') ]));
   }
   function openSeatDialog(table, seat) { const available = confirmedWithoutSeat(); if (!available.length) return tell(message, new Error('No hay invitados confirmados sin mesa.')); state.pendingSeat = { table, seat }; $('seatDialogTitle').textContent = `${table.name} · silla ${seat.seatNumber}`; const select = $('seatAttendee'); select.replaceChildren(...available.map(a => { const option = document.createElement('option'); option.value = a.id; option.textContent = `${a.fullName} · ${a.family}`; return option; })); $('seatDialog').showModal(); }
   async function releaseSeat(table, seat) { if (!confirm(`¿Liberar la silla ${seat.seatNumber} de ${seat.assignment.fullName}? La confirmación RSVP no se eliminará.`)) return; try { await api('releaseSeat', { tableId: table.id, seatNumber: seat.seatNumber }); await refresh(); tell(message); } catch (error) { tell(message, error); } }

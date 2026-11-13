@@ -1046,6 +1046,46 @@ body.invitation-revealed .hero { opacity:1; }
   color: #677363;
 }
 
+/* Regalos: interacción creada con HTML, CSS y JavaScript. */
+.gifts-section { overflow: hidden; }
+.gift-experience { width: min(100%, 620px); margin: 30px auto 0; display: grid; justify-items: center; gap: 22px; }
+.gift-box { position: relative; width: min(62vw, 250px); aspect-ratio: 1.2; border: 0; border-radius: 10px; cursor: pointer; color: #fffdf8; background: linear-gradient(135deg, #78916f, #496543); box-shadow: 0 14px 25px rgba(49, 74, 46, .18); transition: transform .5s ease, box-shadow .5s ease; isolation: isolate; }
+.gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: 0 19px 30px rgba(49, 74, 46, .25); outline: 2px solid #b19155; outline-offset: 4px; }
+.gift-lid { position: absolute; z-index: 2; inset: -12% -5% auto; height: 29%; border-radius: 8px 8px 4px 4px; background: linear-gradient(135deg, #88a07e, #587551); box-shadow: 0 6px 7px rgba(42, 65, 39, .2); transform-origin: 16% 100%; transition: transform .65s cubic-bezier(.2,.75,.25,1); }
+.gift-ribbon { position: absolute; z-index: 3; background: linear-gradient(90deg, #c69f5d, #f1d28b, #b88b43); box-shadow: 0 1px 1px #5a703f88; pointer-events: none; }
+.gift-ribbon-v { width: 15%; height: 100%; left: 42.5%; top: 0; }
+.gift-ribbon-h { width: 110%; height: 13%; left: -5%; top: 40%; }
+.gift-bow { position: absolute; z-index: 4; width: 39%; height: 21%; left: 30.5%; top: -24%; border: 9px solid #d7b26e; border-radius: 50% 50% 45% 45%; transform: rotate(-10deg); pointer-events: none; transition: transform .65s ease; }
+.gift-bow::after { content: ''; position: absolute; width: 85%; height: 100%; left: 62%; top: -9px; border: 9px solid #d7b26e; border-radius: 50%; }
+.gift-box-label { position: absolute; z-index: 4; inset: auto 12px 12px; font: 600 .85rem 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 1px 2px #20371e99; }
+.gift-experience.is-open .gift-box { transform: translateY(5px) scale(.96); }
+.gift-experience.is-open .gift-lid { transform: rotateX(108deg) rotateZ(-8deg); }
+.gift-experience.is-open .gift-bow { transform: translateY(-6px) rotate(-18deg); }
+.gift-experience.is-open .gift-box-label { opacity: 0; transition: opacity .2s ease; }
+.gift-card { width: 100%; padding: clamp(22px, 5vw, 38px); border: 1px solid rgba(177, 145, 85, .45); border-radius: 13px; background: #fffdf8; box-shadow: 0 16px 36px rgba(78, 96, 68, .1); animation: gift-card-in .55s ease both; text-align: left; }
+.gift-card h3 { margin: 0 0 12px; color: #405b47; font: 600 clamp(1.8rem, 5vw, 2.35rem)/1 'Cormorant Garamond', serif; }
+.gift-card p { margin: 0 0 18px; line-height: 1.65; }
+.gift-form textarea { min-height: 110px; resize: vertical; }
+.gift-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+.gift-actions .button { width: auto; flex: 1 1 180px; }
+.gift-status { min-height: 1.25em; margin: 12px 0 0 !important; color: #506b4b; font-size: .88rem; }
+.gift-status.is-error { color: #984d43; }
+.gift-family-ref { margin-top: -8px !important; color: #64735d; font-size: .88rem; font-style: italic; }
+.gift-bank dl { display: grid; gap: 0; margin: 0 0 20px; border: 1px solid #dce4d5; border-radius: 8px; overflow: hidden; }
+.gift-bank dl div { display: grid; grid-template-columns: minmax(110px, .72fr) 1.28fr; gap: 12px; padding: 10px 13px; }
+.gift-bank dl div:nth-child(odd) { background: #f4f7f0; }
+.gift-bank dt { color: #657363; font: 600 .77rem 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: .05em; }
+.gift-bank dd { margin: 0; color: #405b47; font-weight: 600; overflow-wrap: anywhere; }
+.gift-bank dd a { color: inherit; }
+.transfer-report { margin-top: 20px; padding-top: 17px; border-top: 1px solid #dde5d8; }
+.transfer-report summary { cursor: pointer; color: #496543; font-weight: 600; }
+.transfer-report label, .transfer-report input { display: block; width: 100%; }
+.transfer-report label { margin-top: 13px; font-size: .86rem; }
+.transfer-report input { margin-top: 5px; }
+.transfer-report .button { width: auto; margin-top: 15px; }
+@keyframes gift-card-in { from { opacity: 0; transform: translateY(-14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@media (prefers-reduced-motion: reduce) { .gift-box, .gift-lid, .gift-bow, .gift-box-label { transition: none; } .gift-card { animation: none; } }
+
 .form {
   max-width: 530px;
   margin: 30px auto 0;
@@ -1298,6 +1338,8 @@ body.invitation-revealed .hero { opacity:1; }
   .photo {
     font-size: .75rem;
   }
+  .gift-box { width: min(70vw, 240px); }
+  .gift-bank dl div { grid-template-columns: 1fr; gap: 3px; }
   .hero-inner {
     padding: 55px 15px;
   }
