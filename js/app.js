@@ -193,11 +193,11 @@ const calendarBtn = document.getElementById('calendar');
 if (calendarBtn) {
   calendarBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const title = encodeURIComponent('Matrimonio de Hector y Elisbe');
-    const dates = '20270109/20270110';
-    const details = encodeURIComponent('Celebración de nuestro matrimonio. Horarios por confirmar.');
-    const location = encodeURIComponent('Capilla Inmaculada Corazón de María / Quincho Ayuwun, Puerto Montt');
-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+    const title = encodeURIComponent('Matrimonio de Hector & Elisbe');
+    const dates = '20270109T153000/20270110T000000';
+    const details = encodeURIComponent('Ceremonia religiosa · 15:30 hrs\nCapilla Inmaculada Corazón de María\nVolcán Michimavida 296–310, Puerto Montt\n\nCelebración · 17:40 hrs\nQuincho Ayuwun\nQuillaipe km 22, Carretera Austral, Puerto Montt');
+    const location = encodeURIComponent('Capilla Inmaculada Corazón de María y Quincho Ayuwun, Puerto Montt, Chile');
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}&ctz=America%2FSantiago`;
     window.open(calendarUrl, '_blank', 'noopener');
   });
 }

@@ -112,10 +112,8 @@
     <img class="hero-floral hero-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
     <div class="hero-inner">
       <div class="hero-names">Hector <span>&amp;</span> Elisbe</div>
-      <div class="reference-divider hero-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
-      <div class="hero-invitation">Una invitación para celebrar el</div>
-      <h1>amor</h1>
-      <div class="date">09 · 01 · 2027</div>
+      <p class="hero-subtitle">Después de tantos años compartiendo nuestra historia,</p>
+      <h1 class="hero-announcement">¡Nos casamos!</h1>
     </div>
   </header>
 
@@ -123,17 +121,16 @@
     <!-- Sección: Nuestra Historia -->
     <section id="historia" class="center story-section">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Con mucho amor</div>
         <h2>Nuestra historia</h2>
-        <div class="leaf">❧</div>
+        <p class="story-subtitle">13 años de amor, sueños y momentos compartidos</p>
         <div class="story-layout">
           <figure class="story-photo">
             <img src="assets/familia-elisbe-hector.webp" width="960" height="1280" alt="Elisbe y Hector junto a sus hijos Avril y Lucas" loading="lazy" decoding="async">
           </figure>
           <div class="story-copy">
-            <p>Todo comenzó hace 13 años, con un mensaje inesperado por PIN, sin imaginar que sería el inicio de una hermosa historia de amor.</p>
-            <p>Con el paso del tiempo llegaron los sueños, los aprendizajes y el regalo más bonito de todos: nuestros hijos, Avril y Lucas, con quienes formamos la familia que tanto amamos.</p>
-            <p>Hoy, después de tantos momentos compartidos, queremos celebrar nuestro amor y dar un paso muy especial: unirnos en matrimonio ante Dios, con la promesa de seguir eligiéndonos cada día y continuar escribiendo juntos nuestra historia.</p>
+            <p>Todo comenzó hace 13 años, con un mensaje por PIN de BlackBerry. En aquel momento no imaginábamos que una simple conversación nos llevaría a vivir una historia tan bonita.</p>
+            <p>Con el paso de los años llegaron los sueños, las alegrías, los desafíos y nuestros dos regalos más grandes: Avril y Lucas, quienes llenaron nuestras vidas de amor y nos dieron la hermosa familia que hoy tenemos.</p>
+            <p>Hoy, después de tantos años compartiendo la vida, queremos dar un paso muy especial: unirnos en matrimonio ante Dios, rodeados de las personas que queremos y con la ilusión de seguir construyendo nuestra historia juntos.</p>
           </div>
         </div>
       </div>
@@ -142,13 +139,13 @@
     <!-- Sección: Cuenta Regresiva -->
     <section class="alternate center">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Falta muy poquito</div>
-        <h2>Cuenta regresiva</h2>
+        <p class="countdown-lead">Cada día estamos más cerca de nuestro gran momento</p>
+        <h2>¡Falta poquito!</h2>
         <div class="count" id="countdown">
           <div><strong id="days">--</strong><small>Días</small></div>
           <div><strong id="hours">--</strong><small>Horas</small></div>
-          <div><strong id="minutes">--</strong><small>Minutos</small></div>
-          <div><strong id="seconds">--</strong><small>Segundos</small></div>
+          <div><strong id="minutes">--</strong><small>Min</small></div>
+          <div><strong id="seconds">--</strong><small>Seg</small></div>
         </div>
         <p>9 de enero de 2027 · Puerto Montt, Chile</p>
       </div>
@@ -157,28 +154,29 @@
     <!-- Sección: Lugares (Ceremonia y Celebración) -->
     <section class="center">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Te esperamos</div>
-        <h2>El gran día</h2>
-        <div class="grid">
+        <h2>Dónde celebraremos</h2>
+        <p class="location-subtitle">Dos momentos especiales que queremos compartir contigo</p>
+        <div class="grid location-grid">
           <!-- Ceremonia religiosa -->
-          <article class="panel">
+          <article class="panel location-card">
             <div class="symbol">♧</div>
-            <h3>Ceremonia</h3>
+            <h3>Ceremonia religiosa</h3>
+            <time class="location-time" datetime="2027-01-09T15:30:00-03:00">15:30 hrs</time>
             <p><strong>Capilla Inmaculada Corazón de María</strong><br>Volcán Michimavida 296–310, Puerto Montt</p>
-            <p class="note">15:30 hrs</p>
             <a class="button outline" id="ceremonyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
           </article>
 
           <!-- Celebración -->
-          <article class="panel">
+          <article class="panel location-card">
             <div class="symbol">✧</div>
             <h3>Celebración</h3>
+            <time class="location-time" datetime="2027-01-09T17:40:00-03:00">17:40 hrs</time>
             <p><strong>Quincho Ayuwun</strong><br>Quillaipe km 22, Carretera Austral, Puerto Montt</p>
-            <p class="note">17:40 hrs</p>
             <a class="button outline" id="partyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
           </article>
         </div>
-        <p style="margin-top:30px">
+        <p class="location-date">Sábado 9 de enero de 2027</p>
+        <p class="location-calendar">
           <a class="button outline" id="calendar" href="#">Agregar al calendario</a>
         </p>
       </div>
@@ -187,8 +185,7 @@
     <!-- Sección: Itinerario -->
     <section class="alternate center">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Momentos especiales</div>
-        <h2>Itinerario</h2>
+        <h2>Nuestro itinerario</h2>
         <div class="timeline flow-timeline" aria-label="Secuencia del itinerario">
           <article class="event flow-step">
             <div class="flow-node"><span class="flow-icon" aria-hidden="true">⛪</span><span class="flow-order">01</span></div>
@@ -269,7 +266,7 @@
     <!-- Sección: Código de Vestimenta -->
     <section class="alternate center dress-section">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Una noche especial</div>
+        <div class="eyebrow gold">PARA NUESTRO GRAN DÍA</div>
         <h2>Código de vestimenta</h2>
         <div class="leaf">✧</div>
         <div class="dress-layout">
@@ -278,7 +275,7 @@
           </figure>
           <div class="dress-copy">
             <h3>Formal elegante</h3>
-            <p>Queremos que nos acompañes con tu mejor estilo. Te compartimos una referencia de la vestimenta sugerida para nuestra celebración.</p>
+            <p>Queremos que te veas y te sientas increíble en este día tan especial para nosotros. Te dejamos una foto como referencia para que tengas una idea de cómo vestir.</p>
           </div>
         </div>
       </div>
@@ -323,9 +320,9 @@
     <!-- Sección: Confirmación de Asistencia (RSVP) -->
     <section class="alternate center" id="confirmar">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Contamos contigo</div>
-        <h2>Confirma tu asistencia</h2>
-        <p id="rsvpIntro">Nos ayudará mucho saber si podremos compartir este día contigo.</p>
+        <h2>¡Nos encantaría contar contigo!</h2>
+        <p id="rsvpIntro">Por favor, confirma si podrás acompañarnos en nuestro matrimonio antes del 15 de diciembre de 2026.</p>
+        <p class="rsvp-deadline"><strong>Fecha límite de confirmación: 15 de diciembre de 2026.</strong></p>
         <div class="rsvp-state" id="rsvpLoading" role="status">Preparando tu confirmación…</div>
         <div class="rsvp-state" id="rsvpNoLink" hidden>
           Esta sección se habilita desde el enlace personalizado de tu familia.
@@ -368,16 +365,15 @@
 
   <!-- Pie de página -->
   <footer class="footer">
-    <div class="eyebrow">Con todo nuestro amor</div>
+    <div class="eyebrow">GRACIAS POR SER PARTE DE NUESTRA HISTORIA</div>
     <h2>Hector & Elisbe</h2>
-    <p>9 de enero de 2027</p>
-    <div class="leaf">❦</div>
+    <p>Lo más bonito de este día será poder compartirlo con las personas que queremos.</p>
   </footer>
 
   <!-- Scripts: configuración y lógica funcional -->
   <script src="js/config.js?v=20261109-sage-recovered"></script>
   <script src="js/rsvp-config.js?v=20261111-rsvp"></script>
-  <script src="js/app.js?v=20261112-controls-removed"></script>
+  <script src="js/app.js?v=20261113-final-review"></script>
   <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
   <script src="js/rsvp.js?v=20261111-rsvp"></script>
   <script src="js/gifts.js?v=20261113-gifts"></script>

@@ -2032,3 +2032,52 @@ body.invitation-revealed .hero { opacity:1; }
   .hero .eyebrow { font-size:.63rem; }
   .hero .date { font-size:.68rem; letter-spacing:.24em; }
 }
+
+/* Revisión final: composición legible y sin superposiciones. */
+.gifts-section .wrap > h2 { margin-bottom: 12px; }
+.gifts-section .wrap > p { margin-bottom: 0; }
+.gift-experience { margin-top: 38px; padding-top: 42px; gap: 26px; }
+.gift-box { margin: 0 auto; }
+.gift-bow { top: -24%; }
+
+.hero .hero-names { display: block; color: #405440; font: 600 clamp(2.1rem, 6vw, 3.5rem)/1.05 'Cormorant Garamond', serif; letter-spacing: .08em; text-transform: none; }
+.hero .hero-names span { color: #b18b52; }
+.hero .hero-subtitle { display: block; max-width: 450px; margin: 28px auto 12px; color: #62705d; font: italic 500 clamp(1.05rem, 2.7vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
+.hero h1.hero-announcement { margin: 0; color: #b18b52; font: 500 clamp(3.3rem, 10vw, 5.8rem)/.95 'Allura', cursive; text-shadow: 0 1px rgba(255,255,255,.8); }
+
+.story-section .wrap { width: min(100% - 34px, 800px); }
+.story-section h2 { margin-bottom: 8px; }
+.story-subtitle { margin: 0 auto 28px; color: #9b7a48; font: italic 500 clamp(1.1rem, 2.5vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
+.story-layout { grid-template-columns: 1fr; gap: 28px; max-width: 760px; }
+.story-photo { width: min(100%, 430px); margin: 0 auto; }
+.story-copy { max-width: 720px; text-align: left; }
+
+.countdown-lead { margin: 0 auto 8px; color: #61715f; font: italic 500 clamp(1.1rem, 2.5vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
+.count { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(100%, 520px); gap: clamp(5px, 2vw, 18px); flex-wrap: nowrap; margin: 30px auto 24px; }
+.count div { min-width: 0; padding: 8px 3px; }
+.count strong { font-size: clamp(2rem, 8vw, 3rem); }
+.count small { font-size: clamp(.58rem, 2.5vw, .7rem); letter-spacing: .06em; }
+
+.location-subtitle { margin: 0 auto; color: #61715f; font: italic 500 clamp(1.05rem, 2.5vw, 1.3rem)/1.45 'Cormorant Garamond', serif; }
+.location-grid { max-width: 900px; margin: 30px auto 0; gap: 20px; }
+.location-card { display: flex; flex-direction: column; align-items: center; padding: clamp(25px, 4vw, 34px) clamp(18px, 4vw, 28px); border-color: rgba(112,137,105,.35); border-radius: 11px; background: #fffdf8; box-shadow: 0 12px 24px rgba(68,87,60,.06); }
+.location-card h3 { margin: 8px 0 5px; font-size: clamp(1.6rem, 4vw, 2rem); }
+.location-card p { margin: 14px 0 20px; line-height: 1.6; }
+.location-card .button { margin-top: auto; }
+.location-time { color: #9b7a48; font: 600 clamp(1.25rem, 3vw, 1.55rem)/1 'Cormorant Garamond', serif; letter-spacing: .04em; }
+.location-date { margin: 27px 0 13px; color: #52644b; font: 600 1rem 'Cormorant Garamond', serif; letter-spacing: .04em; }
+.location-calendar { margin: 0; }
+
+.dress-section .eyebrow { letter-spacing: .2em; }
+.rsvp-deadline { margin: 16px auto 0; color: #9b7a48; font-size: .95rem; }
+.footer .eyebrow { margin-bottom: 14px; color: #e2c793; letter-spacing: .14em; }
+.footer p { max-width: 520px; margin: 14px auto 0; color: #f2eee4; font: italic 500 clamp(1.05rem, 2.6vw, 1.3rem)/1.5 'Cormorant Garamond', serif; }
+
+@media (max-width: 600px) {
+  .gift-experience { margin-top: 30px; padding-top: 38px; }
+  .hero .hero-names { font-size: clamp(2rem, 10vw, 2.7rem); letter-spacing: .05em; }
+  .hero .hero-subtitle { margin-top: 23px; padding: 0 8px; }
+  .hero h1.hero-announcement { font-size: clamp(3.5rem, 17vw, 4.8rem); }
+  .story-subtitle { margin-bottom: 22px; }
+  .location-grid { grid-template-columns: 1fr; }
+}
