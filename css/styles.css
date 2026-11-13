@@ -1083,7 +1083,10 @@ body.invitation-revealed .hero { opacity:1; }
 .transfer-report label { margin-top: 13px; font-size: .86rem; }
 .transfer-report input { margin-top: 5px; }
 .transfer-report .button { width: auto; margin-top: 15px; }
-@keyframes gift-card-in { from { opacity: 0; transform: translateY(-14px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes gift-card-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% - 14px)) scale(.98); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
 @media (prefers-reduced-motion: reduce) { .gift-box, .gift-lid, .gift-bow, .gift-box-label { transition: none; } .gift-card { animation: none; } }
 
 .form {
@@ -2081,3 +2084,41 @@ body.invitation-revealed .hero { opacity:1; }
   .story-subtitle { margin-bottom: 22px; }
   .location-grid { grid-template-columns: 1fr; }
 }
+
+/* Caja de regalo: representación premium, sin recursos gráficos estáticos. */
+.gifts-section { overflow: visible; }
+.gifts-section .wrap > h2 { margin-bottom: 14px; }
+.gifts-section .wrap > p { max-width: 620px; margin: 0 auto; }
+.gift-experience { margin-top: 48px; padding-top: 52px; gap: 0; }
+.gift-box { width: min(74vw, 310px); aspect-ratio: 1.22; margin: 0 auto; padding: 0; border: 0; border-radius: 28px 28px 20px 20px; background: transparent; box-shadow: none; transform: none; perspective: 900px; isolation: isolate; }
+.gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: none; outline-color: #b59a6b; }
+.gift-shadow { position: absolute; z-index: -2; inset: auto 9% -10% 9%; height: 17%; border-radius: 50%; background: rgba(74, 91, 68, .2); filter: blur(13px); transform: scaleX(.9); }
+.gift-base { position: absolute; z-index: 1; inset: 23% 4% 0; overflow: hidden; border-radius: 19px 19px 24px 24px; background: linear-gradient(135deg, #afc0a7 0%, #8fa88a 34%, #789473 73%, #698766 100%); box-shadow: inset 1px 1px rgba(255,255,255,.62), inset -12px -16px 24px rgba(60,83,58,.18), 0 17px 24px rgba(55,75,51,.2); }
+.gift-front { position: absolute; inset: 0; background: linear-gradient(110deg, rgba(255,255,255,.25), transparent 32%, rgba(55,78,50,.12) 88%); }
+.gift-side { position: absolute; right: 0; top: 0; width: 17%; height: 100%; background: linear-gradient(90deg, rgba(76,101,71,.05), rgba(57,81,54,.26)); }
+.gift-lid { position: absolute; z-index: 3; inset: 12% 0 auto; height: 30%; overflow: visible; border-radius: 21px 21px 13px 13px; background: linear-gradient(145deg, #c4d0bc 0%, #a9bda2 42%, #8fa98a 100%); box-shadow: inset 1px 1px rgba(255,255,255,.78), inset -11px -11px 17px rgba(66,91,61,.13), 0 7px 11px rgba(55,75,51,.18); transform-origin: 10% 100%; transition: transform .72s cubic-bezier(.2,.78,.2,1), box-shadow .5s ease; }
+.gift-ribbon { position: absolute; z-index: 4; display: block; background: linear-gradient(90deg, #b79a69, #e8d5ad 42%, #c7a977 67%, #a98b5c); box-shadow: inset 1px 0 rgba(255,255,255,.45), 0 1px 2px rgba(99,76,38,.18); }
+.gift-ribbon-v { left: 43%; top: -1px; width: 14%; height: calc(100% + 265%); }
+.gift-ribbon-h { left: -3%; top: 42%; width: 106%; height: 17%; }
+.gift-bow { position: absolute; z-index: 6; top: -21%; left: 50%; width: 45%; height: 36%; pointer-events: none; transform: translateX(-50%); transition: transform .72s cubic-bezier(.2,.78,.2,1); }
+.gift-loop { position: absolute; top: 9%; width: 56%; height: 57%; border: 9px solid #d7c096; border-radius: 56% 46% 54% 46%; background: linear-gradient(145deg, rgba(248,235,202,.9), rgba(188,157,105,.76)); box-shadow: inset 2px 2px rgba(255,255,255,.6), 0 5px 7px rgba(82,65,36,.16); }
+.gift-loop-left { left: 0; transform: rotate(-25deg) skewX(-9deg); }
+.gift-loop-right { right: 0; transform: rotate(25deg) skewX(9deg); }
+.gift-knot { position: absolute; z-index: 2; left: 38%; top: 27%; width: 25%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 34% 29%, #fff4ce, #d7bb83 47%, #ac8955); box-shadow: inset 1px 1px rgba(255,255,255,.72), 0 3px 5px rgba(74,59,31,.2); }
+.gift-tail { position: absolute; top: 50%; width: 18%; height: 54%; background: linear-gradient(90deg, #aa8a58, #e8d1a2 50%, #b79763); filter: drop-shadow(0 3px 2px rgba(68,53,28,.14)); clip-path: polygon(0 0,100% 12%,78% 100%,48% 79%,18% 100%); }
+.gift-tail-left { left: 30%; transform: rotate(18deg); }
+.gift-tail-right { right: 30%; transform: rotate(-18deg) scaleX(-1); }
+.gift-tag { position: absolute; z-index: 7; right: 8%; bottom: 9%; display: grid; width: 23%; aspect-ratio: 1.34; place-items: center; border: 1px solid rgba(149,119,70,.58); border-radius: 4px; background: linear-gradient(135deg, #fffdf8, #eee4d1); color: #7e6842; box-shadow: 0 4px 8px rgba(70,58,37,.15); font: 600 clamp(.64rem, 2.3vw, .83rem) 'Cormorant Garamond', serif; letter-spacing: .08em; transform: rotate(7deg); }
+.gift-experience.is-open .gift-box { transform: translateY(2px) scale(.985); }
+.gift-experience.is-open .gift-lid { transform: rotateX(112deg) rotateZ(-7deg) translateY(-7px); box-shadow: 0 0 0 transparent; }
+.gift-experience.is-open .gift-bow { transform: translateX(-50%) translateY(-18px) rotate(-9deg); }
+.gift-box-label { display: none; }
+.gift-backdrop { position: fixed; z-index: 1000; inset: 0; background: rgba(48, 62, 47, .43); backdrop-filter: blur(3px); }
+.gift-card { position: fixed; z-index: 1001; top: 50%; left: 50%; box-sizing: border-box; width: min(620px, calc(100vw - 32px)); max-height: min(760px, calc(100dvh - 32px)); overflow: auto; overscroll-behavior: contain; padding: clamp(38px, 6vw, 48px) clamp(20px, 5vw, 42px) clamp(22px, 5vw, 38px); border: 1px solid rgba(181,154,107,.52); border-radius: 20px; background: #fffdf8; box-shadow: 0 24px 66px rgba(30,45,30,.3); transform: translate(-50%, -50%); animation: gift-card-in .4s ease both; }
+.gift-close { position: sticky; z-index: 2; top: -30px; float: right; margin: -26px -9px 8px 12px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(130,151,121,.35); border-radius: 50%; background: #f5f2e9; color: #52644b; font: 400 1.7rem/1 'DM Sans', sans-serif; cursor: pointer; }
+.gift-close:hover, .gift-close:focus-visible { background: #e8eee3; outline: 2px solid #b59a6b; outline-offset: 2px; }
+.gift-card .form { max-width: none; }
+.gift-open-description { margin: 0 38px 22px 0 !important; color: #5c6b58; line-height: 1.65; }
+.gift-dialog-open { overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card { animation: none; } }
+@media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
