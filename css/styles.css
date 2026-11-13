@@ -1014,6 +1014,7 @@ body.invitation-revealed .hero { opacity:1; }
 }
 
 .photo-filled {
+  aspect-ratio: auto;
   display: block;
   margin: 0;
   padding: 0;
@@ -1026,7 +1027,8 @@ body.invitation-revealed .hero { opacity:1; }
   width: 100%;
   height: auto;
   aspect-ratio: 3 / 4;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center 35%;
   background: #fffdf8;
 }
 
