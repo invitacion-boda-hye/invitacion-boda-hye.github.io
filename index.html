@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Hojas de estilo modularizadas -->
-  <link rel="stylesheet" href="css/styles.css?v=20261113-gifts">
+  <link rel="stylesheet" href="css/styles.css?v=20261113-gifts-premium">
   <link rel="stylesheet" href="css/welcome-v3.css?v=20261112-letter-safe-margin">
 </head>
 <body class="envelope-active">
@@ -284,18 +284,20 @@
     <!-- Sección: Regalos -->
     <section class="center gifts-section" id="regalos">
       <div class="wrap reveal">
-        <div class="eyebrow gold">Tu presencia es nuestro regalo</div>
-        <h2>Regalos</h2>
-        <p>Un detalle que recibiremos con mucho cariño.</p>
+        <h2>Regalo</h2>
         <div class="gift-experience" id="giftExperience">
           <button class="gift-box" id="giftBox" type="button" aria-expanded="false" aria-controls="giftCard" aria-label="Abrir caja de regalo">
-            <span class="gift-lid" aria-hidden="true"></span><span class="gift-ribbon gift-ribbon-v" aria-hidden="true"></span><span class="gift-ribbon gift-ribbon-h" aria-hidden="true"></span><span class="gift-bow" aria-hidden="true"></span><span class="gift-box-label">Toca para abrir</span>
+            <span class="gift-shadow" aria-hidden="true"></span>
+            <span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span>
+            <span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span>
+            <span class="gift-bow" aria-hidden="true"><span class="gift-loop gift-loop-left"></span><span class="gift-loop gift-loop-right"></span><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
+            <span class="gift-tag" aria-hidden="true">E &amp; H</span>
           </button>
-          <div class="gift-card" id="giftCard" hidden>
+          <div class="gift-backdrop" id="giftBackdrop" hidden></div>
+          <div class="gift-card" id="giftCard" role="dialog" aria-modal="true" aria-label="Regalos" hidden>
+            <button class="gift-close" id="giftClose" type="button" aria-label="Cerrar">×</button>
             <div class="gift-intro" id="giftIntro">
-              <h3>Un regalo con cariño</h3>
-              <p>Tu presencia en nuestro matrimonio es el mejor regalo que podemos recibir. Si deseas tener un detalle adicional con nosotros, puedes dejarnos unas palabras antes de realizar tu transferencia.</p>
-              <p class="gift-family-ref" id="giftFamilyRef" hidden></p>
+              <p class="gift-open-description">Tu presencia en nuestro matrimonio es el mejor regalo. Si deseas tener un detalle adicional con nosotros, puedes hacerlo mediante una transferencia.</p>
               <form class="form gift-form" id="giftForm" novalidate>
                 <label for="giftGiverName">Nombre de quien realiza el regalo <span>(opcional)</span></label>
                 <input id="giftGiverName" maxlength="160" autocomplete="name" placeholder="Tu nombre">
@@ -306,7 +308,6 @@
               </form>
             </div>
             <div class="gift-bank" id="giftBank" hidden>
-              <h3>Datos para tu regalo</h3>
               <dl><div><dt>Titular</dt><dd>Elisbe Sanchez</dd></div><div><dt>Banco</dt><dd>BancoEstado</dd></div><div><dt>Tipo de cuenta</dt><dd>CuentaRUT</dd></div><div><dt>Número de cuenta</dt><dd>27299305</dd></div><div><dt>RUT</dt><dd>27.299.305-K</dd></div><div><dt>Correo</dt><dd><a href="mailto:elisbesanchez@gmail.com">elisbesanchez@gmail.com</a></dd></div></dl>
               <button class="button outline" id="copyBank" type="button">Copiar datos bancarios</button>
               <p class="gift-status" id="copyBankStatus" role="status" aria-live="polite"></p>
@@ -376,6 +377,6 @@
   <script src="js/app.js?v=20261113-final-review"></script>
   <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
   <script src="js/rsvp.js?v=20261111-rsvp"></script>
-  <script src="js/gifts.js?v=20261113-gifts"></script>
+  <script src="js/gifts.js?v=20261113-gifts-premium"></script>
 </body>
 </html>
