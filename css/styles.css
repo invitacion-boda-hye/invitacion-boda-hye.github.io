@@ -1013,6 +1013,32 @@ body.invitation-revealed .hero { opacity:1; }
   border: 1px solid #d5dfcf;
 }
 
+.photo-filled {
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #fffdf8;
+}
+
+.photo-filled img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #fffdf8;
+}
+
+.photo-filled figcaption {
+  padding: 11px 10px 12px;
+  border-top: 1px solid rgba(177, 145, 85, .22);
+  background: #fffdf8;
+  color: #52644b;
+  font: 600 .92rem/1.2 'Cormorant Garamond', serif;
+  letter-spacing: .03em;
+}
+
 .note {
   font-size: .82rem;
   color: #677363;
@@ -1263,8 +1289,10 @@ body.invitation-revealed .hero { opacity:1; }
     grid-template-columns: 1fr;
   }
   .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: 7px;
   }
+  .photo-filled { grid-column: 1 / -1; }
   .photo {
     font-size: .75rem;
   }
