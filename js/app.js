@@ -253,6 +253,8 @@ let autoTourReady = false;
 let autoTourFinished = false;
 let autoTourScrolling = false;
 let autoTourPosition = 0;
+let autoTourHoldPointer = null;
+let autoTourHolding = false;
 
 function autoTourLimit() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -265,7 +267,7 @@ function autoTourSpeed() {
     const rect = section.getBoundingClientRect();
     return rect.top < window.innerHeight * .6 && rect.bottom > window.innerHeight * .35;
   });
-  return currentSection?.classList.contains('alternate') ? 22.8 : 28.8;
+  return currentSection?.classList.contains('alternate') ? 29.64 : 37.44;
 }
 
 function pauseAutoTour() {
@@ -302,7 +304,7 @@ function runAutoTour(now) {
 }
 
 function resumeAutoTour() {
-  if (reduceEnvelopeMotion || autoTourFinished || autoTourActive) return;
+  if (reduceEnvelopeMotion || autoTourFinished || autoTourActive || autoTourHolding) return;
   if (window.scrollY >= autoTourLimit() - 1) {
     finishAutoTour();
     return;
@@ -327,26 +329,42 @@ function isInteractiveTourTarget(target) {
   ));
 }
 
-// Un toque libre con el dedo alterna pausa/reanudación. Los controles y
-// enlaces siguen siendo completamente suyos: sólo detienen el recorrido,
-// nunca su acción.
-document.addEventListener('click', (event) => {
-  if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
-  if (autoTourActive) pauseAutoTour();
-  else resumeAutoTour();
-});
+// El recorrido se pausa exclusivamente durante una pulsación sostenida.
+// Pointer Events cubre Android Chrome e iPhone Safari modernos; Touch Events
+// queda como respaldo sin duplicar eventos cuando Pointer Events existe.
+function beginAutoTourHold() {
+  if (!autoTourReady || autoTourFinished || autoTourHolding) return;
+  autoTourHolding = true;
+  pauseAutoTour();
+}
 
-document.addEventListener('wheel', () => pauseAutoTour(), { passive: true });
-document.addEventListener('touchmove', () => pauseAutoTour(), { passive: true });
-document.addEventListener('keydown', (event) => {
-  if (isInteractiveTourTarget(event.target)) return;
-  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
-    pauseAutoTour();
-  }
-});
+function endAutoTourHold() {
+  if (!autoTourHolding) return;
+  autoTourHolding = false;
+  autoTourHoldPointer = null;
+  resumeAutoTour();
+}
 
-window.addEventListener('scroll', () => {
-  if (autoTourReady && autoTourActive && !autoTourScrolling) pauseAutoTour();
-}, { passive: true });
+if ('PointerEvent' in window) {
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || isInteractiveTourTarget(event.target)) return;
+    autoTourHoldPointer = event.pointerId;
+    beginAutoTourHold();
+  }, { passive: true });
+
+  const releasePointerHold = (event) => {
+    if (autoTourHoldPointer !== null && event.pointerId !== autoTourHoldPointer) return;
+    endAutoTourHold();
+  };
+  window.addEventListener('pointerup', releasePointerHold, { passive: true });
+  window.addEventListener('pointercancel', releasePointerHold, { passive: true });
+} else {
+  document.addEventListener('touchstart', (event) => {
+    if (isInteractiveTourTarget(event.target)) return;
+    beginAutoTourHold();
+  }, { passive: true });
+  window.addEventListener('touchend', endAutoTourHold, { passive: true });
+  window.addEventListener('touchcancel', endAutoTourHold, { passive: true });
+}
 
 
