@@ -900,8 +900,8 @@ body.qa-preview-open .hero-inner > * {
 
 .hero-floral-bottom {
   right: auto;
-  bottom: min(-13vw, -95px);
-  left: min(-10vw, -78px);
+  bottom: max(-34px, -2vw);
+  left: max(-48px, -2vw);
   transform: rotate(196deg);
 }
 
@@ -988,7 +988,7 @@ body.qa-preview-open .hero-inner > * {
   .hero { min-height: 100svh; padding: 28px 16px; }
   .hero-floral { width: min(350px, 76vw); opacity: .67; }
   .hero-floral-top { top: -78px; right: -94px; }
-  .hero-floral-bottom { bottom: -88px; left: -104px; }
+  .hero-floral-bottom { bottom: -12px; left: -20px; }
   .hero-inner { padding: 22px 4px 30px; }
   .hero-emblem { margin-bottom: 15px; }
   .hero .hero-subtitle { max-width: 330px; margin-bottom: 23px; font-size: clamp(1.38rem, 7vw, 1.85rem); }
@@ -1123,4 +1123,67 @@ body.envelope-active.overlay-fading .hero {
   .envelope-cord {
     transition-duration: .01ms !important;
   }
+}
+
+/* Ajustes iniciales aprobados: texto y ornamentos, sin alterar la apertura. */
+.envelope-intro { margin-bottom: 18px; }
+.envelope-title { gap: 5px; }
+.envelope-title-primary { font: italic 500 clamp(1.55rem, 3vw, 2.35rem)/1.05 'Cormorant Garamond', serif; }
+.envelope-title-love { margin: 0; font-size: clamp(4.2rem, 7.2vw, 6.1rem); }
+
+.envelope-title-ornament,
+.hero-ornament {
+  display: grid;
+  grid-template-columns: minmax(38px, 82px) auto minmax(38px, 82px);
+  align-items: center;
+  gap: 10px;
+  color: var(--welcome-gold);
+}
+
+.envelope-title-ornament { margin-top: 14px; }
+.envelope-title-ornament span,
+.hero-ornament span { height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+.envelope-title-ornament span:last-child,
+.hero-ornament span:last-child { background: linear-gradient(90deg, currentColor, transparent); }
+.envelope-title-ornament i,
+.hero-ornament i { font-style: normal; font-size: .65rem; }
+
+.envelope-click-hint {
+  margin: 0;
+  color: #697965;
+  font: italic 500 clamp(.92rem, 1.6vw, 1.08rem)/1.3 'Cormorant Garamond', serif;
+  letter-spacing: .03em;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Portada real: solo escala, distribución y detalles; misma estructura. */
+.hero { min-height: max(620px, 100svh); padding: clamp(32px, 6vw, 72px) 22px; }
+.hero-inner { width: min(100%, 1050px); padding: clamp(30px, 5vh, 64px) clamp(16px, 4vw, 52px); gap: clamp(13px, 2.3vh, 25px); }
+.hero .hero-emblem,
+.hero .hero-love-mark { display: none; }
+
+.hero-rings { position: relative; width: 66px; height: 34px; margin-bottom: clamp(4px, 1.5vh, 13px); }
+.hero-rings span { position: absolute; top: 1px; width: 33px; height: 27px; border: 1.5px solid #c18a22; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+.hero-rings span:first-child { left: 6px; transform: rotate(-20deg); }
+.hero-rings span:last-child { right: 6px; transform: rotate(20deg); }
+.hero .hero-names { font-size: clamp(3.65rem, 8.2vw, 7.2rem); line-height: .92; }
+.hero .hero-subtitle { max-width: 700px; margin: 0; font-size: clamp(1.3rem, 2.35vw, 2.05rem); }
+.hero-ornament { margin: clamp(2px, 1vh, 8px) 0 0; }
+.hero h1.hero-announcement { padding: .05em 0 .22em; color: #174c31; font-size: clamp(4.5rem, 9.2vw, 8rem); }
+.hero h1.hero-announcement::before { display: none; }
+.hero h1.hero-announcement::after { content: ''; position: absolute; right: 11%; bottom: 0; left: 11%; height: 1px; background: linear-gradient(90deg, transparent, #c18a22 16%, #c18a22 84%, transparent); }
+.hero-date { color: #a88249; font: 600 clamp(.72rem, 1.3vw, .9rem)/1.2 'DM Sans', sans-serif; letter-spacing: .22em; text-align: center; }
+
+@media (max-width: 680px) {
+  .envelope-intro { margin-bottom: 12px; }
+  .envelope-title-primary { font-size: clamp(1.45rem, 6.7vw, 1.85rem); }
+  .envelope-title-love { font-size: clamp(3.8rem, 18vw, 4.75rem); }
+  .envelope-title-ornament { margin-top: 8px; }
+  .envelope-click-hint { margin-top: 2px; }
+  .hero { min-height: 100svh; padding: 25px 16px; }
+  .hero-inner { padding: 26px 3px 36px; gap: 17px; }
+  .hero .hero-names { font-size: clamp(3.35rem, 16vw, 5rem); }
+  .hero .hero-subtitle { max-width: 335px; font-size: clamp(1.25rem, 6.45vw, 1.72rem); }
+  .hero h1.hero-announcement { font-size: clamp(4.25rem, 19vw, 5.7rem); }
 }

@@ -37,9 +37,8 @@
 
     <div class="envelope-container">
       <div class="envelope-intro">
-        <div class="envelope-subtitle">Hector &amp; Elisbe</div>
-        <div class="reference-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
-        <h2 class="envelope-title"><span class="envelope-title-primary">Te invitamos a celebrar</span><span class="envelope-title-love">con nosotros</span></h2>
+        <h2 class="envelope-title"><span class="envelope-title-primary">Te invitamos a celebrar</span><span class="envelope-title-love">nuestra boda</span></h2>
+        <div class="envelope-title-ornament" aria-hidden="true"><span></span><i>✦</i><span></span></div>
       </div>
 
       <!-- Sobre interactivo con solapa, sello y carta -->
@@ -78,6 +77,7 @@
           <div class="envelope-cord" aria-hidden="true"></div>
         </div>
       </button>
+      <p class="envelope-click-hint" aria-hidden="true">Dale clic para abrir</p>
 
     </div>
   </aside>
@@ -101,13 +101,20 @@
     <img class="hero-floral hero-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
     <img class="hero-floral hero-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
     <div class="hero-inner">
-      <span class="hero-emblem" aria-hidden="true">♡</span>
+      <div class="hero-rings" aria-hidden="true"><span></span><span></span></div>
       <div class="hero-names">Hector <span>&amp;</span> Elisbe</div>
       <p class="hero-subtitle">Queremos compartir contigo un momento muy especial</p>
-      <span class="hero-love-mark" aria-hidden="true">♡</span>
+      <div class="hero-ornament" aria-hidden="true"><span></span><i>✦</i><span></span></div>
       <h1 class="hero-announcement">¡Nos casamos!</h1>
+      <time class="hero-date" datetime="2027-01-09">09 · 01 · 2027</time>
     </div>
   </header>
+
+  <section class="center wedding-photo-section" aria-label="Hector y Elisbe">
+    <figure class="wedding-photo reveal">
+      <img src="assets/foto-boda.png" width="1086" height="1448" alt="Elisbe y Hector en su retrato de boda" loading="lazy" decoding="async">
+    </figure>
+  </section>
 
   <main>
     <!-- Sección: Nuestra Historia -->
@@ -117,7 +124,7 @@
         <p class="story-subtitle">13 años de amor, sueños y momentos compartidos</p>
         <div class="story-layout">
           <figure class="story-photo">
-            <img src="assets/familia-elisbe-hector.webp" width="960" height="1280" alt="Elisbe y Hector junto a sus hijos Avril y Lucas" loading="lazy" decoding="async">
+            <img src="assets/foto-historia.png" width="1198" height="1313" alt="Hector proponiendo matrimonio a Elisbe" loading="lazy" decoding="async">
           </figure>
           <div class="story-copy">
             <p>Todo comenzó hace 13 años, con un mensaje por PIN de BlackBerry. En aquel momento no imaginábamos que una simple conversación nos llevaría a vivir una historia tan bonita.</p>
@@ -125,6 +132,9 @@
             <p>Hoy, después de tantos años compartiendo la vida, queremos dar un paso muy especial: unirnos en matrimonio ante Dios, rodeados de las personas que queremos y con la ilusión de seguir construyendo nuestra historia juntos.</p>
           </div>
         </div>
+        <figure class="story-photo story-photo-companion">
+          <img src="assets/foto-pareja.png" width="1086" height="1448" alt="Elisbe y Hector juntos al atardecer" loading="lazy" decoding="async">
+        </figure>
       </div>
     </section>
 
@@ -232,29 +242,6 @@
       </div>
     </section>
 
-    <!-- Sección: Galería de Fotos -->
-    <section class="center">
-      <div class="wrap reveal">
-        <div class="eyebrow gold">Nuestros recuerdos</div>
-        <h2>Galería de fotos</h2>
-        <p>Un pequeño recorrido por nuestra historia.</p>
-        <div class="photo-grid">
-          <figure class="photo photo-filled">
-            <img src="assets/nuestros-comienzos.webp" width="1086" height="1448" alt="Hector y Elisbe en sus comienzos" loading="lazy" decoding="async">
-            <figcaption>Nuestros comienzos</figcaption>
-          </figure>
-          <figure class="photo photo-filled">
-            <img src="assets/galeria-nuestra-familia.jpg" width="995" height="1628" alt="Hector y Elisbe junto a su familia" loading="lazy" decoding="async">
-            <figcaption>Nuestra familia</figcaption>
-          </figure>
-          <figure class="photo photo-filled">
-            <img src="assets/galeria-nuestro-presente.jpg" width="1536" height="2048" alt="Hector y Elisbe con su familia en su presente" loading="lazy" decoding="async">
-            <figcaption>Nuestro presente</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
     <!-- Sección: Código de Vestimenta -->
     <section class="alternate center dress-section">
       <div class="wrap reveal">
@@ -263,11 +250,12 @@
         <div class="leaf">✧</div>
         <div class="dress-layout">
           <figure class="story-photo dress-photo">
-            <img src="assets/retrato-vestimenta-formal.webp" width="1086" height="1448" alt="Elisbe y Hector con vestimenta formal elegante" loading="lazy" decoding="async">
+            <img src="assets/retrato-vestimenta-ilustrado.webp" width="1120" height="1404" alt="Ilustración de Elisbe y Hector con vestimenta formal elegante" loading="lazy" decoding="async">
           </figure>
           <div class="dress-copy">
             <h3>Formal elegante</h3>
-            <p>Queremos que te veas y te sientas increíble en este día tan especial para nosotros. Te dejamos una foto como referencia para que tengas una idea de cómo vestir.</p>
+            <p>Queremos que te sientas cómodo y elegante en nuestro día especial. Elige un atuendo formal con el que puedas disfrutar y celebrar junto a nosotros.</p>
+            <p class="dress-note"><strong>Importante:</strong> Los colores azul y blanco están reservados para los novios, por lo que agradecemos que elijas otros tonos para tu vestimenta.</p>
           </div>
         </div>
       </div>
@@ -282,7 +270,7 @@
             <span class="gift-shadow" aria-hidden="true"></span>
             <span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span>
             <span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span>
-            <span class="gift-bow" aria-hidden="true"><span class="gift-loop gift-loop-left"></span><span class="gift-loop gift-loop-right"></span><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
+            <span class="gift-bow" aria-hidden="true"><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
             <span class="gift-tag" aria-hidden="true">H &amp; E</span>
           </button>
           <div class="gift-backdrop" id="giftBackdrop" hidden></div>
@@ -355,6 +343,12 @@
       </div>
     </section>
   </main>
+
+  <section class="center closing-family-photo-section" aria-label="Familia de Elisbe y Hector">
+    <figure class="closing-family-photo reveal">
+      <img src="assets/foto-familiar.png" width="1086" height="1448" alt="Elisbe y Hector junto a su familia" loading="lazy" decoding="async">
+    </figure>
+  </section>
 
   <!-- Pie de página -->
   <footer class="footer">
