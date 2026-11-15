@@ -8,7 +8,6 @@
 // ============================================================================
 const envelopeScreen = document.getElementById('envelopeScreen');
 const envelopeTrigger = document.getElementById('envelopeTrigger');
-const envelopePrompt = document.getElementById('envelopePrompt');
 
 let isEnvelopeOpening = false;
 const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -16,8 +15,8 @@ const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduc
 function openEnvelopeSequence() {
   if (isEnvelopeOpening) return;
   isEnvelopeOpening = true;
+  document.documentElement.classList.add('envelope-animating');
   envelopeTrigger?.setAttribute('disabled', '');
-  envelopePrompt?.setAttribute('tabindex', '-1');
 
   // Se ejecuta directamente desde el gesto del invitado para que los navegadores
   // móviles permitan la reproducción. Si falla, el sobre continúa y el botón
@@ -29,47 +28,37 @@ function openEnvelopeSequence() {
     }
   }
 
-  // Secuencia cinematográfica (6,5 s): magia, solapa, tarjeta y portada.
-  // Para quien prefiere menos movimiento se mantienen los mismos estados,
-  // pero se presentan casi de inmediato.
+  // Única secuencia de la apertura: los tiempos coinciden con el prototipo.
   const timing = reduceEnvelopeMotion
-    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, handoff: 82, finish: 100 }
-    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5250, handoff: 6100, finish: 6500 };
+    ? { flap: 10, letter: 20, lift: 30, fade: 40, finish: 80 }
+    : { flap: 200, letter: 700, lift: 1600, fade: 2300, finish: 3500 };
 
-  envelopeScreen.classList.add('step-magic');
-
-  setTimeout(() => {
-    envelopeScreen.classList.add('step-seal-release');
-  }, timing.release);
+  envelopeTrigger?.classList.add('is-seal-released');
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-flap-open');
+    envelopeTrigger?.classList.add('is-flap-open');
   }, timing.flap);
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-letter-out');
+    envelopeTrigger?.classList.add('is-letter-out');
   }, timing.letter);
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-card-focus');
-  }, timing.focus);
+    envelopeTrigger?.classList.add('is-lifting');
+    envelopeScreen?.classList.add('is-lifting');
+  }, timing.lift);
 
   setTimeout(() => {
-    document.body.classList.add('invitation-revealed');
-    envelopeScreen.classList.add('step-hero-reveal');
-  }, timing.reveal);
+    document.body.classList.add('overlay-fading', 'invitation-revealed');
+    envelopeScreen?.classList.add('is-fading');
+  }, timing.fade);
 
   setTimeout(() => {
-    // La portada ya está presente: sólo ahora cedemos la tarjeta compartida.
-    envelopeScreen.classList.add('step-card-handoff');
-  }, timing.handoff);
-
-  setTimeout(() => {
-    envelopeScreen.classList.add('opened');
     document.body.classList.remove('envelope-active');
-
-    // Desactivamos completamente de accesibilidad para que no interfiera en la navegación
-    envelopeScreen.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('overlay-fading');
+    envelopeScreen?.classList.add('is-hidden', 'opened');
+    document.documentElement.classList.remove('envelope-animating');
+    envelopeScreen?.setAttribute('aria-hidden', 'true');
     envelopeTrigger?.setAttribute('tabindex', '-1');
     startAutoTourAfterReveal();
   }, timing.finish);
@@ -77,22 +66,6 @@ function openEnvelopeSequence() {
 
 if (envelopeTrigger) {
   envelopeTrigger.addEventListener('click', openEnvelopeSequence);
-  envelopeTrigger.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openEnvelopeSequence();
-    }
-  });
-}
-
-if (envelopePrompt) {
-  envelopePrompt.addEventListener('click', openEnvelopeSequence);
-  envelopePrompt.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openEnvelopeSequence();
-    }
-  });
 }
 
 // Ruta de previsualización para control visual local: no altera la experiencia

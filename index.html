@@ -24,7 +24,7 @@
 
   <!-- Hojas de estilo modularizadas -->
   <link rel="stylesheet" href="css/styles.css?v=20261113-gifts-premium">
-  <link rel="stylesheet" href="css/welcome-v3.css?v=20261112-letter-safe-margin">
+  <link rel="stylesheet" href="css/welcome-v3.css?v=opening-hero-direct-v1">
 </head>
 <body class="envelope-active">
 
@@ -37,10 +37,8 @@
 
     <div class="envelope-container">
       <div class="envelope-intro">
-        <div class="envelope-subtitle">Hector &amp; Elisbe</div>
-        <div class="reference-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
-        <h2 class="envelope-title">Una invitación para celebrar el</h2>
-        <div class="envelope-love">amor</div>
+        <h2 class="envelope-title"><span class="envelope-title-primary">Te invitamos a celebrar</span><span class="envelope-title-love">nuestra boda</span></h2>
+        <div class="envelope-title-ornament" aria-hidden="true"><span></span><i>✦</i><span></span></div>
       </div>
 
       <!-- Sobre interactivo con solapa, sello y carta -->
@@ -53,21 +51,12 @@
           <div class="envelope-pocket-left"></div>
           <div class="envelope-pocket-right"></div>
 
-          <!-- Carta que emerge al abrir -->
-          <div class="envelope-letter" id="envelopeLetter">
+          <!-- Carta de la secuencia simple: emerge detrás del bolsillo frontal. -->
+          <div class="envelope-letter" id="envelopeLetter" aria-hidden="true">
             <div class="letter-border">
-              <img class="letter-floral letter-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
-              <div class="letter-names"><span>Hector</span><i>&amp;</i><span>Elisbe</span></div>
-              <div class="letter-rule" aria-hidden="true"></div>
-              <p class="letter-message">Una invitación para celebrar el</p>
-              <div class="letter-love">amor</div>
-              <div class="letter-date">09 · 01 · 2027</div>
-              <img class="letter-floral letter-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+              <span class="letter-emblem" aria-hidden="true">♡</span>
+              <div class="letter-names">Hector <i>&amp;</i> Elisbe</div>
             </div>
-          </div>
-
-          <div class="envelope-sparkles" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i>
           </div>
 
           <!-- Bolsillo frontal -->
@@ -81,13 +70,14 @@
           <!-- Sello de cera dorado con iniciales -->
           <div class="envelope-seal" id="envelopeSeal" aria-hidden="true">
             <div class="envelope-seal-inner">
-              <span class="envelope-seal-initials">E & H</span>
+              <span class="envelope-seal-initials">H &amp; E</span>
               <span class="envelope-seal-leaf">❦</span>
             </div>
           </div>
           <div class="envelope-cord" aria-hidden="true"></div>
         </div>
       </button>
+      <p class="envelope-click-hint" aria-hidden="true">Dale clic para abrir</p>
 
     </div>
   </aside>
@@ -111,11 +101,26 @@
     <img class="hero-floral hero-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
     <img class="hero-floral hero-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
     <div class="hero-inner">
+      <div class="hero-rings" aria-hidden="true"><span></span><span></span></div>
       <div class="hero-names">Hector <span>&amp;</span> Elisbe</div>
-      <p class="hero-subtitle">Después de tantos años compartiendo nuestra historia,</p>
+      <p class="hero-subtitle">Queremos compartir contigo un momento muy especial</p>
+      <div class="hero-ornament" aria-hidden="true"><span></span><i>✦</i><span></span></div>
       <h1 class="hero-announcement">¡Nos casamos!</h1>
     </div>
   </header>
+
+  <section class="center wedding-date-section" aria-labelledby="wedding-date-title">
+    <div class="wrap reveal">
+      <h2 id="wedding-date-title">Nuestra boda</h2>
+      <time class="wedding-date" datetime="2027-01-09">
+        <span class="wedding-date-day">09</span>
+        <span class="wedding-date-month">ENERO</span>
+        <span class="wedding-date-year">2027</span>
+      </time>
+      <p class="wedding-date-weekday">Sábado 9 de enero de 2027</p>
+      <p class="wedding-date-place">Puerto Montt, Chile</p>
+    </div>
+  </section>
 
   <main>
     <!-- Sección: Nuestra Historia -->
@@ -291,7 +296,7 @@
             <span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span>
             <span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span>
             <span class="gift-bow" aria-hidden="true"><span class="gift-loop gift-loop-left"></span><span class="gift-loop gift-loop-right"></span><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
-            <span class="gift-tag" aria-hidden="true">E &amp; H</span>
+            <span class="gift-tag" aria-hidden="true">H &amp; E</span>
           </button>
           <div class="gift-backdrop" id="giftBackdrop" hidden></div>
           <div class="gift-card" id="giftCard" role="dialog" aria-modal="true" aria-label="Regalos" hidden>
@@ -374,7 +379,7 @@
   <!-- Scripts: configuración y lógica funcional -->
   <script src="js/config.js?v=20261109-sage-recovered"></script>
   <script src="js/rsvp-config.js?v=20261111-rsvp"></script>
-  <script src="js/app.js?v=20261113-final-review"></script>
+  <script src="js/app.js?v=opening-hero-direct-v1"></script>
   <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
   <script src="js/rsvp.js?v=20261111-rsvp"></script>
   <script src="js/gifts.js?v=20261113-gifts-premium"></script>

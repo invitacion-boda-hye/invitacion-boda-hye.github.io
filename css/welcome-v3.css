@@ -3,8 +3,8 @@
    independientes para conservar la apertura animada. */
 
 :root {
-  --welcome-ivory: #faf4e9;
-  --welcome-paper: #fffaf0;
+  --welcome-ivory: #F7F4EC;
+  --welcome-paper: #F7F4EC;
   --welcome-green: #114a2d;
   --welcome-green-deep: #0a3c23;
   --welcome-gold: #be882c;
@@ -13,6 +13,21 @@
 body.envelope-active {
   overflow: hidden;
   height: 100dvh;
+}
+
+/* La invitación real no participa visualmente hasta el relevo final. */
+body.envelope-active .hero,
+body.envelope-active main {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.envelope-active.invitation-handoff-ready .hero {
+  visibility: visible;
+}
+
+html.envelope-animating {
+  overflow: hidden;
 }
 
 .envelope-screen {
@@ -91,6 +106,9 @@ body.envelope-active {
 }
 
 .envelope-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 0 6px;
 }
 
@@ -100,12 +118,15 @@ body.envelope-active {
   letter-spacing: .47em;
   text-transform: uppercase;
   padding-left: .47em;
+  white-space: nowrap;
 }
 
 .reference-divider {
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: center;
+  grid-template-columns: 1fr auto 1fr;
+  width: min(224px, 66vw);
   gap: 16px;
   margin: 18px auto 15px;
   color: var(--welcome-green);
@@ -113,7 +134,7 @@ body.envelope-active {
 
 .reference-divider span {
   display: block;
-  width: 72px;
+  width: auto;
   height: 1.5px;
   background: var(--welcome-green);
 }
@@ -121,22 +142,34 @@ body.envelope-active {
 .reference-divider b {
   font-size: .8rem;
   line-height: 1;
-  color: var(--welcome-green);
+  color: var(--welcome-gold);
   text-shadow: none;
 }
 
 .envelope-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0;
   color: var(--welcome-green);
   font: italic 500 clamp(1.7rem, 3.45vw, 2.75rem)/1.06 'Cormorant Garamond', serif;
+  text-align: center;
+  text-wrap: balance;
 }
 
+.envelope-title-primary {
+  display: block;
+  color: var(--welcome-green);
+}
+
+.envelope-title-love,
 .envelope-love {
   display: block;
   margin: 5px 0 2px;
-  color: var(--welcome-green);
+  color: var(--welcome-gold);
   font: 400 clamp(4.55rem, 8vw, 6.9rem)/.68 'Allura', cursive;
   text-shadow: 0 1px 0 rgba(255,255,255,.86), 0 2px 4px rgba(14, 64, 38, .15);
+  text-wrap: balance;
 }
 
 .envelope-wrapper {
@@ -155,8 +188,7 @@ body.envelope-active {
   transform: translateY(-3px);
 }
 
-.envelope-wrapper:focus-visible,
-.envelope-prompt:focus-visible {
+.envelope-wrapper:focus-visible {
   outline: 2px solid var(--welcome-green);
   outline-offset: 7px;
 }
@@ -493,205 +525,6 @@ body.envelope-active {
   transform: rotate(-24deg);
 }
 
-.envelope-prompt {
-  display: grid;
-  place-items: center;
-  width: 92px;
-  height: 48px;
-  margin: 0 auto;
-  padding: 0;
-  cursor: pointer;
-  border: 2px solid rgba(255,255,255,.95);
-  border-radius: 999px;
-  background: linear-gradient(180deg, #5f8f3a, #164827);
-  box-shadow: 0 5px 10px rgba(7, 58, 32, .22), inset 0 1px rgba(255,255,255,.38);
-  transition: transform .2s ease, opacity .55s ease;
-}
-
-.envelope-prompt:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(180deg, #6b9944, #164b28);
-}
-
-.envelope-prompt span:not(.chevrons) {
-  display: none;
-}
-
-.chevrons {
-  display: block;
-  position: relative;
-  width: 20px;
-  height: 22px;
-  margin: 0;
-}
-
-.chevrons::before,
-.chevrons::after {
-  display: block;
-  width: 12px;
-  height: 12px;
-  border-right: 3px solid #fff;
-  border-bottom: 3px solid #fff;
-  transform: rotate(45deg);
-}
-
-.chevrons::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 2px;
-}
-
-.chevrons::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 2px;
-}
-
-/* Secuencia: magia, apertura 3D, sorpresa y revelación (6,5 segundos). */
-.envelope-screen.step-magic .envelope-seal {
-  animation: seal-gleam .8s ease-in-out 1;
-}
-
-@keyframes seal-gleam {
-  0%, 100% {
-    box-shadow: 0 4px 10px rgba(73, 43, 3, .36), inset 0 2px 3px rgba(255,255,255,.45), inset 0 -4px 7px rgba(89,53,0,.32);
-    transform: translate(-50%, -50%) scale(1);
-  }
-  48% {
-    box-shadow: 0 5px 18px rgba(218, 165, 57, .68), 0 0 18px rgba(255, 218, 131, .52), inset 0 2px 5px rgba(255,255,255,.75), inset 0 -4px 7px rgba(89,53,0,.28);
-    transform: translate(-50%, -50%) scale(1.045);
-  }
-}
-
-.envelope-screen.step-flap-open .envelope-intro,
-.envelope-screen.step-flap-open .envelope-prompt {
-  opacity: 0;
-  transform: translateY(-8px);
-}
-
-.envelope-screen.step-seal-release .envelope-seal {
-  opacity: 0;
-  transform: translate(-50%, -68%) scale(.58) rotate(8deg);
-}
-
-.envelope-screen.step-seal-release .envelope-cord {
-  opacity: 0;
-  transform: translate(-50%, -11px) scale(.8);
-}
-
-.envelope-screen.step-flap-open .envelope-seam {
-  opacity: 0;
-}
-
-.envelope-screen.step-flap-open .envelope-flap {
-  filter: drop-shadow(0 -9px 12px rgba(86, 57, 17, .18));
-  transform: rotateX(-165deg);
-  z-index: 1;
-}
-
-.envelope-screen.step-letter-out .envelope-letter {
-  opacity: 1;
-  transform: translateY(-175px) scale(1.02);
-  /* La parte inferior sigue detrás del bolsillo: no atraviesa el sobre. */
-  z-index: 4;
-  box-shadow: 0 24px 48px rgba(72, 53, 27, .25);
-}
-
-.envelope-screen.step-letter-out .envelope-sparkles {
-  opacity: .72;
-}
-
-.envelope-screen.step-letter-out .envelope-sparkles i {
-  animation: sparkle-gold 1.35s ease-in-out 2 both;
-}
-
-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(2) { animation-delay: .18s; }
-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(3) { animation-delay: .34s; }
-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(4) { animation-delay: .12s; }
-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(5) { animation-delay: .46s; }
-
-@keyframes sparkle-gold {
-  0%, 100% { opacity: 0; transform: scale(.45); }
-  45% { opacity: .88; transform: scale(1); }
-}
-
-.envelope-screen.step-letter-out .letter-names {
-  opacity: 1;
-  transform: none;
-  transition-delay: .28s;
-}
-
-.envelope-screen.step-letter-out .letter-rule {
-  opacity: 1;
-  transform: none;
-  transition-delay: .48s;
-}
-
-.envelope-screen.step-letter-out .letter-message {
-  opacity: 1;
-  transform: none;
-  transition-delay: .58s;
-}
-
-.envelope-screen.step-letter-out .letter-love {
-  opacity: 1;
-  transform: none;
-  transition-delay: .68s;
-}
-
-.envelope-screen.step-letter-out .letter-date {
-  opacity: 1;
-  transform: none;
-  transition-delay: .78s;
-}
-
-.envelope-screen.step-card-focus .envelope-letter {
-  /* Conserva la posición de salida: sólo crece de forma natural, sin saltar. */
-  transform: translateY(-175px) scale(1.18);
-  z-index: 20;
-  box-shadow: 0 32px 68px rgba(72,53,27,.22);
-  transition-duration: 1.65s, 1.65s, 1s;
-}
-
-.envelope-screen.step-card-focus .envelope-box {
-  opacity: 1;
-  transform: scale(.95);
-  /* La tarjeta vive dentro de esta caja: no se puede desvanecer su padre o
-     desaparecería antes de completar el relevo hacia la portada. */
-  transition: transform .9s ease .25s;
-}
-
-.envelope-screen.step-card-focus .envelope-floral {
-  opacity: 0;
-  transition: opacity .8s ease .2s;
-}
-
-.envelope-screen.step-card-focus .envelope-pocket-left,
-.envelope-screen.step-card-focus .envelope-pocket-right,
-.envelope-screen.step-card-focus .envelope-front-pocket,
-.envelope-screen.step-card-focus .envelope-flap,
-.envelope-screen.step-card-focus .envelope-paper-grain {
-  opacity: 0;
-  transition: opacity .72s ease .22s;
-}
-
-/* La portada aparece mientras la misma tarjeta aún se mantiene visible. */
-.envelope-screen.step-hero-reveal .envelope-container {
-  pointer-events: none;
-}
-
-.envelope-screen.step-hero-reveal::after {
-  opacity: 0;
-}
-
-.envelope-screen.step-card-handoff .envelope-letter {
-  opacity: 0;
-  transform: translateY(-175px) scale(1.22);
-  transition: opacity .42s ease, transform .55s cubic-bezier(.22,.8,.22,1);
-}
-
 /* Portada final: conserva la composición de la referencia, ya sin el sobre. */
 body:not(.invitation-revealed) .hero {
   opacity: 0;
@@ -828,10 +661,9 @@ body.qa-preview-open .hero {
   letter-spacing: .28em;
 }
 
-/* La portada se escribe suavemente mientras desaparece la última capa del sobre. */
+/* La portada se presenta de forma nítida y continua sin parpadeos ni demoras. */
 .hero-inner > * {
   will-change: transform, opacity;
-  transition: opacity .5s ease, transform .65s cubic-bezier(.22,.8,.22,1);
 }
 
 body:not(.invitation-revealed) .hero-inner > * {
@@ -840,15 +672,10 @@ body:not(.invitation-revealed) .hero-inner > * {
 }
 
 body.invitation-revealed .hero-inner > * {
-  opacity: 1;
-  transform: none;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
 }
-
-body.invitation-revealed .hero-names { transition-delay: .04s; }
-body.invitation-revealed .hero-divider { transition-delay: .16s; }
-body.invitation-revealed .hero-invitation { transition-delay: .28s; }
-body.invitation-revealed .hero h1 { transition-delay: .42s; }
-body.invitation-revealed .hero .date { transition-delay: .54s; }
 
 body.qa-preview-open .hero-inner > * {
   opacity: 1 !important;
@@ -913,13 +740,14 @@ body.qa-preview-open .hero-inner > * {
   }
 
   .reference-divider span {
-    width: 48px;
+    width: auto;
   }
 
   .envelope-title {
     font-size: clamp(1.45rem, 6.5vw, 1.78rem);
   }
 
+  .envelope-title-love,
   .envelope-love {
     margin: 1px 0 0;
     font-size: clamp(3.9rem, 18vw, 4.5rem);
@@ -971,22 +799,6 @@ body.qa-preview-open .hero-inner > * {
   .envelope-cord::after {
     width: 65px;
     height: 30px;
-  }
-
-  .envelope-screen.step-letter-out .envelope-letter {
-    transform: translateY(-112px) scale(1.02);
-  }
-
-  .envelope-screen.step-card-focus .envelope-letter {
-    transform: translateY(-112px) scale(1.18);
-  }
-
-  .envelope-screen.step-card-handoff .envelope-letter {
-    transform: translateY(-112px) scale(1.22);
-  }
-
-  .letter-floral {
-    width: 120px;
   }
 
   .hero {
@@ -1042,4 +854,335 @@ body.qa-preview-open .hero-inner > * {
     transition-duration: .01ms !important;
   }
 
+}
+
+/* Revisión cálida y continua: la carta conduce a una portada sin marco. */
+.envelope-screen,
+.hero { background: var(--welcome-ivory); }
+
+.envelope-screen::after,
+.hero { background-color: var(--welcome-ivory); }
+
+.hero::before,
+.hero::after { display: none !important; }
+
+.hero-inner {
+  width: min(620px, 100%);
+  padding: clamp(54px, 9vw, 86px) clamp(20px, 6vw, 48px);
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-floral { opacity: .72; }
+
+/* Portada propuesta 2: cálida, botánica y con los nombres como protagonistas. */
+.hero {
+  min-height: 100svh;
+  padding: clamp(34px, 7vw, 74px) 22px;
+  background:
+    radial-gradient(circle at 52% 39%, rgba(255,255,255,.6), transparent 34%),
+    var(--welcome-ivory);
+}
+
+.hero-floral {
+  z-index: 0;
+  width: min(570px, 46vw);
+  opacity: .78;
+  filter: saturate(.88) sepia(.04);
+}
+
+.hero-floral-top {
+  top: min(-11vw, -78px);
+  right: min(-9vw, -70px);
+  left: auto;
+  transform: rotate(16deg);
+}
+
+.hero-floral-bottom {
+  right: auto;
+  bottom: min(-13vw, -95px);
+  left: min(-10vw, -78px);
+  transform: rotate(196deg);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  width: min(100%, 1120px);
+  max-width: 1120px;
+  padding: clamp(38px, 6vh, 76px) clamp(16px, 3.5vw, 42px);
+  margin: 0 auto;
+}
+
+.hero .hero-emblem,
+.hero .hero-love-mark,
+.hero .hero-subtitle { display: block; }
+
+.hero-emblem {
+  margin: 0 0 clamp(10px, 1.8vw, 20px);
+  color: #be882c;
+  font: 400 clamp(3.8rem, 7vw, 6.4rem)/.55 'Allura', cursive;
+  transform: rotate(-8deg);
+}
+
+.hero .hero-subtitle {
+  max-width: min(100%, 780px);
+  margin: 0 0 clamp(20px, 3vw, 36px);
+  color: #183c29;
+  font: 500 clamp(1.4rem, 2.7vw, 2.35rem)/1.2 'Cormorant Garamond', serif;
+  letter-spacing: .005em;
+  text-align: center;
+}
+
+.hero .hero-names {
+  margin: 0;
+  color: #113d27 !important;
+  font: italic 500 clamp(3.4rem, 8vw, 6.8rem)/.96 'Cormorant Garamond', serif;
+  letter-spacing: -.035em;
+  padding: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.hero .hero-names span {
+  display: inline;
+  color: #c18a22 !important;
+  font-family: 'Allura', cursive;
+  font-size: .92em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: -.05em;
+}
+
+.hero-love-mark {
+  margin: clamp(16px, 2.8vw, 30px) 0 clamp(10px, 2vw, 20px);
+  color: #c18a22;
+  font: 400 clamp(2.8rem, 5vw, 4.4rem)/.7 'Allura', cursive;
+}
+
+.hero h1.hero-announcement {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  padding: .12em .4em .2em;
+  color: #113d27;
+  font: 400 clamp(4.4rem, 8.8vw, 7.6rem)/.86 'Allura', cursive;
+  text-shadow: 0 1px rgba(255,255,255,.82);
+}
+
+.hero h1.hero-announcement::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 19% -4% 12%;
+  border-radius: 50% 43% 47% 45%;
+  background: rgba(190, 202, 162, .43);
+  transform: rotate(-2.5deg) skewX(-7deg);
+  box-shadow: 0 7px 0 rgba(190, 202, 162, .21), 0 -4px 0 rgba(190, 202, 162, .16);
+}
+
+@media (max-width: 600px) {
+  .hero { min-height: 100svh; padding: 28px 16px; }
+  .hero-floral { width: min(350px, 76vw); opacity: .67; }
+  .hero-floral-top { top: -78px; right: -94px; }
+  .hero-floral-bottom { bottom: -88px; left: -104px; }
+  .hero-inner { padding: 22px 4px 30px; }
+  .hero-emblem { margin-bottom: 15px; }
+  .hero .hero-subtitle { max-width: 330px; margin-bottom: 23px; font-size: clamp(1.38rem, 7vw, 1.85rem); }
+  .hero .hero-names { font-size: clamp(3.35rem, 16.5vw, 5rem); letter-spacing: -.06em; }
+  .hero h1.hero-announcement { font-size: clamp(4rem, 19vw, 5.8rem); }
+}
+
+/* Apertura simple: el sobre es un overlay y la portada no se mueve. */
+.envelope-title {
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.envelope-letter .letter-border {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  background: #F7F4EC;
+}
+
+.envelope-flap {
+  transform: perspective(1200px) rotateX(0deg);
+  transform-origin: 50% 0;
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  transition: transform calc(3500ms * .229) ease-out;
+}
+
+.envelope-flap::after {
+  display: block;
+  position: absolute;
+  inset: 0;
+  content: '';
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(155deg, #ead9bd 0%, #f2dfc5 100%);
+  opacity: 0;
+  transform: rotateX(180deg) translateZ(1px);
+  transition: opacity 80ms linear;
+  backface-visibility: visible;
+}
+
+.envelope-letter {
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  background: #fffbf3;
+  opacity: 0;
+  transform: translateY(7px) scale(.98);
+  transition: transform 1000ms ease-out, opacity 200ms ease-out;
+}
+
+.letter-emblem {
+  display: block;
+  color: var(--welcome-gold);
+  font: 400 clamp(2.5rem, 5vw, 4rem)/.6 'Allura', cursive;
+}
+
+.letter-names {
+  color: var(--welcome-green);
+  font: italic 500 clamp(1.8rem, 4vw, 3.4rem)/1 'Cormorant Garamond', serif;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.letter-names i {
+  color: var(--welcome-gold);
+  font: 400 .9em 'Allura', cursive;
+}
+
+.envelope-wrapper.is-seal-released .envelope-seal {
+  opacity: 0;
+  transform: translate(-50%, -70%) scale(.6);
+}
+
+.envelope-wrapper.is-seal-released .envelope-cord {
+  opacity: 0;
+  transform: translate(-50%, -11px) scale(.8);
+}
+
+.envelope-wrapper.is-flap-open .envelope-flap {
+  z-index: 3;
+  transform: perspective(1200px) rotateX(-165deg);
+}
+
+.envelope-wrapper.is-flap-open .envelope-flap::after { opacity: 1; }
+.envelope-wrapper.is-flap-open .envelope-seam { opacity: 0; }
+
+.envelope-wrapper.is-letter-out .envelope-letter {
+  opacity: 1;
+  transform: translateY(-52%);
+}
+
+.envelope-wrapper.is-lifting .envelope-letter {
+  transform: translateY(-125%) scale(1.25);
+}
+
+.envelope-screen.is-lifting .envelope-container {
+  opacity: 0;
+  transform: translateY(90px) scale(.94);
+  transition: transform 1000ms ease-out, opacity 1000ms ease-out;
+}
+
+.envelope-screen.is-fading {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1100ms ease-out;
+}
+
+.envelope-screen.is-hidden { display: none; }
+
+body.envelope-active.overlay-fading .hero {
+  visibility: visible;
+  pointer-events: none;
+  opacity: 1;
+}
+
+@media (max-width: 680px) {
+  .envelope-wrapper.is-letter-out .envelope-letter { transform: translateY(-40%); }
+  .envelope-wrapper.is-lifting .envelope-letter { transform: translateY(-84%) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope-screen,
+  .envelope-container,
+  .envelope-letter,
+  .envelope-flap,
+  .envelope-seal,
+  .envelope-cord {
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Ajustes iniciales aprobados: texto y ornamentos, sin alterar la apertura. */
+.envelope-intro { margin-bottom: 18px; }
+.envelope-title { gap: 5px; }
+.envelope-title-primary { font: italic 500 clamp(1.55rem, 3vw, 2.35rem)/1.05 'Cormorant Garamond', serif; }
+.envelope-title-love { margin: 0; font-size: clamp(4.2rem, 7.2vw, 6.1rem); }
+
+.envelope-title-ornament,
+.hero-ornament {
+  display: grid;
+  grid-template-columns: minmax(38px, 82px) auto minmax(38px, 82px);
+  align-items: center;
+  gap: 10px;
+  color: var(--welcome-gold);
+}
+
+.envelope-title-ornament { margin-top: 14px; }
+.envelope-title-ornament span,
+.hero-ornament span { height: 1px; background: linear-gradient(90deg, transparent, currentColor); }
+.envelope-title-ornament span:last-child,
+.hero-ornament span:last-child { background: linear-gradient(90deg, currentColor, transparent); }
+.envelope-title-ornament i,
+.hero-ornament i { font-style: normal; font-size: .65rem; }
+
+.envelope-click-hint {
+  margin: 0;
+  color: #697965;
+  font: italic 500 clamp(.92rem, 1.6vw, 1.08rem)/1.3 'Cormorant Garamond', serif;
+  letter-spacing: .03em;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Portada real: solo escala, distribución y detalles; misma estructura. */
+.hero { min-height: max(620px, 100svh); padding: clamp(32px, 6vw, 72px) 22px; }
+.hero-inner { width: min(100%, 1050px); padding: clamp(30px, 5vh, 64px) clamp(16px, 4vw, 52px); gap: clamp(13px, 2.3vh, 25px); }
+.hero .hero-emblem,
+.hero .hero-love-mark { display: none; }
+
+.hero-rings { position: relative; width: 66px; height: 34px; margin-bottom: clamp(4px, 1.5vh, 13px); }
+.hero-rings span { position: absolute; top: 1px; width: 33px; height: 27px; border: 1.5px solid #c18a22; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+.hero-rings span:first-child { left: 6px; transform: rotate(-20deg); }
+.hero-rings span:last-child { right: 6px; transform: rotate(20deg); }
+.hero .hero-names { font-size: clamp(3.65rem, 8.2vw, 7.2rem); line-height: .92; }
+.hero .hero-subtitle { max-width: 700px; margin: 0; font-size: clamp(1.3rem, 2.35vw, 2.05rem); }
+.hero-ornament { margin: clamp(2px, 1vh, 8px) 0 0; }
+.hero h1.hero-announcement { padding: .05em 0 .22em; color: #174c31; font-size: clamp(4.5rem, 9.2vw, 8rem); }
+.hero h1.hero-announcement::before { display: none; }
+.hero h1.hero-announcement::after { content: ''; position: absolute; right: 11%; bottom: 0; left: 11%; height: 1px; background: linear-gradient(90deg, transparent, #c18a22 16%, #c18a22 84%, transparent); }
+
+@media (max-width: 680px) {
+  .envelope-intro { margin-bottom: 12px; }
+  .envelope-title-primary { font-size: clamp(1.45rem, 6.7vw, 1.85rem); }
+  .envelope-title-love { font-size: clamp(3.8rem, 18vw, 4.75rem); }
+  .envelope-title-ornament { margin-top: 8px; }
+  .envelope-click-hint { margin-top: 2px; }
+  .hero { min-height: 100svh; padding: 25px 16px; }
+  .hero-inner { padding: 26px 3px 36px; gap: 17px; }
+  .hero .hero-names { font-size: clamp(3.35rem, 16vw, 5rem); }
+  .hero .hero-subtitle { max-width: 335px; font-size: clamp(1.25rem, 6.45vw, 1.72rem); }
+  .hero h1.hero-announcement { font-size: clamp(4.25rem, 19vw, 5.7rem); }
 }
