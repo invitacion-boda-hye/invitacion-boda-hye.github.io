@@ -86,9 +86,11 @@ fi
 # La integración no puede retirar los elementos de la invitación aprobada.
 rg -q 'id="envelopeScreen"' index.html
 rg -q 'id="musicButton"' index.html
-rg -q 'id="autoTourButton"' index.html
+! rg -q 'id="autoTourButton"' index.html
+! rg -q 'Descubrir nuestra invitación' index.html
 rg -q 'assets/musica.mp3' index.html
 rg -q 'pauseAutoTour' js/app.js
+rg -Fq "document.addEventListener('click'" js/app.js
 rg -q 'RSVP_API.publicRequest' js/rsvp.js
 rg -q 'admin-rsvp' js/rsvp-config.js
 if rg -q 'wa\.me' js/app.js; then

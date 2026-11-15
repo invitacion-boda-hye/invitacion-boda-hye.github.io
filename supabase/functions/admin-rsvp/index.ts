@@ -115,6 +115,17 @@ Deno.serve(async (request) => {
       return json({ data }, 200, headers);
     }
 
+    if (action === "listGifts") {
+      const gifts = await rpc<unknown>(config, "gift_admin_list", { p_actor_user_id: adminUserId });
+      return json({ gifts }, 200, headers);
+    }
+
+    if (action === "verifyGift") {
+      const giftId = requireUuid(body.giftId, "ADMIN_GIFT_ARGUMENT_INVALID");
+      const gifts = await rpc<unknown>(config, "gift_admin_verify", { p_gift_id: giftId, p_actor_user_id: adminUserId });
+      return json({ gifts }, 200, headers);
+    }
+
     if (action === "assignSeat") {
       const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
       const attendeeId = requireUuid(body.attendeeId, "ADMIN_ATTENDEE_ARGUMENT_INVALID");

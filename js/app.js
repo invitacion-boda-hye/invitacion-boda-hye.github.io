@@ -8,7 +8,6 @@
 // ============================================================================
 const envelopeScreen = document.getElementById('envelopeScreen');
 const envelopeTrigger = document.getElementById('envelopeTrigger');
-const envelopePrompt = document.getElementById('envelopePrompt');
 
 let isEnvelopeOpening = false;
 const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -16,8 +15,8 @@ const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduc
 function openEnvelopeSequence() {
   if (isEnvelopeOpening) return;
   isEnvelopeOpening = true;
+  document.documentElement.classList.add('envelope-animating');
   envelopeTrigger?.setAttribute('disabled', '');
-  envelopePrompt?.setAttribute('tabindex', '-1');
 
   // Se ejecuta directamente desde el gesto del invitado para que los navegadores
   // móviles permitan la reproducción. Si falla, el sobre continúa y el botón
@@ -29,47 +28,37 @@ function openEnvelopeSequence() {
     }
   }
 
-  // Secuencia cinematográfica (6,5 s): magia, solapa, tarjeta y portada.
-  // Para quien prefiere menos movimiento se mantienen los mismos estados,
-  // pero se presentan casi de inmediato.
+  // Única secuencia de la apertura: los tiempos coinciden con el prototipo.
   const timing = reduceEnvelopeMotion
-    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, handoff: 82, finish: 100 }
-    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5250, handoff: 6100, finish: 6500 };
+    ? { flap: 10, letter: 20, lift: 30, fade: 40, finish: 80 }
+    : { flap: 200, letter: 700, lift: 1600, fade: 2300, finish: 3500 };
 
-  envelopeScreen.classList.add('step-magic');
-
-  setTimeout(() => {
-    envelopeScreen.classList.add('step-seal-release');
-  }, timing.release);
+  envelopeTrigger?.classList.add('is-seal-released');
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-flap-open');
+    envelopeTrigger?.classList.add('is-flap-open');
   }, timing.flap);
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-letter-out');
+    envelopeTrigger?.classList.add('is-letter-out');
   }, timing.letter);
 
   setTimeout(() => {
-    envelopeScreen.classList.add('step-card-focus');
-  }, timing.focus);
+    envelopeTrigger?.classList.add('is-lifting');
+    envelopeScreen?.classList.add('is-lifting');
+  }, timing.lift);
 
   setTimeout(() => {
-    document.body.classList.add('invitation-revealed');
-    envelopeScreen.classList.add('step-hero-reveal');
-  }, timing.reveal);
+    document.body.classList.add('overlay-fading', 'invitation-revealed');
+    envelopeScreen?.classList.add('is-fading');
+  }, timing.fade);
 
   setTimeout(() => {
-    // La portada ya está presente: sólo ahora cedemos la tarjeta compartida.
-    envelopeScreen.classList.add('step-card-handoff');
-  }, timing.handoff);
-
-  setTimeout(() => {
-    envelopeScreen.classList.add('opened');
     document.body.classList.remove('envelope-active');
-
-    // Desactivamos completamente de accesibilidad para que no interfiera en la navegación
-    envelopeScreen.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('overlay-fading');
+    envelopeScreen?.classList.add('is-hidden', 'opened');
+    document.documentElement.classList.remove('envelope-animating');
+    envelopeScreen?.setAttribute('aria-hidden', 'true');
     envelopeTrigger?.setAttribute('tabindex', '-1');
     startAutoTourAfterReveal();
   }, timing.finish);
@@ -77,22 +66,6 @@ function openEnvelopeSequence() {
 
 if (envelopeTrigger) {
   envelopeTrigger.addEventListener('click', openEnvelopeSequence);
-  envelopeTrigger.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openEnvelopeSequence();
-    }
-  });
-}
-
-if (envelopePrompt) {
-  envelopePrompt.addEventListener('click', openEnvelopeSequence);
-  envelopePrompt.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openEnvelopeSequence();
-    }
-  });
 }
 
 // Ruta de previsualización para control visual local: no altera la experiencia
@@ -193,11 +166,11 @@ const calendarBtn = document.getElementById('calendar');
 if (calendarBtn) {
   calendarBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const title = encodeURIComponent('Matrimonio de Hector y Elisbe');
-    const dates = '20270109/20270110';
-    const details = encodeURIComponent('Celebración de nuestro matrimonio. Horarios por confirmar.');
-    const location = encodeURIComponent('Capilla Inmaculada Corazón de María / Quincho Ayuwun, Puerto Montt');
-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+    const title = encodeURIComponent('Matrimonio de Hector & Elisbe');
+    const dates = '20270109T153000/20270110T000000';
+    const details = encodeURIComponent('Ceremonia religiosa · 15:30 hrs\nCapilla Inmaculada Corazón de María\nVolcán Michimavida 296–310, Puerto Montt\n\nCelebración · 17:40 hrs\nQuincho Ayuwun\nQuillaipe km 22, Carretera Austral, Puerto Montt');
+    const location = encodeURIComponent('Capilla Inmaculada Corazón de María y Quincho Ayuwun, Puerto Montt, Chile');
+    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}&ctz=America%2FSantiago`;
     window.open(calendarUrl, '_blank', 'noopener');
   });
 }
@@ -272,7 +245,6 @@ if (audio && mb) {
 // ============================================================================
 // RECORRIDO AUTOMÁTICO — INDEPENDIENTE DE LA MÚSICA
 // ============================================================================
-const autoTourButton = document.getElementById('autoTourButton');
 let autoTourFrame = 0;
 let autoTourStartTimer = 0;
 let autoTourLastFrame = 0;
@@ -281,29 +253,6 @@ let autoTourReady = false;
 let autoTourFinished = false;
 let autoTourScrolling = false;
 let autoTourPosition = 0;
-
-function updateAutoTourControl() {
-  if (!autoTourButton) return;
-
-  const canUseAutoTour = autoTourReady && !reduceEnvelopeMotion;
-  autoTourButton.hidden = !canUseAutoTour;
-  autoTourButton.disabled = autoTourFinished;
-  autoTourButton.classList.toggle('is-active', autoTourActive);
-  autoTourButton.classList.toggle('is-paused', !autoTourActive);
-  autoTourButton.classList.toggle('is-finished', autoTourFinished);
-  autoTourButton.setAttribute('aria-pressed', String(autoTourActive));
-
-  if (autoTourFinished) {
-    autoTourButton.setAttribute('aria-label', 'Recorrido automático finalizado');
-    autoTourButton.setAttribute('title', 'Recorrido automático finalizado');
-  } else if (autoTourActive) {
-    autoTourButton.setAttribute('aria-label', 'Pausar recorrido automático');
-    autoTourButton.setAttribute('title', 'Pausar recorrido automático');
-  } else {
-    autoTourButton.setAttribute('aria-label', 'Reanudar recorrido automático');
-    autoTourButton.setAttribute('title', 'Reanudar recorrido automático');
-  }
-}
 
 function autoTourLimit() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -324,7 +273,6 @@ function pauseAutoTour() {
   autoTourActive = false;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
-  updateAutoTourControl();
 }
 
 function finishAutoTour() {
@@ -332,7 +280,6 @@ function finishAutoTour() {
   autoTourFinished = true;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
-  updateAutoTourControl();
 }
 
 function runAutoTour(now) {
@@ -363,14 +310,12 @@ function resumeAutoTour() {
   autoTourActive = true;
   autoTourPosition = window.scrollY;
   autoTourLastFrame = performance.now();
-  updateAutoTourControl();
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
 function startAutoTourAfterReveal() {
   if (reduceEnvelopeMotion || autoTourReady) return;
   autoTourReady = true;
-  updateAutoTourControl();
   clearTimeout(autoTourStartTimer);
   // La portada permanece en calma dos segundos antes de iniciar el recorrido.
   autoTourStartTimer = window.setTimeout(resumeAutoTour, 2000);
@@ -382,14 +327,9 @@ function isInteractiveTourTarget(target) {
   ));
 }
 
-autoTourButton?.addEventListener('click', (event) => {
-  event.stopPropagation();
-  if (autoTourActive) pauseAutoTour();
-  else resumeAutoTour();
-});
-
-// Un toque libre alterna pausa/reanudación. Los controles y enlaces siguen
-// siendo completamente suyos: sólo detienen el recorrido, nunca su acción.
+// Un toque libre con el dedo alterna pausa/reanudación. Los controles y
+// enlaces siguen siendo completamente suyos: sólo detienen el recorrido,
+// nunca su acción.
 document.addEventListener('click', (event) => {
   if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
   if (autoTourActive) pauseAutoTour();

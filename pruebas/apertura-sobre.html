@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prueba de apertura del sobre</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --ivory:#F7F4EC; --welcome-ivory:#faf4e9; --green:#114a2d; --gold:#be882c; --duration:3500ms; }
+    * { box-sizing:border-box; } html,body { min-height:100%; margin:0; background:var(--ivory); } body { overflow:hidden; color:var(--green); }
+
+    /* La portada real permanece en su ubicación definitiva. */
+    .hero { position:relative; display:grid; min-height:100dvh; place-items:center; overflow:hidden; padding:28px 18px; background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.8),transparent 38%),var(--ivory); }
+    .hero-floral { position:absolute; z-index:0; width:min(570px,46vw); opacity:.78; pointer-events:none; user-select:none; }
+    .hero-floral.top { top:-78px; right:-70px; transform:rotate(16deg); } .hero-floral.bottom { bottom:-95px; left:-78px; transform:rotate(196deg); }
+    .hero-inner { position:relative; z-index:1; display:grid; justify-items:center; max-width:1080px; text-align:center; }
+    .hero-heart { color:var(--gold); font:400 clamp(3.7rem,7.6vw,6.2rem)/.55 Allura,cursive; }
+    .hero-names { margin:20px 0; font:italic 500 clamp(4rem,11.2vw,8.4rem)/.92 'Cormorant Garamond',serif; letter-spacing:-.045em; white-space:nowrap; }
+    .hero-names i,.prototype-letter-names i { color:var(--gold); font:400 .9em Allura,cursive; }
+    .hero-message { max-width:650px; margin:0 0 30px; font:500 clamp(1.6rem,3.7vw,2.65rem)/1.14 'Cormorant Garamond',serif; }
+    .hero-love { position:relative; margin:0; padding:.12em .4em .2em; font:400 clamp(4.7rem,9.8vw,7.8rem)/.86 Allura,cursive; }
+    .hero-love::before { position:absolute; z-index:-1; inset:19% -4% 12%; border-radius:50% 43% 47% 45%; background:rgba(190,202,162,.43); content:''; transform:rotate(-2.5deg) skewX(-7deg); }
+
+    /* Marcado y estilos del sobre de la etiqueta sobre-verde-aprobado. */
+    .envelope-screen { position:fixed; z-index:10; inset:0; isolation:isolate; display:grid; place-items:center; padding:22px; overflow:hidden; background:radial-gradient(circle at 50% 44%,rgba(255,255,255,.75),transparent 43%),var(--welcome-ivory); transition:opacity calc(var(--duration) * .314) ease-out; }
+    .envelope-screen::before { content:''; position:absolute; inset:28px; z-index:-1; pointer-events:none; border:2px solid var(--green); border-radius:53px; background-image:radial-gradient(rgba(115,91,51,.18) .35px,transparent .65px); background-size:5px 5px; }
+    .envelope-screen.is-fading { opacity:0; pointer-events:none; } .envelope-screen.is-hidden { display:none; }
+    .welcome-floral,.envelope-floral { display:block; pointer-events:none; user-select:none; }
+    .welcome-floral { position:absolute; z-index:-1; width:min(660px,47vw); height:auto; }
+    .welcome-floral-top { top:-306px; left:-333px; transform:rotate(180deg); } .welcome-floral-bottom { right:-335px; bottom:-315px; }
+    .envelope-container { width:min(100%,1060px); max-width:1060px; transform:translateY(7px); }
+    .envelope-intro { margin:0 0 6px; text-align:center; }
+    .envelope-subtitle { color:var(--green); font:600 clamp(1.28rem,2.25vw,1.72rem)/1 'Cormorant Garamond',serif; letter-spacing:.47em; text-transform:uppercase; padding-left:.47em; }
+    .reference-divider { display:flex; align-items:center; justify-content:center; gap:16px; margin:18px auto 15px; color:var(--green); }
+    .reference-divider span { display:block; width:72px; height:1.5px; background:var(--green); } .reference-divider b { font-size:.8rem; line-height:1; color:var(--gold); }
+    .envelope-title { margin:0; color:var(--green); font:italic 500 clamp(1.7rem,3.45vw,2.75rem)/1.06 'Cormorant Garamond',serif; }
+    .envelope-love { display:block; margin:5px 0 2px; color:var(--gold); font:400 clamp(4.55rem,8vw,6.9rem)/.68 Allura,cursive; text-shadow:0 1px 0 rgba(255,255,255,.86),0 2px 4px rgba(14,64,38,.15); }
+    .envelope-wrapper { position:relative; display:block; width:min(840px,62vw); aspect-ratio:2/1; margin:5px auto 18px; padding:0; overflow:visible; border:0; background:transparent; cursor:pointer; filter:drop-shadow(0 19px 19px rgba(74,54,25,.18)); -webkit-tap-highlight-color:transparent; }
+    .envelope-wrapper:focus-visible { outline:2px solid var(--green); outline-offset:7px; }
+    .envelope-box { position:relative; width:100%; height:100%; overflow:visible; border:1.4px solid var(--gold); border-radius:3px; background:radial-gradient(rgba(119,92,49,.16) .35px,transparent .66px) 0 0/5px 5px,linear-gradient(145deg,#fffbf0,#f8ecd9 60%,#ecddc4); box-shadow:inset 0 1px rgba(255,255,255,.93),0 8px 16px rgba(77,55,22,.16); transition:transform calc(var(--duration) * .286) ease-out,opacity calc(var(--duration) * .286) ease-out; }
+    .envelope-paper-grain { display:none; }
+    .envelope-floral { position:absolute; z-index:11; width:340px; height:auto; }
+    .envelope-floral-left { top:-78px; left:-88px; transform:rotate(180deg); } .envelope-floral-right { right:-74px; bottom:-74px; }
+    .envelope-pocket-left,.envelope-pocket-right { position:absolute; display:block; inset:0; width:100%; height:100%; border:0; background:#f8eedf; }
+    .envelope-pocket-left { z-index:5; clip-path:polygon(0 0,52% 53%,0 100%); background:linear-gradient(135deg,#fffaf0,#ebd9bd); }
+    .envelope-pocket-right { z-index:5; clip-path:polygon(100% 0,48% 53%,100% 100%); background:linear-gradient(225deg,#fffaf0,#ecddc4); }
+    .envelope-front-pocket { position:absolute; inset:0; z-index:6; height:100%; overflow:visible; border-radius:2px; background:transparent; pointer-events:none; }
+    .envelope-front-pocket::before { content:''; position:absolute; inset:0; width:100%; height:100%; clip-path:polygon(0 100%,0 0,50% 53%,100% 0,100% 100%); background:linear-gradient(180deg,#fffaf0 0%,#f8edda 100%); }
+    .envelope-front-pocket::after { content:''; position:absolute; inset:-1px; border:1.35px solid rgba(190,136,44,.82); border-radius:3px; box-shadow:inset 0 0 0 3px rgba(255,255,255,.18); }
+    .envelope-flap { position:absolute; z-index:8; top:-1px; left:-1px; width:calc(100% + 2px); height:55%; border:0; clip-path:polygon(0 0,100% 0,50% 100%); background:radial-gradient(rgba(119,92,49,.13) .3px,transparent .6px) 0 0/5px 5px,linear-gradient(155deg,#fffdf5 0%,#f5e9d6 100%); filter:drop-shadow(0 3px 3px rgba(86,57,17,.14)); transform:perspective(1200px) rotateX(0); transform-origin:50% 0; transform-style:preserve-3d; backface-visibility:visible; transition:transform calc(var(--duration) * .229) ease-out; }
+    .envelope-flap::after { content:''; position:absolute; inset:0; clip-path:polygon(0 0,100% 0,50% 100%); background:radial-gradient(rgba(119,92,49,.1) .3px,transparent .6px) 0 0/5px 5px,linear-gradient(155deg,#ead9bd 0%,#f2dfc5 100%); opacity:0; transform:rotateX(180deg) translateZ(1px); transition:opacity 80ms linear; backface-visibility:visible; }
+    .envelope-seam { position:absolute; top:0; z-index:9; width:56%; height:1.6px; pointer-events:none; background:var(--gold); box-shadow:0 1px rgba(255,246,214,.9); transition:opacity .25s ease; }
+    .envelope-seam-left { left:0; transform:rotate(27.5deg); transform-origin:0 0; } .envelope-seam-right { right:0; transform:rotate(-27.5deg); transform-origin:100% 0; }
+    .prototype-letter { position:absolute; z-index:4; top:5%; left:6.5%; display:grid; width:87%; height:88%; place-items:center; padding:8px; border:1px solid rgba(190,136,44,.74); border-radius:1px; background:#fffbf3; box-shadow:0 8px 21px rgba(72,53,27,.14); opacity:0; transform:translateY(7px) scale(.98); transition:transform calc(var(--duration) * .286) ease-out,opacity calc(var(--duration) * .057) ease-out; }
+    .prototype-letter-inner { display:grid; width:100%; height:100%; place-items:center; align-content:center; gap:8px; overflow:hidden; border:1px solid rgba(17,74,45,.28); background:radial-gradient(circle at 50% 42%,#fffef9 0,#fcf3e4 100%); color:var(--green); }
+    .prototype-letter-heart { color:var(--gold); font:400 clamp(2.5rem,5vw,4rem)/.6 Allura,cursive; } .prototype-letter-names { font:italic 500 clamp(1.8rem,4vw,3.4rem)/1 'Cormorant Garamond',serif; }
+    .envelope-seal { position:absolute; top:53%; left:50%; z-index:14; display:grid; width:82px; height:82px; place-items:center; border:1px solid rgba(104,63,7,.63); border-radius:50%; background:radial-gradient(circle at 31% 25%,#ffe9a6 0 7%,#d99d2b 42%,#a36308 74%,#704105 100%); box-shadow:0 4px 10px rgba(73,43,3,.36),inset 0 2px 3px rgba(255,255,255,.45),inset 0 -4px 7px rgba(89,53,0,.32); transform:translate(-50%,-50%); transition:opacity calc(var(--duration) * .086) ease-out,transform calc(var(--duration) * .086) ease-out; }
+    .envelope-seal::before { content:''; position:absolute; inset:6px; border:1px solid rgba(255,242,199,.75); border-radius:50%; } .envelope-seal-inner { position:relative; z-index:1; display:grid; width:62px; height:62px; place-items:center; }
+    .envelope-seal-initials { color:#fff9e9; font:600 1.4rem/1 'Cormorant Garamond',serif; letter-spacing:.02em; white-space:nowrap; } .envelope-seal-leaf { display:none; }
+    .envelope-cord { position:absolute; top:60%; left:50%; z-index:13; width:184px; height:94px; pointer-events:none; transform:translateX(-50%); transition:opacity .35s ease,transform .55s ease; }
+    .envelope-cord::before,.envelope-cord::after { content:''; position:absolute; top:12px; width:86px; height:39px; border-top:2.5px solid #b87a18; border-radius:50%; filter:drop-shadow(0 1px rgba(255,238,183,.9)); }
+    .envelope-cord::before { left:0; transform:rotate(24deg); } .envelope-cord::after { right:0; transform:rotate(-24deg); }
+    .envelope-prompt { display:grid; place-items:center; width:92px; height:48px; margin:0 auto; border:2px solid rgba(255,255,255,.95); border-radius:999px; background:linear-gradient(180deg,#d9a42c,#be7b03); box-shadow:0 5px 10px rgba(107,68,6,.22),inset 0 1px rgba(255,255,255,.38); }
+    .chevrons { position:relative; display:block; width:20px; height:22px; }.chevrons::before,.chevrons::after { content:''; position:absolute; left:2px; display:block; width:12px; height:12px; border-right:3px solid #fff; border-bottom:3px solid #fff; transform:rotate(45deg); }.chevrons::before { top:0; }.chevrons::after { top:8px; }
+
+    /* Secuencia del prototipo: una sola línea de estados, 3,5 s. */
+    .envelope-wrapper.is-seal-released .envelope-seal { opacity:0; transform:translate(-50%,-70%) scale(.6); }.envelope-wrapper.is-seal-released .envelope-cord { opacity:0; transform:translate(-50%,-11px) scale(.8); }
+    .envelope-wrapper.is-flap-open .envelope-flap { z-index:3; transform:perspective(1200px) rotateX(-165deg); }.envelope-wrapper.is-flap-open .envelope-flap::after { opacity:1; }.envelope-wrapper.is-flap-open .envelope-seam { opacity:0; }
+    .envelope-wrapper.is-letter-out .prototype-letter { opacity:1; transform:translateY(-52%); }.envelope-wrapper.is-lifting .prototype-letter { transform:translateY(-125%) scale(1.25); }
+    .envelope-screen.is-lifting .envelope-container { opacity:0; transform:translateY(90px) scale(.94); transition:transform calc(var(--duration) * .286) ease-out,opacity calc(var(--duration) * .286) ease-out; }
+    .prototype-note { position:fixed; z-index:20; right:14px; bottom:14px; padding:7px 10px; border-radius:999px; background:rgba(247,244,236,.9); color:var(--green); font:600 .7rem DM Sans,sans-serif; }
+
+    @media (max-width:680px) { .envelope-screen { padding:13px 11px; }.envelope-screen::before { inset:8px; border-width:1.5px; border-radius:21px; }.welcome-floral { width:370px; }.welcome-floral-top { top:-168px; left:-190px; }.welcome-floral-bottom { right:-190px; bottom:-169px; }.envelope-container { transform:translateY(-2px); }.envelope-intro { margin-bottom:1px; }.envelope-subtitle { font-size:1.06rem; letter-spacing:.34em; padding-left:.34em; }.reference-divider { gap:11px; margin:12px auto 10px; }.reference-divider span { width:48px; }.envelope-title { font-size:clamp(1.45rem,6.5vw,1.78rem); }.envelope-love { margin:1px 0 0; font-size:clamp(3.9rem,18vw,4.5rem); }.envelope-wrapper { width:min(350px,86vw); margin:5px auto 18px; }.envelope-floral { width:205px; }.envelope-floral-left { top:-47px; left:-51px; }.envelope-floral-right { right:-43px; bottom:-45px; }.envelope-seal { width:62px; height:62px; }.envelope-seal::before { inset:5px; }.envelope-seal-inner { width:48px; height:48px; }.envelope-seal-initials { font-size:1.04rem; }.envelope-cord { width:139px; height:71px; }.envelope-cord::before,.envelope-cord::after { width:65px; height:30px; }.envelope-wrapper.is-letter-out .prototype-letter { transform:translateY(-40%); }.envelope-wrapper.is-lifting .prototype-letter { transform:translateY(-84%) scale(1.12); }.hero-names { font-size:clamp(3.35rem,16.5vw,5rem); }.hero-message { max-width:330px; font-size:clamp(1.38rem,7vw,1.85rem); }.hero-love { font-size:clamp(4rem,19vw,5.8rem); } }
+    @media (prefers-reduced-motion:reduce) { .envelope-screen,.envelope-container,.envelope-box,.prototype-letter,.envelope-flap,.envelope-seal,.envelope-cord { transition-duration:.01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="hero" aria-label="Portada de la invitación">
+    <img class="hero-floral top" src="../assets/floral-acuarela-eucalipto-v3.png" alt=""><img class="hero-floral bottom" src="../assets/floral-acuarela-eucalipto-v3.png" alt="">
+    <div class="hero-inner"><span class="hero-heart">♡</span><div class="hero-names">Hector <i>&amp;</i> Elisbe</div><p class="hero-message">Queremos compartir contigo un momento muy especial</p><h1 class="hero-love">¡Nos casamos!</h1></div>
+  </main>
+  <section class="envelope-screen" id="overlay" aria-label="Apertura de invitación">
+    <img class="welcome-floral welcome-floral-top" src="../assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true"><img class="welcome-floral welcome-floral-bottom" src="../assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+    <div class="envelope-container">
+      <div class="envelope-intro"><div class="envelope-subtitle">Elisbe &amp; Hector</div><div class="reference-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div><h1 class="envelope-title">Una invitación para celebrar el</h1><div class="envelope-love">amor</div></div>
+      <button class="envelope-wrapper" id="openEnvelope" type="button" aria-label="Abrir sobre de invitación de Elisbe y Hector">
+        <div class="envelope-box">
+          <div class="envelope-paper-grain" aria-hidden="true"></div><img class="envelope-floral envelope-floral-left" src="../assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true"><img class="envelope-floral envelope-floral-right" src="../assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+          <div class="envelope-pocket-left"></div><div class="envelope-pocket-right"></div>
+          <div class="prototype-letter" aria-hidden="true"><div class="prototype-letter-inner"><span class="prototype-letter-heart">♡</span><div class="prototype-letter-names">Hector <i>&amp;</i> Elisbe</div></div></div>
+          <div class="envelope-front-pocket"></div><div class="envelope-flap"></div><span class="envelope-seam envelope-seam-left" aria-hidden="true"></span><span class="envelope-seam envelope-seam-right" aria-hidden="true"></span>
+          <div class="envelope-seal" aria-hidden="true"><div class="envelope-seal-inner"><span class="envelope-seal-initials">E &amp; H</span><span class="envelope-seal-leaf">❦</span></div></div><div class="envelope-cord" aria-hidden="true"></div>
+        </div>
+      </button>
+      <div class="envelope-prompt" aria-hidden="true"><span class="chevrons"></span></div>
+    </div>
+  </section>
+  <span class="prototype-note" id="note">Prototipo · 3,5 s</span>
+  <audio id="music" preload="none"><source src="../assets/musica.mp3" type="audio/mpeg"></audio>
+  <script>
+    const overlay = document.getElementById('overlay');
+    const button = document.getElementById('openEnvelope');
+    const music = document.getElementById('music');
+    const slow = Math.max(1, Number(new URLSearchParams(location.search).get('slow')) || 1);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduced ? 80 : 3500 * slow;
+    document.documentElement.style.setProperty('--duration', `${duration}ms`);
+    document.getElementById('note').textContent = `Prototipo · ${slow === 1 ? '3,5 s' : `lento ×${slow}`}`;
+    button.addEventListener('click', () => {
+      if (button.disabled) return;
+      button.disabled = true;
+      music.play().catch(() => {});
+      button.classList.add('is-seal-released');
+      setTimeout(() => button.classList.add('is-flap-open'), duration * .057);
+      setTimeout(() => button.classList.add('is-letter-out'), duration * .2);
+      setTimeout(() => { button.classList.add('is-lifting'); overlay.classList.add('is-lifting'); }, duration * .457);
+      setTimeout(() => overlay.classList.add('is-fading'), duration * .657);
+      setTimeout(() => overlay.classList.add('is-hidden'), duration);
+    });
+  </script>
+</body>
+</html>

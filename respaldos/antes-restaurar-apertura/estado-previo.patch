@@ -1,0 +1,2251 @@
+diff --git a/admin/admin.css b/admin/admin.css
+index 61cd415..4354cf9 100644
+--- a/admin/admin.css
++++ b/admin/admin.css
+@@ -1 +1 @@
+-.admin-page{min-height:100vh;background:radial-gradient(circle at 5% 0,#e8eee3,transparent 28%),#faf8f2;color:#40543d}.admin-shell{width:min(100% - 30px,1180px);margin:auto;padding:28px 0 55px}.admin-card{padding:22px;border:1px solid rgba(119,139,109,.28);border-radius:12px;background:#fffefbd9;box-shadow:0 12px 34px rgba(67,80,58,.06)}.panel-header{display:flex;justify-content:space-between;align-items:center;margin:0 0 16px}.panel-header span,.admin-card>p,.section-heading p{font-size:.83rem;color:#687166}.panel-header h1{margin:2px 0 0;font:600 clamp(1.8rem,4vw,2.7rem)/1 'Cormorant Garamond',serif}.panel-header .button{width:auto;min-width:0}.admin-nav{display:flex;gap:5px;overflow:auto;border-bottom:1px solid #dae3d4;margin-bottom:18px}.admin-nav button{border:0;background:transparent;padding:11px 14px;color:#657363;font:600 .82rem 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer}.admin-nav button.active{color:#40543d;border-bottom:2px solid #b08a4f}.panel-view{display:none}.panel-view.active{display:block}.admin-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}.metric{padding:15px;border-radius:9px;background:#edf2e8;text-align:left}.metric strong{display:block;color:#40543d;font:600 1.8rem/1 'Cormorant Garamond',serif}.metric span{display:block;margin-top:5px;color:#687166;font-size:.71rem}.occupancy{display:grid;gap:12px;margin-bottom:16px}.occupancy>div:first-child{display:flex;justify-content:space-between;gap:10px}.occupancy span{font-size:.85rem;color:#687166}.progress{height:8px;border-radius:8px;background:#e6e9e1;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#738b69,#b08a4f);transition:width .25s}.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form label{font-size:.84rem}.admin-link-result{margin-top:12px}.admin-link-result input{width:100%;padding:10px;border:1px solid #ccd7c5;border-radius:5px;font:.78rem 'DM Sans',sans-serif}.admin-link-result .button{width:100%;margin-top:8px}.section-heading{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin:4px 0 14px}.section-heading h2,.admin-card h2{margin:0;color:#40543d;font:600 1.65rem 'Cormorant Garamond',serif}.section-heading p{margin:4px 0}.family-controls{display:flex;gap:8px}.family-controls input,.family-controls select{padding:9px;border:1px solid #cad6c3;border-radius:5px;font:.8rem 'DM Sans',sans-serif}.family-list{display:grid;gap:8px}.family-row{padding:14px;border:1px solid #dbe4d5;border-radius:8px;background:#fffefb}.family-main{display:flex;align-items:center;justify-content:space-between;gap:10px}.family-main strong{font-size:.94rem}.family-meta{font-size:.78rem;color:#697565}.status{border-radius:99px;padding:4px 8px;background:#edf2e8;color:#4e6648;font-size:.72rem;white-space:nowrap}.status.pending{background:#fbf4e5;color:#856632}.status.declined{background:#f7e9e5;color:#945246}.family-actions{display:flex;gap:7px;margin-top:10px}.mini-btn{border:1px solid #cad6c3;border-radius:5px;background:white;color:#4c6148;padding:6px 8px;font:500 .74rem 'DM Sans',sans-serif;cursor:pointer}.attendee-details{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #e4eadf;font-size:.82rem;color:#566451}.attendee-details.open{display:block}.attendee-details li{margin:5px 0}.table-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.table-card{position:relative;min-height:180px;padding:13px;border-radius:12px;border:1px solid #ced9c8;background:#fffefb}.table-card.head{border-color:#b08a4f;background:#fffaf0}.table-top{display:flex;justify-content:space-between;align-items:center}.table-top strong{font:600 1.2rem 'Cormorant Garamond',serif}.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px}.seat{min-height:40px;border:1px solid #cbd6c5;border-radius:7px;background:#f8faf6;color:#587052;padding:3px;font:.66rem/1.15 'DM Sans',sans-serif;cursor:pointer;overflow:hidden}.seat.occupied{background:#dfe9da;border-color:#78906e}.seat.inactive{opacity:.35;cursor:not-allowed}.seat .number{display:block;color:#a47d40;font-size:.58rem;margin-bottom:2px}.unassigned{margin-top:14px}.unassigned h2{font-size:1.4rem}.unassigned p{margin:4px 0 10px}.unassigned-list{display:flex;flex-wrap:wrap;gap:7px}.unassigned-item{padding:7px 9px;border-radius:5px;background:#edf2e8;color:#52694d;font-size:.78rem}.print-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.print-actions h2,.print-actions p{width:100%}.print-actions .button{width:auto}.print-boards{display:none}dialog{border:0;border-radius:12px;box-shadow:0 20px 70px #26332355;padding:0;max-width:min(92vw,430px)}dialog::backdrop{background:#24332366}.seat-dialog{padding:24px;position:relative}.seat-dialog h2{font:600 1.7rem 'Cormorant Garamond',serif;margin:0 0 15px}.seat-dialog select{width:100%;padding:10px;margin-top:6px}.seat-dialog menu{display:flex;justify-content:flex-end;gap:8px;padding:0;margin:18px 0 0}.seat-dialog .button{width:auto}.dialog-close{position:absolute;right:9px;top:7px;border:0;background:transparent;font-size:1.5rem;cursor:pointer}.admin-message{min-height:1.1em;color:#687166;font-size:.83rem}.admin-message.is-error{color:#984d43}@media(max-width:760px){.admin-shell{width:min(100% - 22px,1180px);padding-top:16px}.admin-metrics{grid-template-columns:repeat(2,1fr)}.admin-grid,.table-layout{grid-template-columns:1fr}.section-heading{align-items:stretch;flex-direction:column}.family-controls{flex-direction:column}.panel-header{align-items:flex-start}.panel-header .button{font-size:.72rem;padding:8px}.table-card{min-height:0}}@media print{body{background:#fff}.admin-shell>*:not(#adminDashboard),.panel-header,.admin-nav,.admin-message,.panel-view:not([data-panel="print"]),.print-actions{display:none!important}.panel-view[data-panel="print"]{display:block!important}.print-boards{display:block!important}.print-board{break-after:page;margin:12mm}.print-board h1{font:600 36pt 'Cormorant Garamond',serif;color:#40543d}.print-board h2{font:600 22pt 'Cormorant Garamond',serif;color:#40543d}.print-board ul{columns:2;font:12pt 'DM Sans',sans-serif}.print-board li{margin:5px 0}}
++.admin-page{min-height:100vh;background:radial-gradient(circle at 5% 0,#e8eee3,transparent 28%),#faf8f2;color:#40543d}.admin-shell{width:min(100% - 30px,1180px);margin:auto;padding:28px 0 55px}.admin-card{padding:22px;border:1px solid rgba(119,139,109,.28);border-radius:12px;background:#fffefbd9;box-shadow:0 12px 34px rgba(67,80,58,.06)}.panel-header{display:flex;justify-content:space-between;align-items:center;margin:0 0 16px}.panel-header span,.admin-card>p,.section-heading p{font-size:.83rem;color:#687166}.panel-header h1{margin:2px 0 0;font:600 clamp(1.8rem,4vw,2.7rem)/1 'Cormorant Garamond',serif}.panel-header .button{width:auto;min-width:0}.admin-nav{display:flex;gap:5px;overflow:auto;border-bottom:1px solid #dae3d4;margin-bottom:18px}.admin-nav button{border:0;background:transparent;padding:11px 14px;color:#657363;font:600 .82rem 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer}.admin-nav button.active{color:#40543d;border-bottom:2px solid #b08a4f}.panel-view{display:none}.panel-view.active{display:block}.admin-metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}.metric{padding:15px;border-radius:9px;background:#edf2e8;text-align:left}.metric strong{display:block;color:#40543d;font:600 1.8rem/1 'Cormorant Garamond',serif}.metric span{display:block;margin-top:5px;color:#687166;font-size:.71rem}.occupancy{display:grid;gap:12px;margin-bottom:16px}.occupancy>div:first-child{display:flex;justify-content:space-between;gap:10px}.occupancy span{font-size:.85rem;color:#687166}.progress{height:8px;border-radius:8px;background:#e6e9e1;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#738b69,#b08a4f);transition:width .25s}.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form label{font-size:.84rem}.admin-link-result{margin-top:12px}.admin-link-result input{width:100%;padding:10px;border:1px solid #ccd7c5;border-radius:5px;font:.78rem 'DM Sans',sans-serif}.admin-link-result .button{width:100%;margin-top:8px}.section-heading{display:flex;justify-content:space-between;gap:14px;align-items:flex-end;margin:4px 0 14px}.section-heading h2,.admin-card h2{margin:0;color:#40543d;font:600 1.65rem 'Cormorant Garamond',serif}.section-heading p{margin:4px 0}.family-controls{display:flex;gap:8px}.family-controls input,.family-controls select{padding:9px;border:1px solid #cad6c3;border-radius:5px;font:.8rem 'DM Sans',sans-serif}.family-list{display:grid;gap:8px}.family-row{padding:14px;border:1px solid #dbe4d5;border-radius:8px;background:#fffefb}.family-main{display:flex;align-items:center;justify-content:space-between;gap:10px}.family-main strong{font-size:.94rem}.family-meta{font-size:.78rem;color:#697565}.status{border-radius:99px;padding:4px 8px;background:#edf2e8;color:#4e6648;font-size:.72rem;white-space:nowrap}.status.pending{background:#fbf4e5;color:#856632}.status.declined{background:#f7e9e5;color:#945246}.family-actions{display:flex;gap:7px;margin-top:10px}.mini-btn{border:1px solid #cad6c3;border-radius:5px;background:white;color:#4c6148;padding:6px 8px;font:500 .74rem 'DM Sans',sans-serif;cursor:pointer}.attendee-details{display:none;margin-top:10px;padding-top:10px;border-top:1px solid #e4eadf;font-size:.82rem;color:#566451}.attendee-details.open{display:block}.attendee-details li{margin:5px 0}.table-layout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.table-card{position:relative;min-height:180px;padding:13px;border-radius:12px;border:1px solid #ced9c8;background:#fffefb}.table-card.head{border-color:#b08a4f;background:#fffaf0}.table-top{display:flex;justify-content:space-between;align-items:center}.table-top strong{font:600 1.2rem 'Cormorant Garamond',serif}.seat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:16px}.seat{min-height:40px;border:1px solid #cbd6c5;border-radius:7px;background:#f8faf6;color:#587052;padding:3px;font:.66rem/1.15 'DM Sans',sans-serif;cursor:pointer;overflow:hidden}.seat.occupied{background:#dfe9da;border-color:#78906e}.seat.inactive{opacity:.35;cursor:not-allowed}.seat .number{display:block;color:#a47d40;font-size:.58rem;margin-bottom:2px}.unassigned{margin-top:14px}.unassigned h2{font-size:1.4rem}.unassigned p{margin:4px 0 10px}.unassigned-list{display:flex;flex-wrap:wrap;gap:7px}.unassigned-item{padding:7px 9px;border-radius:5px;background:#edf2e8;color:#52694d;font-size:.78rem}.print-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.print-actions h2,.print-actions p{width:100%}.print-actions .button{width:auto}.print-boards{display:none}dialog{border:0;border-radius:12px;box-shadow:0 20px 70px #26332355;padding:0;max-width:min(92vw,430px)}dialog::backdrop{background:#24332366}.seat-dialog{padding:24px;position:relative}.seat-dialog h2{font:600 1.7rem 'Cormorant Garamond',serif;margin:0 0 15px}.seat-dialog select{width:100%;padding:10px;margin-top:6px}.seat-dialog menu{display:flex;justify-content:flex-end;gap:8px;padding:0;margin:18px 0 0}.seat-dialog .button{width:auto}.dialog-close{position:absolute;right:9px;top:7px;border:0;background:transparent;font-size:1.5rem;cursor:pointer}.admin-message{min-height:1.1em;color:#687166;font-size:.83rem}.admin-message.is-error{color:#984d43}.gift-admin-list{display:grid;gap:9px}.gift-admin-row{padding:15px;border:1px solid #dbe4d5;border-radius:8px;background:#fffefb}.gift-admin-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.gift-admin-details{display:grid;gap:7px;margin-top:9px;color:#657363;font-size:.83rem}.gift-admin-details p{margin:0;color:#465945;white-space:pre-wrap}.gift-status{border-radius:99px;padding:4px 8px;background:#edf2e8;color:#4e6648;font-size:.72rem;white-space:nowrap}.gift-status.transfer_reported{background:#fbf4e5;color:#856632}.gift-status.transfer_verified{background:#e1ece0;color:#3d683e}@media(max-width:760px){.admin-shell{width:min(100% - 22px,1180px);padding-top:16px}.admin-metrics{grid-template-columns:repeat(2,1fr)}.admin-grid,.table-layout{grid-template-columns:1fr}.section-heading{align-items:stretch;flex-direction:column}.family-controls{flex-direction:column}.panel-header{align-items:flex-start}.panel-header .button{font-size:.72rem;padding:8px}.table-card{min-height:0}}@media print{body{background:#fff}.admin-shell>*:not(#adminDashboard),.panel-header,.admin-nav,.admin-message,.panel-view:not([data-panel="print"]),.print-actions{display:none!important}.panel-view[data-panel="print"]{display:block!important}.print-boards{display:block!important}.print-board{break-after:page;margin:12mm}.print-board h1{font:600 36pt 'Cormorant Garamond',serif;color:#40543d}.print-board h2{font:600 22pt 'Cormorant Garamond',serif;color:#40543d}.print-board ul{columns:2;font:12pt 'DM Sans',sans-serif}.print-board li{margin:5px 0}}
+diff --git a/admin/admin.js b/admin/admin.js
+index 9bc3f1f..fe4d775 100644
+--- a/admin/admin.js
++++ b/admin/admin.js
+@@ -1,7 +1,7 @@
+ (() => {
+   const $ = (id) => document.getElementById(id);
+   const login = $('adminLogin'), dashboard = $('adminDashboard'), message = $('dashboardMessage'), loginMessage = $('loginMessage');
+-  const state = { token: sessionStorage.getItem('rsvp-admin-access-token') || '', summary: null, data: { invitations: [], tables: [] }, pendingSeat: null };
++  const state = { token: sessionStorage.getItem('rsvp-admin-access-token') || '', summary: null, data: { invitations: [], tables: [] }, gifts: [], pendingSeat: null };
+   const errorText = { ADMIN_FORBIDDEN: 'Tu cuenta no está autorizada como administradora.', ADMIN_AUTH_REQUIRED: 'Tu sesión no es válida. Vuelve a iniciar sesión.', ORIGIN_NOT_ALLOWED: 'Este origen no está autorizado para usar el panel.', ADMIN_SEAT_OCCUPIED: 'Esa silla acaba de ser ocupada.', ADMIN_ATTENDEE_ALREADY_SEATED: 'Este invitado ya tiene una silla.', ADMIN_ATTENDEE_NOT_ELIGIBLE: 'Este invitado ya no está confirmado.', ADMIN_TABLE_CAPACITY_OCCUPIED: 'No puedes reducir una mesa con sillas ocupadas.', ADMIN_SEAT_EMPTY: 'Esta silla ya está libre.', NETWORK_ERROR: 'No se pudo conectar con el servidor.', DATABASE_ERROR: 'No se pudo consultar el evento.' };
+   const tell = (target, error) => { target.textContent = error ? (errorText[error.message] || 'No fue posible completar la operación.') : ''; target.classList.toggle('is-error', Boolean(error)); };
+   const text = (tag, value, className = '') => { const node = document.createElement(tag); node.textContent = value; if (className) node.className = className; return node; };
+@@ -12,11 +12,12 @@
+ 
+   async function api(action, payload = {}) { return RSVP_API.adminRequest(action, payload, state.token); }
+   async function refresh() {
+-    const [summaryResult, guestResult] = await Promise.all([api('summary'), api('listInvitations')]);
++    const [summaryResult, guestResult, giftResult] = await Promise.all([api('summary'), api('listInvitations'), api('listGifts')]);
+     state.summary = summaryResult.summary; state.data = guestResult.data || { invitations: [], tables: [] };
++    state.gifts = giftResult.gifts || [];
+     render();
+   }
+-  function render() { renderSummary(); renderFamilies(); renderTables(); renderPrintBoards(); }
++  function render() { renderSummary(); renderFamilies(); renderTables(); renderGifts(); renderPrintBoards(); }
+   function renderSummary() {
+     const s = state.summary; if (!s) return;
+     $('adminMetrics').replaceChildren(metric('Capacidad RSVP', s.capacity), metric('Confirmados', s.confirmedPeople), metric('Disponibles', s.availableCapacity), metric('Familias pendientes', s.pendingFamilies), metric('Rechazadas', s.declinedFamilies));
+@@ -48,6 +49,22 @@
+     const unassigned = confirmedWithoutSeat(); $('unassignedList').replaceChildren(...(unassigned.length ? unassigned.map(a => text('span', `${a.fullName} · ${a.family}`, 'unassigned-item')) : [text('span', 'Todos los confirmados tienen mesa.', 'unassigned-item')]));
+     const tables = state.data.tables.map((table) => { const card = document.createElement('article'); card.className = `table-card${table.isHeadTable ? ' head' : ''}`; const top = document.createElement('div'); top.className = 'table-top'; const capacity = text('button', `${table.capacity} sillas`, 'mini-btn'); capacity.type = 'button'; capacity.addEventListener('click', () => updateTableCapacity(table)); top.append(text('strong', table.name), capacity); const seats = document.createElement('div'); seats.className = 'seat-grid'; table.seats.filter(s => s.isActive).forEach((seat) => { const button = document.createElement('button'); button.type = 'button'; button.className = `seat${seat.assignment ? ' occupied' : ''}`; button.append(text('span', `Silla ${seat.seatNumber}`, 'number'), text('span', seat.assignment?.fullName || 'Libre')); button.addEventListener('click', () => seat.assignment ? releaseSeat(table, seat) : openSeatDialog(table, seat)); seats.append(button); }); card.append(top, seats); return card; }); $('tableLayout').replaceChildren(...tables);
+   }
++  function giftStatusName(value) { return ({ message_received: 'Mensaje recibido', transfer_reported: 'Transferencia informada', transfer_verified: 'Transferencia verificada' })[value] || 'Mensaje recibido'; }
++  function renderGifts() {
++    const rows = state.gifts.map((gift) => {
++      const row = document.createElement('article'); row.className = 'gift-admin-row';
++      const top = document.createElement('div'); top.className = 'gift-admin-top';
++      const date = gift.createdAt ? new Intl.DateTimeFormat('es-CL', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(gift.createdAt)) : 'Sin fecha';
++      const person = gift.giverName || 'Nombre no indicado'; const family = gift.family ? ` · ${gift.family}` : '';
++      top.append(text('strong', person), text('span', giftStatusName(gift.status), `gift-status ${gift.status}`));
++      const details = document.createElement('div'); details.className = 'gift-admin-details'; details.append(text('span', `${date}${family}`));
++      if (gift.dedication) details.append(text('p', gift.dedication));
++      if (gift.status !== 'message_received') details.append(text('span', `Remitente informado: ${gift.transferSender || 'No indicado'} · ${gift.transferDate || 'Sin fecha'}`));
++      if (gift.status === 'transfer_reported') { const verify = text('button', 'Marcar como verificada', 'mini-btn'); verify.type = 'button'; verify.addEventListener('click', async () => { if (!confirm('¿Confirmas que revisaste esta transferencia en el banco?')) return; try { const result = await api('verifyGift', { giftId: gift.id }); state.gifts = result.gifts || []; renderGifts(); tell(message); } catch (error) { tell(message, error); } }); details.append(verify); }
++      row.append(top, details); return row;
++    });
++    $('giftAdminList').replaceChildren(...(rows.length ? rows : [text('p', 'Aún no hay mensajes ni transferencias informadas.') ]));
++  }
+   function openSeatDialog(table, seat) { const available = confirmedWithoutSeat(); if (!available.length) return tell(message, new Error('No hay invitados confirmados sin mesa.')); state.pendingSeat = { table, seat }; $('seatDialogTitle').textContent = `${table.name} · silla ${seat.seatNumber}`; const select = $('seatAttendee'); select.replaceChildren(...available.map(a => { const option = document.createElement('option'); option.value = a.id; option.textContent = `${a.fullName} · ${a.family}`; return option; })); $('seatDialog').showModal(); }
+   async function releaseSeat(table, seat) { if (!confirm(`¿Liberar la silla ${seat.seatNumber} de ${seat.assignment.fullName}? La confirmación RSVP no se eliminará.`)) return; try { await api('releaseSeat', { tableId: table.id, seatNumber: seat.seatNumber }); await refresh(); tell(message); } catch (error) { tell(message, error); } }
+   async function updateTableCapacity(table) { const requested = prompt(`Capacidad de ${table.name} (1–54):`, table.capacity); if (requested === null) return; const capacity = Number(requested); if (!Number.isInteger(capacity) || capacity < 1 || capacity > 54) return tell(message, new Error('La capacidad debe estar entre 1 y 54.')); if (!confirm(`¿Cambiar ${table.name} a ${capacity} sillas?`)) return; try { await api('updateTableCapacity', { tableId: table.id, capacity }); await refresh(); tell(message); } catch (error) { tell(message, error); } }
+diff --git a/admin/index.html b/admin/index.html
+index 262cdc2..d2ced5a 100644
+--- a/admin/index.html
++++ b/admin/index.html
+@@ -1,11 +1,12 @@
+ <!doctype html>
+-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Gestión de invitados | Hector & Elisbe</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/styles.css?v=20261111-rsvp"><link rel="stylesheet" href="admin.css?v=20261112-tables"></head>
++<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Gestión de invitados | Hector & Elisbe</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/styles.css?v=20261113-gifts"><link rel="stylesheet" href="admin.css?v=20261113-gifts"></head>
+ <body class="admin-page"><main class="admin-shell">
+ <section class="admin-card" id="adminLogin"><h1>Gestión de invitados</h1><p>Hector &amp; Elisbe · 09.01.2027</p><form id="loginForm" class="form"><label for="adminEmail">Correo electrónico</label><input id="adminEmail" type="email" autocomplete="email" required><label for="adminPassword">Contraseña</label><input id="adminPassword" type="password" autocomplete="current-password" required><button class="button" type="submit">Ingresar</button><p class="admin-message" id="loginMessage" role="alert"></p></form></section>
+-<section id="adminDashboard" hidden><header class="panel-header"><div><span>Hector &amp; Elisbe</span><h1>Gestión de invitados</h1></div><button class="button outline" id="logoutButton" type="button">Cerrar sesión</button></header><nav class="admin-nav" aria-label="Secciones"><button data-view="summary" class="active">Resumen</button><button data-view="families">Familias</button><button data-view="tables">Mesas</button><button data-view="exports">Exportaciones</button><button data-view="print">Imprimir distribución</button></nav><p class="admin-message" id="dashboardMessage" role="status"></p>
++<section id="adminDashboard" hidden><header class="panel-header"><div><span>Hector &amp; Elisbe</span><h1>Gestión de invitados</h1></div><button class="button outline" id="logoutButton" type="button">Cerrar sesión</button></header><nav class="admin-nav" aria-label="Secciones"><button data-view="summary" class="active">Resumen</button><button data-view="families">Familias</button><button data-view="tables">Mesas</button><button data-view="gifts">Regalos y mensajes</button><button data-view="exports">Exportaciones</button><button data-view="print">Imprimir distribución</button></nav><p class="admin-message" id="dashboardMessage" role="status"></p>
+ <section class="panel-view active" data-panel="summary"><div class="admin-metrics" id="adminMetrics" aria-live="polite"></div><div class="admin-card occupancy"><div><strong>Ocupación RSVP</strong><span id="occupancyText"></span></div><div class="progress"><span id="occupancyBar"></span></div></div><div class="admin-grid"><section class="admin-card"><h2>Crear familia</h2><form id="createInvitationForm" class="form"><label for="groupName">Familia o grupo</label><input id="groupName" maxlength="160" required placeholder="Familia Álvarez Coyazo"><label for="maxPasses">Pases</label><input id="maxPasses" type="number" min="1" max="1000" value="1" required><button class="button" type="submit">Crear enlace</button></form><div class="admin-link-result" id="linkResult" hidden><input id="generatedLink" readonly><button class="button outline" id="copyLink" type="button">Copiar enlace</button></div></section><section class="admin-card"><h2>Configuración RSVP</h2><form id="settingsForm" class="form"><label for="eventCapacity">Capacidad RSVP</label><input id="eventCapacity" type="number" min="1" max="1000" required><label for="rsvpDeadline">Fecha límite <span>(opcional)</span></label><input id="rsvpDeadline" type="datetime-local"><button class="button" type="submit">Guardar</button></form></section></div></section>
+ <section class="panel-view" data-panel="families"><div class="section-heading"><div><h2>Familias e invitados</h2><p>Los enlaces se muestran solo al crearlos o regenerarlos.</p></div><div class="family-controls"><input id="familySearch" type="search" placeholder="Buscar familia o invitado"><select id="familyFilter"><option value="all">Todos los estados</option><option value="attending">Confirmadas</option><option value="partial">Parciales</option><option value="pending">Pendientes</option><option value="declined">Rechazadas</option></select></div></div><div id="familyList" class="family-list"></div></section>
+ <section class="panel-view" data-panel="tables"><div class="section-heading"><div><h2>Distribución de mesas</h2><p><span id="physicalCapacity">54</span> sillas físicas · capacidad RSVP independiente: <span id="rsvpCapacity">50</span>.</p></div></div><div class="table-layout" id="tableLayout"></div><aside class="admin-card unassigned"><h2>Confirmados sin mesa</h2><p>Selecciona una silla libre para asignarlos.</p><div id="unassignedList" class="unassigned-list"></div></aside></section>
++<section class="panel-view" data-panel="gifts"><div class="section-heading"><div><h2>Regalos y mensajes</h2><p>Una transferencia informada requiere revisión manual antes de marcarse como verificada.</p></div></div><div class="gift-admin-list" id="giftAdminList"></div></section>
+ <section class="panel-view" data-panel="exports"><div class="admin-card"><h2>Exportación</h2><p>Incluye familias pendientes o rechazadas sin inventar asistentes. El archivo usa UTF-8 con BOM y punto y coma.</p><button class="button" id="exportCsv" type="button">Exportar CSV</button></div></section>
+ <section class="panel-view" data-panel="print"><div class="admin-card print-actions"><h2>Carteleras</h2><p>Genera carteleras con mesas, listado alfabético y listas individuales. No incluyen comentarios, tokens ni información de contacto.</p><button class="button" id="printA4" type="button">Imprimir A4</button><button class="button outline" id="printA3" type="button">Imprimir A3</button><button class="button outline" id="printA2" type="button">Imprimir A2</button></div><div id="printBoards" class="print-boards"></div></section></section></main>
+-<dialog id="seatDialog"><form method="dialog" class="seat-dialog"><button class="dialog-close" value="cancel" aria-label="Cerrar">×</button><h2 id="seatDialogTitle">Asignar silla</h2><label for="seatAttendee">Invitado confirmado</label><select id="seatAttendee"></select><menu><button value="cancel" class="button outline">Cancelar</button><button id="seatDialogConfirm" value="default" class="button">Asignar</button></menu></form></dialog><script src="../js/rsvp-config.js?v=20261112-tables"></script><script src="../js/rsvp-client.js?v=20261112-tables"></script><script src="admin.js?v=20261112-tables"></script></body></html>
++<dialog id="seatDialog"><form method="dialog" class="seat-dialog"><button class="dialog-close" value="cancel" aria-label="Cerrar">×</button><h2 id="seatDialogTitle">Asignar silla</h2><label for="seatAttendee">Invitado confirmado</label><select id="seatAttendee"></select><menu><button value="cancel" class="button outline">Cancelar</button><button id="seatDialogConfirm" value="default" class="button">Asignar</button></menu></form></dialog><script src="../js/rsvp-config.js?v=20261112-tables"></script><script src="../js/rsvp-client.js?v=20261112-tables"></script><script src="admin.js?v=20261113-gifts"></script></body></html>
+diff --git a/css/styles.css b/css/styles.css
+index 56bac70..120b118 100644
+--- a/css/styles.css
++++ b/css/styles.css
+@@ -9,10 +9,10 @@
+   --gold: #c5a46d;
+   --gold-light: #eeddbb;
+   --gold-dark: #9f7d45;
+-  --white: #ffffff;
+-  --ivory: #faf8f5;
++  --white: #F7F4EC;
++  --ivory: #F7F4EC;
+   --ink: #3d4b3b;
+-  --soft: #f6f8f3;
++  --soft: #F7F4EC;
+   --shadow-soft: 0 10px 30px rgba(61, 75, 59, 0.08);
+   --shadow-envelope: 0 20px 45px rgba(61, 75, 59, 0.16);
+ }
+@@ -28,7 +28,9 @@ html {
+ 
+ body {
+   margin: 0;
+-  background: var(--white);
++  background-color: var(--white);
++  background-image: radial-gradient(rgba(133, 113, 75, .08) .38px, transparent .6px);
++  background-size: 6px 6px;
+   color: var(--ink);
+   font-family: 'DM Sans', sans-serif;
+   font-size: 15px;
+@@ -392,39 +394,6 @@ section {
+   font-weight: 600;
+ }
+ 
+-/* Instrucción bajo el sobre */
+-.envelope-prompt {
+-  display: flex;
+-  align-items: center;
+-  justify-content: center;
+-  gap: 8px;
+-  font-size: 0.85rem;
+-  color: var(--sage-dark);
+-  letter-spacing: 0.08em;
+-  font-weight: 500;
+-  animation: pulseGentle 2.4s infinite ease-in-out;
+-  cursor: pointer;
+-  padding: 8px 16px;
+-  border-radius: 20px;
+-  background: rgba(163, 177, 138, 0.12);
+-  transition: background 0.3s;
+-}
+-
+-.envelope-prompt:hover {
+-  background: rgba(163, 177, 138, 0.22);
+-}
+-
+-@keyframes pulseGentle {
+-  0%, 100% {
+-    transform: translateY(0);
+-    opacity: 0.9;
+-  }
+-  50% {
+-    transform: translateY(-3px);
+-    opacity: 1;
+-  }
+-}
+-
+ /* ==========================================================================
+    ESTADOS DE ANIMACIÓN AL ABRIR EL SOBRE
+    ========================================================================== */
+@@ -517,10 +486,7 @@ section {
+ .letter-botanical { position:absolute; width:58%; height:auto; fill:rgba(160,182,148,.34); stroke:rgba(94,130,90,.58); stroke-width:1.45; }
+ .letter-botanical-top { top:-18px; left:-22px; }
+ .letter-botanical-bottom { bottom:-18px; right:-22px; transform:rotate(180deg); }
+-.envelope-prompt { color:#6d7d68; border: 1px solid rgba(139,161,128,.32); background: rgba(255,255,255,.42); font-size:.73rem; letter-spacing:.18em; text-transform:uppercase; padding: 9px 18px; }
+-
+-.envelope-screen.step-flap-open .envelope-intro,
+-.envelope-screen.step-flap-open .envelope-prompt { opacity:0; transform:translateY(-8px); }
++.envelope-screen.step-flap-open .envelope-intro { opacity:0; transform:translateY(-8px); }
+ .envelope-screen.step-flap-open .envelope-seal { transform:translate(-50%, -95%) scale(.52) rotate(12deg); }
+ .envelope-screen.step-letter-out .envelope-letter { transform: translateY(-138px) scale(1.045); z-index:14; box-shadow:0 25px 46px rgba(62,52,33,.26); }
+ .envelope-screen.step-card-focus .envelope-letter { transform: translateY(-78px) scale(1.54); z-index:20; box-shadow:0 35px 70px rgba(62,52,33,.25); transition: transform 1.15s cubic-bezier(.22,.8,.22,1), box-shadow 1s ease; }
+@@ -736,6 +702,265 @@ body.invitation-revealed .hero { opacity:1; }
+   margin: 0;
+ }
+ 
++/* Nuestra historia: columna editorial lista para acompañarse de una foto familiar. */
++.story-section .wrap {
++  width: min(1040px, 90%);
++}
++
++.story-section h2 {
++  margin-bottom: 12px;
++  color: var(--dark);
++}
++
++.story-section .leaf {
++  margin: 0 auto 25px;
++  color: var(--sage);
++}
++
++.story-layout {
++  display: grid;
++  grid-template-columns: minmax(280px, .82fr) minmax(0, 1fr);
++  align-items: center;
++  gap: clamp(28px, 5vw, 70px);
++  max-width: 960px;
++  margin: 0 auto;
++  text-align: left;
++}
++
++.story-photo {
++  margin: 0;
++  padding: 6px;
++  border: 1px solid rgba(177, 145, 85, .42);
++  border-radius: 15px;
++  background: #fffdf8;
++  box-shadow: 0 12px 28px rgba(62, 78, 58, .11);
++}
++
++.story-photo img {
++  display: block;
++  width: 100%;
++  height: auto;
++  max-height: 600px;
++  border-radius: 10px;
++  object-fit: contain;
++}
++
++.story-copy {
++  display: grid;
++  grid-template-columns: minmax(0, 1fr);
++  gap: 18px;
++  max-width: 680px;
++  margin: 0 auto;
++}
++
++.story-copy p {
++  max-width: none;
++  margin: 0;
++  color: #566451;
++  font: 400 clamp(1rem, 1.45vw, 1.1rem)/1.72 'DM Sans', sans-serif;
++}
++
++/* Código de vestimenta: referencia visual sobria y proporcionada. */
++.dress-section .wrap { width: min(920px, 90%); }
++
++.dress-section .leaf {
++  margin: 0 auto 25px;
++  color: var(--sage);
++}
++
++.dress-layout {
++  display: grid;
++  grid-template-columns: minmax(260px, .78fr) minmax(0, 1fr);
++  align-items: center;
++  gap: clamp(28px, 6vw, 76px);
++  max-width: 860px;
++  margin: 0 auto;
++  text-align: left;
++}
++
++.dress-photo {
++  max-width: 405px;
++  justify-self: center;
++}
++
++.dress-photo img {
++  max-height: 540px;
++}
++
++.dress-copy {
++  max-width: 410px;
++}
++
++.dress-copy h3 {
++  margin: 0 0 14px;
++  color: var(--dark);
++  font: 600 clamp(1.65rem, 3vw, 2.2rem)/1.05 'Cormorant Garamond', serif;
++}
++
++.dress-copy p {
++  max-width: none;
++  margin: 0;
++  color: #566451;
++  font: 400 clamp(1rem, 1.45vw, 1.1rem)/1.7 'DM Sans', sans-serif;
++}
++
++@media (max-width: 600px) {
++  .story-section .wrap { width: min(100% - 34px, 680px); }
++  .story-section .leaf { margin-bottom: 21px; }
++  .story-layout {
++    grid-template-columns: 1fr;
++    gap: 26px;
++    text-align: left;
++  }
++  .story-photo {
++    width: min(100%, 390px);
++    margin: 0 auto;
++  }
++  .story-photo img { max-height: 520px; }
++  .story-copy { gap: 16px; }
++  .story-copy p { font-size: 1rem; line-height: 1.68; }
++  .dress-section .wrap { width: min(100% - 34px, 680px); }
++  .dress-section .leaf { margin-bottom: 21px; }
++  .dress-layout {
++    grid-template-columns: 1fr;
++    gap: 25px;
++    text-align: center;
++  }
++  .dress-photo {
++    width: min(100%, 390px);
++    max-width: none;
++    margin: 0 auto;
++  }
++  .dress-photo img { max-height: 510px; }
++  .dress-copy { max-width: 500px; margin: 0 auto; }
++  .dress-copy h3 { margin-bottom: 11px; }
++}
++
++/* Itinerario: una secuencia de momentos conectados, como un diagrama de flujo. */
++.flow-timeline {
++  display: grid;
++  grid-template-columns: repeat(5, minmax(0, 1fr));
++  gap: 12px;
++  max-width: 1040px;
++  margin: 46px auto 14px;
++  padding: 0 10px;
++}
++
++.flow-timeline::before {
++  top: 35px;
++  bottom: auto;
++  left: 8%;
++  width: 84%;
++  height: 1px;
++  background: linear-gradient(90deg, transparent, var(--gold) 6%, var(--gold) 94%, transparent);
++}
++
++.flow-step {
++  position: relative;
++  display: grid;
++  grid-template-rows: 70px auto;
++  gap: 15px;
++  margin: 0;
++  text-align: center;
++}
++
++.flow-step:not(:last-child)::after {
++  position: absolute;
++  top: 24px;
++  right: -11px;
++  z-index: 2;
++  width: 22px;
++  color: var(--gold);
++  background: var(--soft);
++  content: '›';
++  font: 400 1.5rem/1 'Cormorant Garamond', serif;
++}
++
++.flow-node {
++  position: relative;
++  z-index: 3;
++  display: grid;
++  place-items: center;
++  width: 70px;
++  height: 70px;
++  margin: 0 auto;
++  border: 1px solid rgba(197, 164, 109, .9);
++  border-radius: 50%;
++  background: #fffdf8;
++  box-shadow: 0 7px 16px rgba(76, 89, 70, .08), inset 0 0 0 5px rgba(235, 239, 230, .75);
++}
++
++.flow-icon { font-size: 1.55rem; line-height: 1; }
++
++.flow-order {
++  position: absolute;
++  right: -6px;
++  bottom: -6px;
++  display: grid;
++  width: 22px;
++  height: 22px;
++  place-items: center;
++  border: 1px solid #fffdf8;
++  border-radius: 50%;
++  background: var(--sage);
++  color: #fff;
++  font: 600 .54rem/1 'DM Sans', sans-serif;
++}
++
++.flow-card {
++  min-height: 92px;
++  padding: 15px 9px 13px;
++  border: 1px solid rgba(177, 145, 85, .27);
++  border-radius: 8px;
++  background: rgba(255, 253, 248, .76);
++  box-shadow: 0 9px 20px rgba(76, 89, 70, .05);
++}
++
++.flow-card h3 {
++  margin: 0 0 8px;
++  color: #40543d;
++  font: 600 clamp(1.12rem, 1.65vw, 1.38rem)/1.05 'Cormorant Garamond', serif;
++}
++
++.flow-time {
++  display: inline-block;
++  color: #927449;
++  font: 600 .67rem/1.25 'DM Sans', sans-serif;
++  letter-spacing: .08em;
++  text-transform: uppercase;
++}
++
++@media (max-width: 720px) {
++  .flow-timeline {
++    grid-template-columns: 1fr;
++    gap: 14px;
++    max-width: 410px;
++    padding: 2px 0 2px 8px;
++  }
++
++  .flow-timeline::before {
++    top: 27px;
++    bottom: 27px;
++    left: 42px;
++    width: 1px;
++    height: auto;
++    background: linear-gradient(var(--gold), rgba(197, 164, 109, .2));
++  }
++
++  .flow-step {
++    grid-template-columns: 70px minmax(0, 1fr);
++    grid-template-rows: auto;
++    align-items: center;
++    gap: 16px;
++    text-align: left;
++  }
++
++  .flow-step:not(:last-child)::after { display: none; }
++  .flow-node { margin: 0; }
++  .flow-card { min-height: 0; padding: 15px 18px; }
++  .flow-card h3 { margin-bottom: 6px; }
++}
++
+ .photo-grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+@@ -754,11 +979,82 @@ body.invitation-revealed .hero { opacity:1; }
+   border: 1px solid #d5dfcf;
+ }
+ 
++.photo-filled {
++  aspect-ratio: auto;
++  display: block;
++  margin: 0;
++  padding: 0;
++  overflow: hidden;
++  background: #fffdf8;
++}
++
++.photo-filled img {
++  display: block;
++  width: 100%;
++  height: auto;
++  aspect-ratio: 3 / 4;
++  object-fit: cover;
++  object-position: center 35%;
++  background: #fffdf8;
++}
++
++.photo-filled figcaption {
++  padding: 11px 10px 12px;
++  border-top: 1px solid rgba(177, 145, 85, .22);
++  background: #fffdf8;
++  color: #52644b;
++  font: 600 .92rem/1.2 'Cormorant Garamond', serif;
++  letter-spacing: .03em;
++}
++
+ .note {
+   font-size: .82rem;
+   color: #677363;
+ }
+ 
++/* Regalos: interacción creada con HTML, CSS y JavaScript. */
++.gifts-section { overflow: hidden; }
++.gift-experience { width: min(100%, 620px); margin: 30px auto 0; display: grid; justify-items: center; gap: 22px; }
++.gift-box { position: relative; width: min(62vw, 250px); aspect-ratio: 1.2; border: 0; border-radius: 10px; cursor: pointer; color: #fffdf8; background: linear-gradient(135deg, #78916f, #496543); box-shadow: 0 14px 25px rgba(49, 74, 46, .18); transition: transform .5s ease, box-shadow .5s ease; isolation: isolate; }
++.gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: 0 19px 30px rgba(49, 74, 46, .25); outline: 2px solid #b19155; outline-offset: 4px; }
++.gift-lid { position: absolute; z-index: 2; inset: -12% -5% auto; height: 29%; border-radius: 8px 8px 4px 4px; background: linear-gradient(135deg, #88a07e, #587551); box-shadow: 0 6px 7px rgba(42, 65, 39, .2); transform-origin: 16% 100%; transition: transform .65s cubic-bezier(.2,.75,.25,1); }
++.gift-ribbon { position: absolute; z-index: 3; background: linear-gradient(90deg, #c69f5d, #f1d28b, #b88b43); box-shadow: 0 1px 1px #5a703f88; pointer-events: none; }
++.gift-ribbon-v { width: 15%; height: 100%; left: 42.5%; top: 0; }
++.gift-ribbon-h { width: 110%; height: 13%; left: -5%; top: 40%; }
++.gift-bow { position: absolute; z-index: 4; width: 39%; height: 21%; left: 30.5%; top: -24%; border: 9px solid #d7b26e; border-radius: 50% 50% 45% 45%; transform: rotate(-10deg); pointer-events: none; transition: transform .65s ease; }
++.gift-bow::after { content: ''; position: absolute; width: 85%; height: 100%; left: 62%; top: -9px; border: 9px solid #d7b26e; border-radius: 50%; }
++.gift-box-label { position: absolute; z-index: 4; inset: auto 12px 12px; font: 600 .85rem 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 1px 2px #20371e99; }
++.gift-experience.is-open .gift-box { transform: translateY(5px) scale(.96); }
++.gift-experience.is-open .gift-lid { transform: rotateX(108deg) rotateZ(-8deg); }
++.gift-experience.is-open .gift-bow { transform: translateY(-6px) rotate(-18deg); }
++.gift-experience.is-open .gift-box-label { opacity: 0; transition: opacity .2s ease; }
++.gift-card { width: 100%; padding: clamp(22px, 5vw, 38px); border: 1px solid rgba(177, 145, 85, .45); border-radius: 13px; background: #fffdf8; box-shadow: 0 16px 36px rgba(78, 96, 68, .1); animation: gift-card-in .55s ease both; text-align: left; }
++.gift-card h3 { margin: 0 0 12px; color: #405b47; font: 600 clamp(1.8rem, 5vw, 2.35rem)/1 'Cormorant Garamond', serif; }
++.gift-card p { margin: 0 0 18px; line-height: 1.65; }
++.gift-form textarea { min-height: 110px; resize: vertical; }
++.gift-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
++.gift-actions .button { width: auto; flex: 1 1 180px; }
++.gift-status { min-height: 1.25em; margin: 12px 0 0 !important; color: #506b4b; font-size: .88rem; }
++.gift-status.is-error { color: #984d43; }
++.gift-family-ref { margin-top: -8px !important; color: #64735d; font-size: .88rem; font-style: italic; }
++.gift-bank dl { display: grid; gap: 0; margin: 0 0 20px; border: 1px solid #dce4d5; border-radius: 8px; overflow: hidden; }
++.gift-bank dl div { display: grid; grid-template-columns: minmax(110px, .72fr) 1.28fr; gap: 12px; padding: 10px 13px; }
++.gift-bank dl div:nth-child(odd) { background: #f4f7f0; }
++.gift-bank dt { color: #657363; font: 600 .77rem 'DM Sans', sans-serif; text-transform: uppercase; letter-spacing: .05em; }
++.gift-bank dd { margin: 0; color: #405b47; font-weight: 600; overflow-wrap: anywhere; }
++.gift-bank dd a { color: inherit; }
++.transfer-report { margin-top: 20px; padding-top: 17px; border-top: 1px solid #dde5d8; }
++.transfer-report summary { cursor: pointer; color: #496543; font-weight: 600; }
++.transfer-report label, .transfer-report input { display: block; width: 100%; }
++.transfer-report label { margin-top: 13px; font-size: .86rem; }
++.transfer-report input { margin-top: 5px; }
++.transfer-report .button { width: auto; margin-top: 15px; }
++@keyframes gift-card-in {
++  from { opacity: 0; transform: translate(-50%, calc(-50% - 14px)) scale(.98); }
++  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
++}
++@media (prefers-reduced-motion: reduce) { .gift-box, .gift-lid, .gift-bow, .gift-box-label { transition: none; } .gift-card { animation: none; } }
++
+ .form {
+   max-width: 530px;
+   margin: 30px auto 0;
+@@ -1004,11 +1300,15 @@ body.invitation-revealed .hero { opacity:1; }
+     grid-template-columns: 1fr;
+   }
+   .photo-grid {
++    grid-template-columns: repeat(2, 1fr);
+     gap: 7px;
+   }
++  .photo-filled { grid-column: 1 / -1; }
+   .photo {
+     font-size: .75rem;
+   }
++  .gift-box { width: min(70vw, 240px); }
++  .gift-bank dl div { grid-template-columns: 1fr; gap: 3px; }
+   .hero-inner {
+     padding: 55px 15px;
+   }
+@@ -1246,15 +1546,6 @@ body.invitation-revealed .hero { opacity:1; }
+ .envelope-eucalyptus-left { left: -66px; bottom: -42px; transform: rotate(-19deg); }
+ .envelope-eucalyptus-right { right: -65px; top: -49px; transform: scaleX(-1) rotate(-15deg); }
+ 
+-.envelope-prompt {
+-  color: var(--sage-dark);
+-  background: transparent;
+-  border: 1px solid rgba(163, 177, 138, .32);
+-  font-size: .72rem;
+-  letter-spacing: .14em;
+-  text-transform: uppercase;
+-}
+-
+ .envelope-screen.step-flap-open .envelope-flap {
+   transform: rotateX(180deg);
+   z-index: 1;
+@@ -1551,9 +1842,6 @@ body.invitation-revealed .hero { opacity:1; }
+ .letter-date { color:#a56a09; }
+ .letter-botanical { display:none; }
+ .letter-border::before { opacity:.3; background-image:url('../assets/referencia-floral-el-isbe-hector.png'); background-size:470px auto; background-position:0 0; }
+-.envelope-prompt { width:112px; height:40px; padding:0; border:1px solid #bd7504; border-radius:22px; background:linear-gradient(180deg,#f9bd37,#d58402); box-shadow:0 4px 8px rgba(123,74,4,.22), inset 0 1px rgba(255,247,210,.7); animation:none; }
+-.envelope-prompt svg { width:25px; height:23px; fill:none; stroke:#fff; stroke-width:3; stroke-linecap:round; stroke-linejoin:round; }
+-.envelope-prompt:hover { background:linear-gradient(180deg,#ffc94b,#d58402); }
+ 
+ /* La portada repite el papel, oro y flores de la referencia. */
+ .hero { background:#fbf3e7; }
+@@ -1598,7 +1886,6 @@ body.invitation-revealed .hero { opacity:1; }
+   .envelope-seal { width:61px; height:61px; }
+   .envelope-seal-inner { width:49px; height:49px; }
+   .envelope-seal-initials { font-size:1rem; }
+-  .envelope-prompt { width:96px; height:36px; }
+   .hero .hero-names { font-size:1.36rem; letter-spacing:.2em; }
+   .hero .hero-invitation { font-size:1.85rem; }
+   .hero h1 { font-size:5.7rem; margin-bottom:44px; }
+@@ -1661,9 +1948,6 @@ body.invitation-revealed .hero { opacity:1; }
+ .letter-names { color:#465a45; font-size:2.05rem; }
+ .letter-names i { color:#c5a46d; }
+ .letter-date { color:#927449; }
+-.envelope-prompt { width:auto; height:auto; padding:9px 18px; color:#6d7d68; border:1px solid rgba(139,161,128,.32); border-radius:20px; background:rgba(255,255,255,.42); box-shadow:none; font-size:.73rem; letter-spacing:.18em; text-transform:uppercase; }
+-.envelope-prompt svg { display:none; }
+-
+ .hero { background:radial-gradient(circle at 50% 38%,#fffdf8 0,#faf6ee 44%,#edf1e8 100%); }
+ .hero::before { inset:13px; border:1px solid rgba(177,145,85,.34); border-radius:0; background-image:radial-gradient(rgba(99,83,54,.16) .35px,transparent .55px); background-size:6px 6px; opacity:.35; }
+ .hero::after { border-color:rgba(197,164,109,.34); box-shadow:0 0 0 13px rgba(255,253,247,.3); }
+@@ -1701,3 +1985,90 @@ body.invitation-revealed .hero { opacity:1; }
+   .hero .eyebrow { font-size:.63rem; }
+   .hero .date { font-size:.68rem; letter-spacing:.24em; }
+ }
++
++/* Revisión final: composición legible y sin superposiciones. */
++.gifts-section .wrap > h2 { margin-bottom: 12px; }
++.gifts-section .wrap > p { margin-bottom: 0; }
++.gift-experience { margin-top: 38px; padding-top: 42px; gap: 26px; }
++.gift-box { margin: 0 auto; }
++.gift-bow { top: -24%; }
++
++.hero .hero-names { display: block; color: #405440; font: 600 clamp(2.1rem, 6vw, 3.5rem)/1.05 'Cormorant Garamond', serif; letter-spacing: .08em; text-transform: none; }
++.hero .hero-names span { color: #b18b52; }
++.hero .hero-subtitle { display: block; max-width: 450px; margin: 28px auto 12px; color: #62705d; font: italic 500 clamp(1.05rem, 2.7vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
++.hero h1.hero-announcement { margin: 0; color: #b18b52; font: 500 clamp(3.3rem, 10vw, 5.8rem)/.95 'Allura', cursive; text-shadow: 0 1px rgba(255,255,255,.8); }
++
++.story-section .wrap { width: min(100% - 34px, 800px); }
++.story-section h2 { margin-bottom: 8px; }
++.story-subtitle { margin: 0 auto 28px; color: #9b7a48; font: italic 500 clamp(1.1rem, 2.5vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
++.story-layout { grid-template-columns: 1fr; gap: 28px; max-width: 760px; }
++.story-photo { width: min(100%, 430px); margin: 0 auto; }
++.story-copy { max-width: 720px; text-align: left; }
++
++.countdown-lead { margin: 0 auto 8px; color: #61715f; font: italic 500 clamp(1.1rem, 2.5vw, 1.35rem)/1.45 'Cormorant Garamond', serif; }
++.count { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: min(100%, 520px); gap: clamp(5px, 2vw, 18px); flex-wrap: nowrap; margin: 30px auto 24px; }
++.count div { min-width: 0; padding: 8px 3px; }
++.count strong { font-size: clamp(2rem, 8vw, 3rem); }
++.count small { font-size: clamp(.58rem, 2.5vw, .7rem); letter-spacing: .06em; }
++
++.location-subtitle { margin: 0 auto; color: #61715f; font: italic 500 clamp(1.05rem, 2.5vw, 1.3rem)/1.45 'Cormorant Garamond', serif; }
++.location-grid { max-width: 900px; margin: 30px auto 0; gap: 20px; }
++.location-card { display: flex; flex-direction: column; align-items: center; padding: clamp(25px, 4vw, 34px) clamp(18px, 4vw, 28px); border-color: rgba(112,137,105,.35); border-radius: 11px; background: #fffdf8; box-shadow: 0 12px 24px rgba(68,87,60,.06); }
++.location-card h3 { margin: 8px 0 5px; font-size: clamp(1.6rem, 4vw, 2rem); }
++.location-card p { margin: 14px 0 20px; line-height: 1.6; }
++.location-card .button { margin-top: auto; }
++.location-time { color: #9b7a48; font: 600 clamp(1.25rem, 3vw, 1.55rem)/1 'Cormorant Garamond', serif; letter-spacing: .04em; }
++.location-date { margin: 27px 0 13px; color: #52644b; font: 600 1rem 'Cormorant Garamond', serif; letter-spacing: .04em; }
++.location-calendar { margin: 0; }
++
++.dress-section .eyebrow { letter-spacing: .2em; }
++.rsvp-deadline { margin: 16px auto 0; color: #9b7a48; font-size: .95rem; }
++.footer .eyebrow { margin-bottom: 14px; color: #e2c793; letter-spacing: .14em; }
++.footer p { max-width: 520px; margin: 14px auto 0; color: #f2eee4; font: italic 500 clamp(1.05rem, 2.6vw, 1.3rem)/1.5 'Cormorant Garamond', serif; }
++
++@media (max-width: 600px) {
++  .gift-experience { margin-top: 30px; padding-top: 38px; }
++  .hero .hero-names { font-size: clamp(2rem, 10vw, 2.7rem); letter-spacing: .05em; }
++  .hero .hero-subtitle { margin-top: 23px; padding: 0 8px; }
++  .hero h1.hero-announcement { font-size: clamp(3.5rem, 17vw, 4.8rem); }
++  .story-subtitle { margin-bottom: 22px; }
++  .location-grid { grid-template-columns: 1fr; }
++}
++
++/* Caja de regalo: representación premium, sin recursos gráficos estáticos. */
++.gifts-section { overflow: visible; }
++.gifts-section .wrap > h2 { margin-bottom: 14px; }
++.gifts-section .wrap > p { max-width: 620px; margin: 0 auto; }
++.gift-experience { margin-top: 48px; padding-top: 52px; gap: 0; }
++.gift-box { width: min(74vw, 310px); aspect-ratio: 1.22; margin: 0 auto; padding: 0; border: 0; border-radius: 28px 28px 20px 20px; background: transparent; box-shadow: none; transform: none; perspective: 900px; isolation: isolate; }
++.gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: none; outline-color: #b59a6b; }
++.gift-shadow { position: absolute; z-index: -2; inset: auto 9% -10% 9%; height: 17%; border-radius: 50%; background: rgba(74, 91, 68, .2); filter: blur(13px); transform: scaleX(.9); }
++.gift-base { position: absolute; z-index: 1; inset: 23% 4% 0; overflow: hidden; border-radius: 19px 19px 24px 24px; background: linear-gradient(135deg, #afc0a7 0%, #8fa88a 34%, #789473 73%, #698766 100%); box-shadow: inset 1px 1px rgba(255,255,255,.62), inset -12px -16px 24px rgba(60,83,58,.18), 0 17px 24px rgba(55,75,51,.2); }
++.gift-front { position: absolute; inset: 0; background: linear-gradient(110deg, rgba(255,255,255,.25), transparent 32%, rgba(55,78,50,.12) 88%); }
++.gift-side { position: absolute; right: 0; top: 0; width: 17%; height: 100%; background: linear-gradient(90deg, rgba(76,101,71,.05), rgba(57,81,54,.26)); }
++.gift-lid { position: absolute; z-index: 3; inset: 12% 0 auto; height: 30%; overflow: visible; border-radius: 21px 21px 13px 13px; background: linear-gradient(145deg, #c4d0bc 0%, #a9bda2 42%, #8fa98a 100%); box-shadow: inset 1px 1px rgba(255,255,255,.78), inset -11px -11px 17px rgba(66,91,61,.13), 0 7px 11px rgba(55,75,51,.18); transform-origin: 10% 100%; transition: transform .72s cubic-bezier(.2,.78,.2,1), box-shadow .5s ease; }
++.gift-ribbon { position: absolute; z-index: 4; display: block; background: linear-gradient(90deg, #b79a69, #e8d5ad 42%, #c7a977 67%, #a98b5c); box-shadow: inset 1px 0 rgba(255,255,255,.45), 0 1px 2px rgba(99,76,38,.18); }
++.gift-ribbon-v { left: 43%; top: -1px; width: 14%; height: calc(100% + 265%); }
++.gift-ribbon-h { left: -3%; top: 42%; width: 106%; height: 17%; }
++.gift-bow { position: absolute; z-index: 6; top: -21%; left: 50%; width: 45%; height: 36%; pointer-events: none; transform: translateX(-50%); transition: transform .72s cubic-bezier(.2,.78,.2,1); }
++.gift-loop { position: absolute; top: 9%; width: 56%; height: 57%; border: 9px solid #d7c096; border-radius: 56% 46% 54% 46%; background: linear-gradient(145deg, rgba(248,235,202,.9), rgba(188,157,105,.76)); box-shadow: inset 2px 2px rgba(255,255,255,.6), 0 5px 7px rgba(82,65,36,.16); }
++.gift-loop-left { left: 0; transform: rotate(-25deg) skewX(-9deg); }
++.gift-loop-right { right: 0; transform: rotate(25deg) skewX(9deg); }
++.gift-knot { position: absolute; z-index: 2; left: 38%; top: 27%; width: 25%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 34% 29%, #fff4ce, #d7bb83 47%, #ac8955); box-shadow: inset 1px 1px rgba(255,255,255,.72), 0 3px 5px rgba(74,59,31,.2); }
++.gift-tail { position: absolute; top: 50%; width: 18%; height: 54%; background: linear-gradient(90deg, #aa8a58, #e8d1a2 50%, #b79763); filter: drop-shadow(0 3px 2px rgba(68,53,28,.14)); clip-path: polygon(0 0,100% 12%,78% 100%,48% 79%,18% 100%); }
++.gift-tail-left { left: 30%; transform: rotate(18deg); }
++.gift-tail-right { right: 30%; transform: rotate(-18deg) scaleX(-1); }
++.gift-tag { position: absolute; z-index: 7; right: 8%; bottom: 9%; display: grid; width: 23%; aspect-ratio: 1.34; place-items: center; border: 1px solid rgba(149,119,70,.58); border-radius: 4px; background: linear-gradient(135deg, #fffdf8, #eee4d1); color: #7e6842; box-shadow: 0 4px 8px rgba(70,58,37,.15); font: 600 clamp(.64rem, 2.3vw, .83rem) 'Cormorant Garamond', serif; letter-spacing: .08em; transform: rotate(7deg); }
++.gift-experience.is-open .gift-box { transform: translateY(2px) scale(.985); }
++.gift-experience.is-open .gift-lid { transform: rotateX(112deg) rotateZ(-7deg) translateY(-7px); box-shadow: 0 0 0 transparent; }
++.gift-experience.is-open .gift-bow { transform: translateX(-50%) translateY(-18px) rotate(-9deg); }
++.gift-box-label { display: none; }
++.gift-backdrop { position: fixed; z-index: 1000; inset: 0; background: rgba(48, 62, 47, .43); backdrop-filter: blur(3px); }
++.gift-card { position: fixed; z-index: 1001; top: 50%; left: 50%; box-sizing: border-box; width: min(620px, calc(100vw - 32px)); max-height: min(760px, calc(100dvh - 32px)); overflow: auto; overscroll-behavior: contain; padding: clamp(38px, 6vw, 48px) clamp(20px, 5vw, 42px) clamp(22px, 5vw, 38px); border: 1px solid rgba(181,154,107,.52); border-radius: 20px; background: #fffdf8; box-shadow: 0 24px 66px rgba(30,45,30,.3); transform: translate(-50%, -50%); animation: gift-card-in .4s ease both; }
++.gift-close { position: sticky; z-index: 2; top: -30px; float: right; margin: -26px -9px 8px 12px; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(130,151,121,.35); border-radius: 50%; background: #f5f2e9; color: #52644b; font: 400 1.7rem/1 'DM Sans', sans-serif; cursor: pointer; }
++.gift-close:hover, .gift-close:focus-visible { background: #e8eee3; outline: 2px solid #b59a6b; outline-offset: 2px; }
++.gift-card .form { max-width: none; }
++.gift-open-description { margin: 0 38px 22px 0 !important; color: #5c6b58; line-height: 1.65; }
++.gift-dialog-open { overflow: hidden; }
++@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card { animation: none; } }
++@media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
+diff --git a/css/welcome-v3.css b/css/welcome-v3.css
+index e6ed36d..200746e 100644
+--- a/css/welcome-v3.css
++++ b/css/welcome-v3.css
+@@ -3,8 +3,8 @@
+    independientes para conservar la apertura animada. */
+ 
+ :root {
+-  --welcome-ivory: #faf4e9;
+-  --welcome-paper: #fffaf0;
++  --welcome-ivory: #F7F4EC;
++  --welcome-paper: #F7F4EC;
+   --welcome-green: #114a2d;
+   --welcome-green-deep: #0a3c23;
+   --welcome-gold: #be882c;
+@@ -15,6 +15,21 @@ body.envelope-active {
+   height: 100dvh;
+ }
+ 
++/* La invitación real no participa visualmente hasta el relevo final. */
++body.envelope-active .hero,
++body.envelope-active main {
++  visibility: hidden;
++  pointer-events: none;
++}
++
++body.envelope-active.invitation-handoff-ready .hero {
++  visibility: visible;
++}
++
++html.envelope-animating {
++  overflow: hidden;
++}
++
+ .envelope-screen {
+   isolation: isolate;
+   display: grid;
+@@ -91,6 +106,9 @@ body.envelope-active {
+ }
+ 
+ .envelope-intro {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
+   margin: 0 0 6px;
+ }
+ 
+@@ -100,12 +118,15 @@ body.envelope-active {
+   letter-spacing: .47em;
+   text-transform: uppercase;
+   padding-left: .47em;
++  white-space: nowrap;
+ }
+ 
+ .reference-divider {
+-  display: flex;
++  display: grid;
+   align-items: center;
+   justify-content: center;
++  grid-template-columns: 1fr auto 1fr;
++  width: min(224px, 66vw);
+   gap: 16px;
+   margin: 18px auto 15px;
+   color: var(--welcome-green);
+@@ -113,7 +134,7 @@ body.envelope-active {
+ 
+ .reference-divider span {
+   display: block;
+-  width: 72px;
++  width: auto;
+   height: 1.5px;
+   background: var(--welcome-green);
+ }
+@@ -121,22 +142,34 @@ body.envelope-active {
+ .reference-divider b {
+   font-size: .8rem;
+   line-height: 1;
+-  color: var(--welcome-green);
++  color: var(--welcome-gold);
+   text-shadow: none;
+ }
+ 
+ .envelope-title {
++  display: flex;
++  flex-direction: column;
++  align-items: center;
+   margin: 0;
+   color: var(--welcome-green);
+   font: italic 500 clamp(1.7rem, 3.45vw, 2.75rem)/1.06 'Cormorant Garamond', serif;
++  text-align: center;
++  text-wrap: balance;
+ }
+ 
++.envelope-title-primary {
++  display: block;
++  color: var(--welcome-green);
++}
++
++.envelope-title-love,
+ .envelope-love {
+   display: block;
+   margin: 5px 0 2px;
+-  color: var(--welcome-green);
++  color: var(--welcome-gold);
+   font: 400 clamp(4.55rem, 8vw, 6.9rem)/.68 'Allura', cursive;
+   text-shadow: 0 1px 0 rgba(255,255,255,.86), 0 2px 4px rgba(14, 64, 38, .15);
++  text-wrap: balance;
+ }
+ 
+ .envelope-wrapper {
+@@ -155,8 +188,7 @@ body.envelope-active {
+   transform: translateY(-3px);
+ }
+ 
+-.envelope-wrapper:focus-visible,
+-.envelope-prompt:focus-visible {
++.envelope-wrapper:focus-visible {
+   outline: 2px solid var(--welcome-green);
+   outline-offset: 7px;
+ }
+@@ -305,7 +337,9 @@ body.envelope-active {
+   padding: 8px;
+   border: 1px solid rgba(190, 136, 44, .74);
+   border-radius: 1px;
+-  background: #fffbf3;
++  /* Mantiene el mismo marfil de la portada para que la carta no cambie de
++     color cuando crece durante la apertura. */
++  background: #fffef9;
+   box-shadow: 0 8px 21px rgba(72, 53, 27, .14);
+   opacity: 0;
+   transform: translateY(7px) scale(.98);
+@@ -317,13 +351,14 @@ body.envelope-active {
+ .letter-border {
+   position: relative;
+   display: grid;
+-  align-content: center;
++  align-content: start;
+   gap: 6px;
+   height: 100%;
+   overflow: hidden;
+-  padding: 24px 18px;
++  /* Reserva un margen superior real para que los nombres no se recorten. */
++  padding: 34px 18px 18px;
+   border: 1px solid rgba(17, 74, 45, .28);
+-  background: radial-gradient(circle at 50% 42%, #fffef9 0, #fcf3e4 100%);
++  background: radial-gradient(circle at 50% 42%, #fffef9 0, #faf5eb 100%);
+ }
+ 
+ .letter-floral {
+@@ -344,16 +379,9 @@ body.envelope-active {
+   bottom: -73px;
+ }
+ 
+-.letter-tag {
+-  color: var(--welcome-gold);
+-  font-size: .57rem;
+-  letter-spacing: .28em;
+-  text-transform: uppercase;
+-}
+-
+ .letter-names {
+   color: var(--welcome-green);
+-  font: 500 clamp(1.4rem, 3vw, 2.15rem)/.95 'Cormorant Garamond', serif;
++  font: 500 clamp(1.45rem, 3vw, 2.15rem)/.95 'Cormorant Garamond', serif;
+ }
+ 
+ .letter-names i {
+@@ -370,24 +398,31 @@ body.envelope-active {
+ 
+ .letter-date {
+   color: var(--welcome-green);
+-  font-size: .53rem;
++  /* Mínimo de 16 px para que se lea bien también en teléfono. */
++  font-size: clamp(1rem, 3.8vw, 1.2rem);
+   font-weight: 600;
+   letter-spacing: .25em;
+ }
+ 
+ .letter-message {
+-  max-width: 240px;
+-  margin: 4px auto 0;
+-  color: #58705d;
+-  font-size: .62rem;
+-  line-height: 1.45;
++  max-width: 300px;
++  margin: 5px auto 0;
++  color: var(--welcome-green);
++  font: italic 500 clamp(1rem, 2.1vw, 1.45rem)/1.08 'Cormorant Garamond', serif;
++}
++
++.letter-love {
++  margin: 0;
++  color: var(--welcome-green);
++  font: 400 clamp(3.1rem, 6vw, 4.45rem)/.72 'Allura', cursive;
++  text-shadow: 0 1px 0 rgba(255,255,255,.86), 0 2px 4px rgba(14, 64, 38, .15);
+ }
+ 
+-.letter-tag,
+ .letter-names,
+ .letter-rule,
+ .letter-date,
+-.letter-message {
++.letter-message,
++.letter-love {
+   opacity: 0;
+   transform: translateY(9px);
+   transition: opacity .55s ease, transform .7s cubic-bezier(.22,.8,.22,1);
+@@ -490,62 +525,6 @@ body.envelope-active {
+   transform: rotate(-24deg);
+ }
+ 
+-.envelope-prompt {
+-  display: grid;
+-  place-items: center;
+-  width: 92px;
+-  height: 48px;
+-  margin: 0 auto;
+-  padding: 0;
+-  cursor: pointer;
+-  border: 2px solid rgba(255,255,255,.95);
+-  border-radius: 999px;
+-  background: linear-gradient(180deg, #5f8f3a, #164827);
+-  box-shadow: 0 5px 10px rgba(7, 58, 32, .22), inset 0 1px rgba(255,255,255,.38);
+-  transition: transform .2s ease, opacity .55s ease;
+-}
+-
+-.envelope-prompt:hover {
+-  transform: translateY(-2px);
+-  background: linear-gradient(180deg, #6b9944, #164b28);
+-}
+-
+-.envelope-prompt span:not(.chevrons) {
+-  display: none;
+-}
+-
+-.chevrons {
+-  display: block;
+-  position: relative;
+-  width: 20px;
+-  height: 22px;
+-  margin: 0;
+-}
+-
+-.chevrons::before,
+-.chevrons::after {
+-  display: block;
+-  width: 12px;
+-  height: 12px;
+-  border-right: 3px solid #fff;
+-  border-bottom: 3px solid #fff;
+-  transform: rotate(45deg);
+-}
+-
+-.chevrons::before {
+-  content: '';
+-  position: absolute;
+-  top: 0;
+-  left: 2px;
+-}
+-
+-.chevrons::after {
+-  content: '';
+-  position: absolute;
+-  top: 8px;
+-  left: 2px;
+-}
+-
+ /* Secuencia: magia, apertura 3D, sorpresa y revelación (6,5 segundos). */
+ .envelope-screen.step-magic .envelope-seal {
+   animation: seal-gleam .8s ease-in-out 1;
+@@ -562,8 +541,7 @@ body.envelope-active {
+   }
+ }
+ 
+-.envelope-screen.step-flap-open .envelope-intro,
+-.envelope-screen.step-flap-open .envelope-prompt {
++.envelope-screen.step-flap-open .envelope-intro {
+   opacity: 0;
+   transform: translateY(-8px);
+ }
+@@ -588,101 +566,6 @@ body.envelope-active {
+   z-index: 1;
+ }
+ 
+-.envelope-screen.step-letter-out .envelope-letter {
+-  opacity: 1;
+-  transform: translateY(-175px) scale(1.02);
+-  /* La parte inferior sigue detrás del bolsillo: no atraviesa el sobre. */
+-  z-index: 4;
+-  box-shadow: 0 24px 48px rgba(72, 53, 27, .25);
+-}
+-
+-.envelope-screen.step-letter-out .envelope-sparkles {
+-  opacity: .72;
+-}
+-
+-.envelope-screen.step-letter-out .envelope-sparkles i {
+-  animation: sparkle-gold 1.35s ease-in-out 2 both;
+-}
+-
+-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(2) { animation-delay: .18s; }
+-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(3) { animation-delay: .34s; }
+-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(4) { animation-delay: .12s; }
+-.envelope-screen.step-letter-out .envelope-sparkles i:nth-child(5) { animation-delay: .46s; }
+-
+-@keyframes sparkle-gold {
+-  0%, 100% { opacity: 0; transform: scale(.45); }
+-  45% { opacity: .88; transform: scale(1); }
+-}
+-
+-.envelope-screen.step-letter-out .letter-tag {
+-  opacity: 1;
+-  transform: none;
+-  transition-delay: .28s;
+-}
+-
+-.envelope-screen.step-letter-out .letter-names {
+-  opacity: 1;
+-  transform: none;
+-  transition-delay: .48s;
+-}
+-
+-.envelope-screen.step-letter-out .letter-rule,
+-.envelope-screen.step-letter-out .letter-date {
+-  opacity: 1;
+-  transform: none;
+-  transition-delay: .68s;
+-}
+-
+-.envelope-screen.step-letter-out .letter-message {
+-  opacity: 1;
+-  transform: none;
+-  transition-delay: .86s;
+-}
+-
+-.envelope-screen.step-card-focus .envelope-letter {
+-  transform: translateY(-175px) scale(1.28);
+-  z-index: 20;
+-  box-shadow: 0 32px 68px rgba(72,53,27,.22);
+-  transition-duration: 1.65s, 1.65s, 1s;
+-}
+-
+-.envelope-screen.step-card-focus .envelope-box {
+-  opacity: 1;
+-  transform: scale(.95);
+-  /* La tarjeta vive dentro de esta caja: no se puede desvanecer su padre o
+-     desaparecería antes de completar el relevo hacia la portada. */
+-  transition: transform .9s ease .25s;
+-}
+-
+-.envelope-screen.step-card-focus .envelope-floral {
+-  opacity: 0;
+-  transition: opacity .8s ease .2s;
+-}
+-
+-.envelope-screen.step-card-focus .envelope-pocket-left,
+-.envelope-screen.step-card-focus .envelope-pocket-right,
+-.envelope-screen.step-card-focus .envelope-front-pocket,
+-.envelope-screen.step-card-focus .envelope-flap,
+-.envelope-screen.step-card-focus .envelope-paper-grain {
+-  opacity: 0;
+-  transition: opacity .72s ease .22s;
+-}
+-
+-/* La portada aparece mientras la misma tarjeta aún se mantiene visible. */
+-.envelope-screen.step-hero-reveal .envelope-container {
+-  pointer-events: none;
+-}
+-
+-.envelope-screen.step-hero-reveal::after {
+-  opacity: 0;
+-}
+-
+-.envelope-screen.step-card-handoff .envelope-letter {
+-  opacity: 0;
+-  transform: translateY(-175px) scale(1.36);
+-  transition: opacity .42s ease, transform .55s cubic-bezier(.22,.8,.22,1);
+-}
+-
+ /* Portada final: conserva la composición de la referencia, ya sin el sobre. */
+ body:not(.invitation-revealed) .hero {
+   opacity: 0;
+@@ -703,81 +586,6 @@ body.qa-preview-open .hero {
+   transition: none;
+ }
+ 
+-/* Control independiente de la música para el recorrido automático. */
+-.auto-tour-control {
+-  position: fixed;
+-  right: 22px;
+-  bottom: 88px;
+-  z-index: 102;
+-  display: grid;
+-  width: 48px;
+-  height: 48px;
+-  place-items: center;
+-  padding: 0;
+-  border: 1px solid rgba(255,255,255,.86);
+-  border-radius: 50%;
+-  background: linear-gradient(145deg, #91a977, #507142);
+-  box-shadow: 0 7px 18px rgba(54,75,47,.25), inset 0 1px 0 rgba(255,255,255,.28);
+-  color: #fffdf5;
+-  cursor: pointer;
+-  opacity: 0;
+-  transform: translateY(8px);
+-  pointer-events: none;
+-  transition: opacity .28s ease, transform .28s ease, box-shadow .2s ease;
+-  -webkit-tap-highlight-color: transparent;
+-}
+-
+-.auto-tour-control:not([hidden]) {
+-  opacity: 1;
+-  transform: none;
+-  pointer-events: auto;
+-}
+-
+-.auto-tour-control:hover,
+-.auto-tour-control:focus-visible {
+-  box-shadow: 0 9px 22px rgba(54,75,47,.33), inset 0 1px 0 rgba(255,255,255,.34);
+-}
+-
+-.auto-tour-control:focus-visible {
+-  outline: 2px solid #cda84a;
+-  outline-offset: 3px;
+-}
+-
+-.auto-tour-control:disabled {
+-  cursor: default;
+-  opacity: .68;
+-}
+-
+-.auto-tour-icon {
+-  position: relative;
+-  display: block;
+-  width: 15px;
+-  height: 18px;
+-}
+-
+-.auto-tour-control.is-active .auto-tour-icon::before,
+-.auto-tour-control.is-active .auto-tour-icon::after {
+-  position: absolute;
+-  top: 1px;
+-  width: 4px;
+-  height: 16px;
+-  border-radius: 2px;
+-  background: currentColor;
+-  content: '';
+-}
+-
+-.auto-tour-control.is-active .auto-tour-icon::before { left: 1px; }
+-.auto-tour-control.is-active .auto-tour-icon::after { right: 1px; }
+-
+-.auto-tour-control.is-paused .auto-tour-icon {
+-  width: 0;
+-  height: 0;
+-  margin-left: 3px;
+-  border-top: 9px solid transparent;
+-  border-bottom: 9px solid transparent;
+-  border-left: 14px solid currentColor;
+-}
+-
+ .hero {
+   isolation: isolate;
+   position: relative;
+@@ -894,36 +702,9 @@ body.qa-preview-open .hero {
+   letter-spacing: .28em;
+ }
+ 
+-.hero-buttons {
+-  position: relative;
+-  margin-top: 30px !important;
+-}
+-
+-.hero .button {
+-  display: grid;
+-  place-items: center;
+-  width: 92px;
+-  height: 48px;
+-  min-width: 0;
+-  padding: 0;
+-  overflow: visible;
+-  border: 2px solid rgba(255,255,255,.95);
+-  border-radius: 999px;
+-  background: linear-gradient(180deg, #5f8f3a, #164827);
+-  box-shadow: 0 5px 10px rgba(7, 58, 32, .22), inset 0 1px rgba(255,255,255,.38);
+-}
+-
+-.hero .button::before,
+-.hero .button::after,
+-.hero-buttons::before,
+-.hero-buttons::after {
+-  display: none;
+-}
+-
+-/* La portada se escribe suavemente mientras desaparece la última capa del sobre. */
++/* La portada se presenta de forma nítida y continua sin parpadeos ni demoras. */
+ .hero-inner > * {
+   will-change: transform, opacity;
+-  transition: opacity .5s ease, transform .65s cubic-bezier(.22,.8,.22,1);
+ }
+ 
+ body:not(.invitation-revealed) .hero-inner > * {
+@@ -932,17 +713,11 @@ body:not(.invitation-revealed) .hero-inner > * {
+ }
+ 
+ body.invitation-revealed .hero-inner > * {
+-  opacity: 1;
+-  transform: none;
++  opacity: 1 !important;
++  transform: none !important;
++  transition: none !important;
+ }
+ 
+-body.invitation-revealed .hero-names { transition-delay: .04s; }
+-body.invitation-revealed .hero-divider { transition-delay: .16s; }
+-body.invitation-revealed .hero-invitation { transition-delay: .28s; }
+-body.invitation-revealed .hero h1 { transition-delay: .42s; }
+-body.invitation-revealed .hero .date { transition-delay: .54s; }
+-body.invitation-revealed .hero-buttons { transition-delay: .64s; }
+-
+ body.qa-preview-open .hero-inner > * {
+   opacity: 1 !important;
+   transform: none !important;
+@@ -950,6 +725,14 @@ body.qa-preview-open .hero-inner > * {
+ }
+ 
+ @media (max-width: 680px) {
++  .letter-border {
++    gap: 4px;
++    padding: 28px 15px 14px;
++  }
++
++  .letter-names { font-size: clamp(1.35rem, 6.2vw, 1.75rem); }
++  .letter-love { font-size: clamp(3rem, 14vw, 3.9rem); }
++
+   .envelope-screen {
+     padding: 13px 11px;
+   }
+@@ -998,13 +781,14 @@ body.qa-preview-open .hero-inner > * {
+   }
+ 
+   .reference-divider span {
+-    width: 48px;
++    width: auto;
+   }
+ 
+   .envelope-title {
+     font-size: clamp(1.45rem, 6.5vw, 1.78rem);
+   }
+ 
++  .envelope-title-love,
+   .envelope-love {
+     margin: 1px 0 0;
+     font-size: clamp(3.9rem, 18vw, 4.5rem);
+@@ -1058,27 +842,6 @@ body.qa-preview-open .hero-inner > * {
+     height: 30px;
+   }
+ 
+-  .envelope-screen.step-letter-out .envelope-letter {
+-    transform: translateY(-112px) scale(1.02);
+-  }
+-
+-  .envelope-screen.step-card-focus .envelope-letter {
+-    transform: translateY(-75px) scale(1.28);
+-  }
+-
+-  .envelope-screen.step-card-handoff .envelope-letter {
+-    transform: translateY(-75px) scale(1.36);
+-  }
+-
+-  .auto-tour-control {
+-    right: 16px;
+-    bottom: 82px;
+-  }
+-
+-  .letter-floral {
+-    width: 120px;
+-  }
+-
+   .hero {
+     padding: 30px 16px;
+   }
+@@ -1132,7 +895,242 @@ body.qa-preview-open .hero-inner > * {
+     transition-duration: .01ms !important;
+   }
+ 
+-  .auto-tour-control {
+-    display: none !important;
++}
++
++/* Revisión cálida y continua: la carta conduce a una portada sin marco. */
++.envelope-screen,
++.hero { background: var(--welcome-ivory); }
++
++.envelope-screen::after,
++.hero { background-color: var(--welcome-ivory); }
++
++.hero::before,
++.hero::after { display: none !important; }
++
++.hero-inner {
++  width: min(620px, 100%);
++  padding: clamp(54px, 9vw, 86px) clamp(20px, 6vw, 48px);
++  background: transparent;
++  box-shadow: none;
++}
++
++.hero-floral { opacity: .72; }
++
++/* Portada propuesta 2: cálida, botánica y con los nombres como protagonistas. */
++.hero {
++  min-height: 100svh;
++  padding: clamp(34px, 7vw, 74px) 22px;
++  background:
++    radial-gradient(circle at 52% 39%, rgba(255,255,255,.6), transparent 34%),
++    var(--welcome-ivory);
++}
++
++.hero-floral {
++  z-index: 0;
++  width: min(570px, 46vw);
++  opacity: .78;
++  filter: saturate(.88) sepia(.04);
++}
++
++.hero-floral-top {
++  top: min(-11vw, -78px);
++  right: min(-9vw, -70px);
++  left: auto;
++  transform: rotate(16deg);
++}
++
++.hero-floral-bottom {
++  right: auto;
++  bottom: min(-13vw, -95px);
++  left: min(-10vw, -78px);
++  transform: rotate(196deg);
++}
++
++.hero-inner {
++  position: relative;
++  z-index: 1;
++  display: grid;
++  justify-items: center;
++  align-content: center;
++  width: min(100%, 1120px);
++  max-width: 1120px;
++  padding: clamp(38px, 6vh, 76px) clamp(16px, 3.5vw, 42px);
++  margin: 0 auto;
++}
++
++.hero .hero-emblem,
++.hero .hero-love-mark,
++.hero .hero-subtitle { display: block; }
++
++.hero-emblem {
++  margin: 0 0 clamp(10px, 1.8vw, 20px);
++  color: #be882c;
++  font: 400 clamp(3.8rem, 7vw, 6.4rem)/.55 'Allura', cursive;
++  transform: rotate(-8deg);
++}
++
++.hero .hero-subtitle {
++  max-width: min(100%, 780px);
++  margin: 0 0 clamp(20px, 3vw, 36px);
++  color: #183c29;
++  font: 500 clamp(1.4rem, 2.7vw, 2.35rem)/1.2 'Cormorant Garamond', serif;
++  letter-spacing: .005em;
++  text-align: center;
++}
++
++.hero .hero-names {
++  margin: 0;
++  color: #113d27 !important;
++  font: italic 500 clamp(3.4rem, 8vw, 6.8rem)/.96 'Cormorant Garamond', serif;
++  letter-spacing: -.035em;
++  padding: 0;
++  text-transform: none;
++  white-space: nowrap;
++}
++
++.hero .hero-names span {
++  display: inline;
++  color: #c18a22 !important;
++  font-family: 'Allura', cursive;
++  font-size: .92em;
++  font-style: normal;
++  font-weight: 400;
++  letter-spacing: -.05em;
++}
++
++.hero-love-mark {
++  margin: clamp(16px, 2.8vw, 30px) 0 clamp(10px, 2vw, 20px);
++  color: #c18a22;
++  font: 400 clamp(2.8rem, 5vw, 4.4rem)/.7 'Allura', cursive;
++}
++
++.hero h1.hero-announcement {
++  position: relative;
++  isolation: isolate;
++  margin: 0;
++  padding: .12em .4em .2em;
++  color: #113d27;
++  font: 400 clamp(4.4rem, 8.8vw, 7.6rem)/.86 'Allura', cursive;
++  text-shadow: 0 1px rgba(255,255,255,.82);
++}
++
++.hero h1.hero-announcement::before {
++  content: '';
++  position: absolute;
++  z-index: -1;
++  inset: 19% -4% 12%;
++  border-radius: 50% 43% 47% 45%;
++  background: rgba(190, 202, 162, .43);
++  transform: rotate(-2.5deg) skewX(-7deg);
++  box-shadow: 0 7px 0 rgba(190, 202, 162, .21), 0 -4px 0 rgba(190, 202, 162, .16);
++}
++
++@media (max-width: 600px) {
++  .hero { min-height: 100svh; padding: 28px 16px; }
++  .hero-floral { width: min(350px, 76vw); opacity: .67; }
++  .hero-floral-top { top: -78px; right: -94px; }
++  .hero-floral-bottom { bottom: -88px; left: -104px; }
++  .hero-inner { padding: 22px 4px 30px; }
++  .hero-emblem { margin-bottom: 15px; }
++  .hero .hero-subtitle { max-width: 330px; margin-bottom: 23px; font-size: clamp(1.38rem, 7vw, 1.85rem); }
++  .hero .hero-names { font-size: clamp(3.35rem, 16.5vw, 5rem); letter-spacing: -.06em; }
++  .hero h1.hero-announcement { font-size: clamp(4rem, 19vw, 5.8rem); }
++}
++
++/* Secuencia continua: la misma tarjeta se eleva y ocupa la portada. */
++.envelope-title {
++  max-width: 520px;
++  margin-inline: auto;
++}
++
++.envelope-letter .letter-border {
++  align-content: center;
++  justify-content: center;
++  background: #F7F4EC;
++}
++
++.envelope-letter { background: #F7F4EC; }
++
++body.envelope-active.invitation-revealed .hero {
++  visibility: visible;
++  pointer-events: none;
++}
++
++/* #hero es la única composición que emerge. Se escala completa —textos y
++   decoración incluidos— desde la abertura hacia su estado normal. */
++.hero.hero-emerging {
++  position: fixed;
++  z-index: 4;
++  inset: 0;
++  box-sizing: border-box;
++  width: 100vw;
++  height: 100dvh;
++  min-height: 100dvh;
++  margin: 0;
++  transform: translate3d(var(--hero-start-x), var(--hero-start-y), 0)
++    scale(var(--hero-start-scale));
++  transform-origin: top left;
++  will-change: transform;
++  transition: transform 3.4s ease-in-out;
++}
++
++.hero.hero-emerging.hero-emerged {
++  transform: translate3d(0, 0, 0) scale(1);
++}
++
++/* #hero se aloja dentro de la caja: bolsillo frontal (z-index: 6) queda sobre
++   la portada (z-index: 4), mientras la solapa abierta se mantiene detrás. */
++.envelope-screen.hero-hosting .envelope-container {
++  perspective: none !important;
++  transform: none;
++}
++
++/* Evita que transform/filter de los ancestros conviertan la capa fija de la
++   portada en una capa relativa al sobre. */
++.envelope-screen.hero-hosting .envelope-wrapper {
++  perspective: none !important;
++  filter: none;
++  transform: none !important;
++}
++
++/* La perspectiva vive sólo en la solapa: no cambia el sistema de coordenadas
++   de #hero cuando se aloja temporalmente dentro del sobre. */
++.envelope-flap {
++  transform: perspective(1200px) rotateX(0deg);
++}
++
++.envelope-screen.step-flap-open .envelope-flap {
++  transform: perspective(1200px) rotateX(-165deg) !important;
++}
++
++.envelope-screen.revealing-hero {
++  opacity: 1;
++  pointer-events: none;
++}
++
++/* El sobre sólo desaparece cuando #hero ya volvió a su ubicación normal; no
++   se aplica opacidad al contenedor completo para no desvanecer la portada. */
++.envelope-screen.revealing-hero.fading-envelope {
++  background: transparent;
++}
++
++.envelope-screen.revealing-hero.fading-envelope::before,
++.envelope-screen.revealing-hero.fading-envelope::after,
++.envelope-screen.revealing-hero.fading-envelope .welcome-floral,
++.envelope-screen.revealing-hero.fading-envelope .envelope-container {
++  opacity: 0;
++  transition: opacity .6s ease-in-out;
++}
++
++@media (prefers-reduced-motion: reduce) {
++  .hero.hero-emerging {
++    transition-duration: .01ms !important;
++  }
++
++  .envelope-screen.revealing-hero.fading-envelope::before,
++  .envelope-screen.revealing-hero.fading-envelope::after,
++  .envelope-screen.revealing-hero.fading-envelope .welcome-floral,
++  .envelope-screen.revealing-hero.fading-envelope .envelope-container {
++    transition-duration: .01ms !important;
+   }
+ }
+diff --git a/index.html b/index.html
+index 3e8aa5d..1d7d64d 100644
+--- a/index.html
++++ b/index.html
+@@ -23,8 +23,8 @@
+   <link href="https://fonts.googleapis.com/css2?family=Allura&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+ 
+   <!-- Hojas de estilo modularizadas -->
+-  <link rel="stylesheet" href="css/styles.css?v=20261110-envelope-v3">
+-  <link rel="stylesheet" href="css/welcome-v3.css?v=20261110-reference-match">
++  <link rel="stylesheet" href="css/styles.css?v=20261113-gifts-premium">
++  <link rel="stylesheet" href="css/welcome-v3.css?v=opening-hero-direct-v1">
+ </head>
+ <body class="envelope-active">
+ 
+@@ -39,8 +39,7 @@
+       <div class="envelope-intro">
+         <div class="envelope-subtitle">Hector &amp; Elisbe</div>
+         <div class="reference-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
+-        <h2 class="envelope-title">Una invitación para celebrar el</h2>
+-        <div class="envelope-love">amor</div>
++        <h2 class="envelope-title"><span class="envelope-title-primary">Te invitamos a celebrar</span><span class="envelope-title-love">con nosotros</span></h2>
+       </div>
+ 
+       <!-- Sobre interactivo con solapa, sello y carta -->
+@@ -57,11 +56,12 @@
+           <div class="envelope-letter" id="envelopeLetter">
+             <div class="letter-border">
+               <img class="letter-floral letter-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+-              <span class="letter-tag">Nuestra boda</span>
++              <span class="letter-emblem" aria-hidden="true">♡</span>
+               <div class="letter-names"><span>Hector</span><i>&amp;</i><span>Elisbe</span></div>
+-              <div class="letter-rule" aria-hidden="true"></div>
++              <p class="letter-message">Queremos compartir contigo un momento muy especial</p>
++              <span class="letter-love-mark" aria-hidden="true">♡</span>
++              <div class="letter-love">¡Nos casamos!</div>
+               <div class="letter-date">09 · 01 · 2027</div>
+-              <p class="letter-message">Hay momentos que se vuelven inolvidables cuando se comparten.</p>
+               <img class="letter-floral letter-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+             </div>
+           </div>
+@@ -81,7 +81,7 @@
+           <!-- Sello de cera dorado con iniciales -->
+           <div class="envelope-seal" id="envelopeSeal" aria-hidden="true">
+             <div class="envelope-seal-inner">
+-              <span class="envelope-seal-initials">E & H</span>
++              <span class="envelope-seal-initials">H &amp; E</span>
+               <span class="envelope-seal-leaf">❦</span>
+             </div>
+           </div>
+@@ -106,48 +106,48 @@
+     <source src="assets/musica.mp3" type="audio/mpeg">
+   </audio>
+ 
+-  <button class="auto-tour-control is-paused" id="autoTourButton" type="button" aria-label="Reanudar recorrido automático" title="Reanudar recorrido automático" aria-pressed="false" hidden>
+-    <span class="auto-tour-icon" aria-hidden="true"></span>
+-  </button>
+-
+   <!-- Hero principal de la invitación -->
+   <header class="hero" id="hero">
+     <img class="hero-floral hero-floral-top" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+     <img class="hero-floral hero-floral-bottom" src="assets/floral-acuarela-eucalipto-v3.png" alt="" aria-hidden="true">
+     <div class="hero-inner">
++      <span class="hero-emblem" aria-hidden="true">♡</span>
+       <div class="hero-names">Hector <span>&amp;</span> Elisbe</div>
+-      <div class="reference-divider hero-divider" aria-hidden="true"><span></span><b>♥</b><span></span></div>
+-      <div class="hero-invitation">Una invitación para celebrar el</div>
+-      <h1>amor</h1>
+-      <div class="date">09 · 01 · 2027</div>
+-      <div class="buttons hero-buttons">
+-        <a class="button" href="#historia" aria-label="Descubrir nuestra invitación"><span class="chevrons" aria-hidden="true"></span></a>
+-      </div>
++      <p class="hero-subtitle">Queremos compartir contigo un momento muy especial</p>
++      <span class="hero-love-mark" aria-hidden="true">♡</span>
++      <h1 class="hero-announcement">¡Nos casamos!</h1>
+     </div>
+   </header>
+ 
+   <main>
+     <!-- Sección: Nuestra Historia -->
+-    <section id="historia" class="center">
++    <section id="historia" class="center story-section">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Con mucho amor</div>
+         <h2>Nuestra historia</h2>
+-        <div class="leaf">❧</div>
+-        <p>Dos caminos, una historia y un nuevo capítulo que queremos celebrar junto a ustedes.</p>
+-        <p class="note">Aquí podremos agregar nuestra historia personal.</p>
++        <p class="story-subtitle">13 años de amor, sueños y momentos compartidos</p>
++        <div class="story-layout">
++          <figure class="story-photo">
++            <img src="assets/familia-elisbe-hector.webp" width="960" height="1280" alt="Elisbe y Hector junto a sus hijos Avril y Lucas" loading="lazy" decoding="async">
++          </figure>
++          <div class="story-copy">
++            <p>Todo comenzó hace 13 años, con un mensaje por PIN de BlackBerry. En aquel momento no imaginábamos que una simple conversación nos llevaría a vivir una historia tan bonita.</p>
++            <p>Con el paso de los años llegaron los sueños, las alegrías, los desafíos y nuestros dos regalos más grandes: Avril y Lucas, quienes llenaron nuestras vidas de amor y nos dieron la hermosa familia que hoy tenemos.</p>
++            <p>Hoy, después de tantos años compartiendo la vida, queremos dar un paso muy especial: unirnos en matrimonio ante Dios, rodeados de las personas que queremos y con la ilusión de seguir construyendo nuestra historia juntos.</p>
++          </div>
++        </div>
+       </div>
+     </section>
+ 
+     <!-- Sección: Cuenta Regresiva -->
+     <section class="alternate center">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Falta muy poquito</div>
+-        <h2>Cuenta regresiva</h2>
++        <p class="countdown-lead">Cada día estamos más cerca de nuestro gran momento</p>
++        <h2>¡Falta poquito!</h2>
+         <div class="count" id="countdown">
+           <div><strong id="days">--</strong><small>Días</small></div>
+           <div><strong id="hours">--</strong><small>Horas</small></div>
+-          <div><strong id="minutes">--</strong><small>Minutos</small></div>
+-          <div><strong id="seconds">--</strong><small>Segundos</small></div>
++          <div><strong id="minutes">--</strong><small>Min</small></div>
++          <div><strong id="seconds">--</strong><small>Seg</small></div>
+         </div>
+         <p>9 de enero de 2027 · Puerto Montt, Chile</p>
+       </div>
+@@ -156,28 +156,29 @@
+     <!-- Sección: Lugares (Ceremonia y Celebración) -->
+     <section class="center">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Te esperamos</div>
+-        <h2>El gran día</h2>
+-        <div class="grid">
++        <h2>Dónde celebraremos</h2>
++        <p class="location-subtitle">Dos momentos especiales que queremos compartir contigo</p>
++        <div class="grid location-grid">
+           <!-- Ceremonia religiosa -->
+-          <article class="panel">
++          <article class="panel location-card">
+             <div class="symbol">♧</div>
+-            <h3>Ceremonia</h3>
++            <h3>Ceremonia religiosa</h3>
++            <time class="location-time" datetime="2027-01-09T15:30:00-03:00">15:30 hrs</time>
+             <p><strong>Capilla Inmaculada Corazón de María</strong><br>Volcán Michimavida 296–310, Puerto Montt</p>
+-            <p class="note">Horario por confirmar</p>
+             <a class="button outline" id="ceremonyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
+           </article>
+ 
+           <!-- Celebración -->
+-          <article class="panel">
++          <article class="panel location-card">
+             <div class="symbol">✧</div>
+             <h3>Celebración</h3>
++            <time class="location-time" datetime="2027-01-09T17:40:00-03:00">17:40 hrs</time>
+             <p><strong>Quincho Ayuwun</strong><br>Quillaipe km 22, Carretera Austral, Puerto Montt</p>
+-            <p class="note">Horario por confirmar</p>
+             <a class="button outline" id="partyMap" href="#" hidden target="_blank" rel="noopener">Cómo llegar</a>
+           </article>
+         </div>
+-        <p style="margin-top:30px">
++        <p class="location-date">Sábado 9 de enero de 2027</p>
++        <p class="location-calendar">
+           <a class="button outline" id="calendar" href="#">Agregar al calendario</a>
+         </p>
+       </div>
+@@ -186,44 +187,57 @@
+     <!-- Sección: Itinerario -->
+     <section class="alternate center">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Momentos especiales</div>
+-        <h2>Itinerario</h2>
+-        <div class="timeline">
+-          <div class="event">
+-            <div class="dot">💍</div>
+-            <div>
+-              <h3>Ceremonia</h3>
+-              <p>Hora por confirmar</p>
++        <h2>Nuestro itinerario</h2>
++        <div class="timeline flow-timeline" aria-label="Secuencia del itinerario">
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">⛪</span><span class="flow-order">01</span></div>
++            <div class="flow-card">
++              <h3>Ceremonia religiosa</h3>
++              <time class="flow-time" datetime="15:30">15:30 hrs</time>
+             </div>
+-          </div>
+-          <div class="event">
+-            <div class="dot">🥂</div>
+-            <div>
+-              <h3>Brindis</h3>
+-              <p>Hora por confirmar</p>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">🍸</span><span class="flow-order">02</span></div>
++            <div class="flow-card">
++              <h3>Recepción y cóctel de bienvenida</h3>
++              <time class="flow-time" datetime="17:40">17:40 hrs</time>
+             </div>
+-          </div>
+-          <div class="event">
+-            <div class="dot">📷</div>
+-            <div>
+-              <h3>Fotografías</h3>
+-              <p>Hora por confirmar</p>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">🥂</span><span class="flow-order">03</span></div>
++            <div class="flow-card">
++              <h3>Brindis y fotografías</h3>
++              <time class="flow-time" datetime="18:15">18:15 hrs</time>
+             </div>
+-          </div>
+-          <div class="event">
+-            <div class="dot">🍽</div>
+-            <div>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">🍽</span><span class="flow-order">04</span></div>
++            <div class="flow-card">
+               <h3>Cena</h3>
+-              <p>Hora por confirmar</p>
++              <time class="flow-time" datetime="19:00">19:00 hrs</time>
+             </div>
+-          </div>
+-          <div class="event">
+-            <div class="dot">♫</div>
+-            <div>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">💃</span><span class="flow-order">05</span></div>
++            <div class="flow-card">
++              <h3>Vals de los novios</h3>
++              <time class="flow-time" datetime="20:30">20:30 hrs</time>
++            </div>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">💐</span><span class="flow-order">06</span></div>
++            <div class="flow-card">
++              <h3>Lanzamiento del ramo</h3>
++              <time class="flow-time" datetime="21:00">21:00 hrs</time>
++            </div>
++          </article>
++          <article class="event flow-step">
++            <div class="flow-node"><span class="flow-icon" aria-hidden="true">🎉</span><span class="flow-order">07</span></div>
++            <div class="flow-card">
+               <h3>Baile y celebración</h3>
+-              <p>Hora por confirmar</p>
++              <time class="flow-time" datetime="21:15">21:15 hrs</time>
+             </div>
+-          </div>
++          </article>
+         </div>
+       </div>
+     </section>
+@@ -235,34 +249,73 @@
+         <h2>Galería de fotos</h2>
+         <p>Un pequeño recorrido por nuestra historia.</p>
+         <div class="photo-grid">
+-          <div class="photo">Nuestra foto 1</div>
+-          <div class="photo">Nuestra foto 2</div>
+-          <div class="photo">Nuestra foto 3</div>
++          <figure class="photo photo-filled">
++            <img src="assets/nuestros-comienzos.webp" width="1086" height="1448" alt="Hector y Elisbe en sus comienzos" loading="lazy" decoding="async">
++            <figcaption>Nuestros comienzos</figcaption>
++          </figure>
++          <figure class="photo photo-filled">
++            <img src="assets/galeria-nuestra-familia.jpg" width="995" height="1628" alt="Hector y Elisbe junto a su familia" loading="lazy" decoding="async">
++            <figcaption>Nuestra familia</figcaption>
++          </figure>
++          <figure class="photo photo-filled">
++            <img src="assets/galeria-nuestro-presente.jpg" width="1536" height="2048" alt="Hector y Elisbe con su familia en su presente" loading="lazy" decoding="async">
++            <figcaption>Nuestro presente</figcaption>
++          </figure>
+         </div>
+-        <p class="note">Reemplazar con fotos de Hector y Elisbe en la carpeta assets.</p>
+       </div>
+     </section>
+ 
+     <!-- Sección: Código de Vestimenta -->
+-    <section class="alternate center">
++    <section class="alternate center dress-section">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Una noche especial</div>
++        <div class="eyebrow gold">PARA NUESTRO GRAN DÍA</div>
+         <h2>Código de vestimenta</h2>
+         <div class="leaf">✧</div>
+-        <h3>Elegante</h3>
+-        <p>Los detalles de vestimenta se confirmarán próximamente.</p>
++        <div class="dress-layout">
++          <figure class="story-photo dress-photo">
++            <img src="assets/retrato-vestimenta-formal.webp" width="1086" height="1448" alt="Elisbe y Hector con vestimenta formal elegante" loading="lazy" decoding="async">
++          </figure>
++          <div class="dress-copy">
++            <h3>Formal elegante</h3>
++            <p>Queremos que te veas y te sientas increíble en este día tan especial para nosotros. Te dejamos una foto como referencia para que tengas una idea de cómo vestir.</p>
++          </div>
++        </div>
+       </div>
+     </section>
+ 
+-    <!-- Sección: Regalos y Datos Bancarios -->
+-    <section class="center">
++    <!-- Sección: Regalos -->
++    <section class="center gifts-section" id="regalos">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Tu presencia es nuestro regalo</div>
+-        <h2>Regalos</h2>
+-        <p>Lo más importante es celebrar contigo. Si deseas hacernos un regalo, aquí podrás consultar los datos para una transferencia.</p>
+-        <div class="panel" style="max-width:500px;margin:auto">
+-          <p id="bankDetails">Datos bancarios por confirmar.</p>
+-          <button class="button outline" id="copyBank" disabled>Copiar datos bancarios</button>
++        <h2>Regalo</h2>
++        <div class="gift-experience" id="giftExperience">
++          <button class="gift-box" id="giftBox" type="button" aria-expanded="false" aria-controls="giftCard" aria-label="Abrir caja de regalo">
++            <span class="gift-shadow" aria-hidden="true"></span>
++            <span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span>
++            <span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span>
++            <span class="gift-bow" aria-hidden="true"><span class="gift-loop gift-loop-left"></span><span class="gift-loop gift-loop-right"></span><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
++            <span class="gift-tag" aria-hidden="true">H &amp; E</span>
++          </button>
++          <div class="gift-backdrop" id="giftBackdrop" hidden></div>
++          <div class="gift-card" id="giftCard" role="dialog" aria-modal="true" aria-label="Regalos" hidden>
++            <button class="gift-close" id="giftClose" type="button" aria-label="Cerrar">×</button>
++            <div class="gift-intro" id="giftIntro">
++              <p class="gift-open-description">Tu presencia en nuestro matrimonio es el mejor regalo. Si deseas tener un detalle adicional con nosotros, puedes hacerlo mediante una transferencia.</p>
++              <form class="form gift-form" id="giftForm" novalidate>
++                <label for="giftGiverName">Nombre de quien realiza el regalo <span>(opcional)</span></label>
++                <input id="giftGiverName" maxlength="160" autocomplete="name" placeholder="Tu nombre">
++                <label for="giftMessage">Mensaje para los novios <span>(opcional)</span></label>
++                <textarea id="giftMessage" maxlength="500" placeholder="Escribe unas palabras para los novios"></textarea>
++                <div class="gift-actions"><button class="button outline" id="giftMessageSubmit" type="button">Enviar dedicatoria</button><button class="button" type="submit">Continuar al regalo</button></div>
++                <p class="gift-status" id="giftStatus" role="status" aria-live="polite"></p>
++              </form>
++            </div>
++            <div class="gift-bank" id="giftBank" hidden>
++              <dl><div><dt>Titular</dt><dd>Elisbe Sanchez</dd></div><div><dt>Banco</dt><dd>BancoEstado</dd></div><div><dt>Tipo de cuenta</dt><dd>CuentaRUT</dd></div><div><dt>Número de cuenta</dt><dd>27299305</dd></div><div><dt>RUT</dt><dd>27.299.305-K</dd></div><div><dt>Correo</dt><dd><a href="mailto:elisbesanchez@gmail.com">elisbesanchez@gmail.com</a></dd></div></dl>
++              <button class="button outline" id="copyBank" type="button">Copiar datos bancarios</button>
++              <p class="gift-status" id="copyBankStatus" role="status" aria-live="polite"></p>
++              <details class="transfer-report"><summary>Ya realicé mi transferencia</summary><p>Si lo deseas, avísanos para poder revisarla. Quedará pendiente de verificación.</p><label for="transferSender">Nombre del remitente</label><input id="transferSender" maxlength="160" autocomplete="name"><label for="transferDate">Fecha de transferencia</label><input id="transferDate" type="date"><button class="button outline" id="reportTransfer" type="button">Informar transferencia</button><p class="gift-status" id="transferStatus" role="status" aria-live="polite"></p></details>
++            </div>
++          </div>
+         </div>
+       </div>
+     </section>
+@@ -270,9 +323,9 @@
+     <!-- Sección: Confirmación de Asistencia (RSVP) -->
+     <section class="alternate center" id="confirmar">
+       <div class="wrap reveal">
+-        <div class="eyebrow gold">Contamos contigo</div>
+-        <h2>Confirma tu asistencia</h2>
+-        <p id="rsvpIntro">Nos ayudará mucho saber si podremos compartir este día contigo.</p>
++        <h2>¡Nos encantaría contar contigo!</h2>
++        <p id="rsvpIntro">Por favor, confirma si podrás acompañarnos en nuestro matrimonio antes del 15 de diciembre de 2026.</p>
++        <p class="rsvp-deadline"><strong>Fecha límite de confirmación: 15 de diciembre de 2026.</strong></p>
+         <div class="rsvp-state" id="rsvpLoading" role="status">Preparando tu confirmación…</div>
+         <div class="rsvp-state" id="rsvpNoLink" hidden>
+           Esta sección se habilita desde el enlace personalizado de tu familia.
+@@ -315,17 +368,17 @@
+ 
+   <!-- Pie de página -->
+   <footer class="footer">
+-    <div class="eyebrow">Con todo nuestro amor</div>
++    <div class="eyebrow">GRACIAS POR SER PARTE DE NUESTRA HISTORIA</div>
+     <h2>Hector & Elisbe</h2>
+-    <p>9 de enero de 2027</p>
+-    <div class="leaf">❦</div>
++    <p>Lo más bonito de este día será poder compartirlo con las personas que queremos.</p>
+   </footer>
+ 
+   <!-- Scripts: configuración y lógica funcional -->
+   <script src="js/config.js?v=20261109-sage-recovered"></script>
+   <script src="js/rsvp-config.js?v=20261111-rsvp"></script>
+-  <script src="js/app.js?v=20261109-sage-recovered"></script>
++  <script src="js/app.js?v=opening-hero-direct-v1"></script>
+   <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
+   <script src="js/rsvp.js?v=20261111-rsvp"></script>
++  <script src="js/gifts.js?v=20261113-gifts-premium"></script>
+ </body>
+ </html>
+diff --git a/js/app.js b/js/app.js
+index f7ddcd5..819a8ee 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -8,16 +8,59 @@
+ // ============================================================================
+ const envelopeScreen = document.getElementById('envelopeScreen');
+ const envelopeTrigger = document.getElementById('envelopeTrigger');
+-const envelopePrompt = document.getElementById('envelopePrompt');
++const hero = document.getElementById('hero');
++const envelopeBox = document.querySelector('.envelope-box');
++const heroHome = hero ? { parent: hero.parentNode, next: hero.nextSibling } : null;
+ 
+ let isEnvelopeOpening = false;
+ const reduceEnvelopeMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+ 
++function revealHeroFromEnvelope() {
++  if (!hero || !envelopeTrigger || !envelopeBox) return;
++
++  // Se mueve el nodo real de la portada al interior del sobre: queda detrás
++  // del bolsillo frontal, sin crear una segunda portada ni una tarjeta.
++  envelopeScreen.classList.add('hero-hosting', 'revealing-hero');
++  hero.style.setProperty('--hero-start-x', '0px');
++  hero.style.setProperty('--hero-start-y', '0px');
++  hero.style.setProperty('--hero-start-scale', '.32');
++  hero.classList.add('hero-emerging');
++  envelopeBox.append(hero);
++  // El reflow ocurre después de neutralizar perspective/filter en los
++  // ancestros; así el rectángulo se mide verdaderamente respecto al viewport.
++  void hero.offsetWidth;
++  const opening = envelopeBox.getBoundingClientRect();
++  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
++  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
++  const scale = Math.min(.5, Math.max(.32, (opening.width / viewportWidth) * .66));
++  const startX = opening.left + (opening.width - viewportWidth * scale) / 2;
++  const startY = Math.max(0, opening.top + (opening.height - viewportHeight * scale) / 2);
++
++  hero.style.setProperty('--hero-start-x', `${Math.round(startX)}px`);
++  hero.style.setProperty('--hero-start-y', `${Math.round(startY)}px`);
++  hero.style.setProperty('--hero-start-scale', String(scale));
++  void hero.offsetWidth;
++  document.body.classList.add('invitation-revealed');
++  requestAnimationFrame(() => hero.classList.add('hero-emerged'));
++}
++
++function restoreHeroHome() {
++  if (!hero || !heroHome) return;
++  if (hero.parentNode !== heroHome.parent) {
++    heroHome.parent.insertBefore(hero, heroHome.next);
++  }
++  hero.classList.remove('hero-emerging', 'hero-emerged');
++  hero.style.removeProperty('--hero-start-x');
++  hero.style.removeProperty('--hero-start-y');
++  hero.style.removeProperty('--hero-start-scale');
++  envelopeScreen?.classList.remove('hero-hosting');
++}
++
+ function openEnvelopeSequence() {
+   if (isEnvelopeOpening) return;
+   isEnvelopeOpening = true;
++  document.documentElement.classList.add('envelope-animating');
+   envelopeTrigger?.setAttribute('disabled', '');
+-  envelopePrompt?.setAttribute('tabindex', '-1');
+ 
+   // Se ejecuta directamente desde el gesto del invitado para que los navegadores
+   // móviles permitan la reproducción. Si falla, el sobre continúa y el botón
+@@ -29,12 +72,12 @@ function openEnvelopeSequence() {
+     }
+   }
+ 
+-  // Secuencia cinematográfica (6,5 s): magia, solapa, tarjeta y portada.
++  // Secuencia directa (5,5 s): sello, solapa y portada real emergiendo.
+   // Para quien prefiere menos movimiento se mantienen los mismos estados,
+   // pero se presentan casi de inmediato.
+   const timing = reduceEnvelopeMotion
+-    ? { release: 20, flap: 30, letter: 45, focus: 60, reveal: 75, handoff: 82, finish: 100 }
+-    : { release: 800, flap: 1000, letter: 2500, focus: 4500, reveal: 5250, handoff: 6100, finish: 6500 };
++    ? { release: 20, flap: 30, reveal: 50, fade: 80, finish: 100 }
++    : { release: 400, flap: 800, reveal: 1400, fade: 4900, finish: 5500 };
+ 
+   envelopeScreen.classList.add('step-magic');
+ 
+@@ -47,31 +90,26 @@ function openEnvelopeSequence() {
+   }, timing.flap);
+ 
+   setTimeout(() => {
+-    envelopeScreen.classList.add('step-letter-out');
+-  }, timing.letter);
+-
+-  setTimeout(() => {
+-    envelopeScreen.classList.add('step-card-focus');
+-  }, timing.focus);
+-
+-  setTimeout(() => {
+-    document.body.classList.add('invitation-revealed');
+-    envelopeScreen.classList.add('step-hero-reveal');
++    revealHeroFromEnvelope();
+   }, timing.reveal);
+ 
+   setTimeout(() => {
+-    // La portada ya está presente: sólo ahora cedemos la tarjeta compartida.
+-    envelopeScreen.classList.add('step-card-handoff');
+-  }, timing.handoff);
++    // Hero ya está en su geometría final; se devuelve fuera del sobre antes
++    // de que cualquier parte del sobre comience su fundido.
++    restoreHeroHome();
++    envelopeScreen.classList.add('fading-envelope');
++  }, timing.fade);
+ 
+   setTimeout(() => {
+-    envelopeScreen.classList.add('opened');
+     document.body.classList.remove('envelope-active');
++    envelopeScreen.classList.add('opened');
++    document.documentElement.classList.remove('envelope-animating');
+ 
+     // Desactivamos completamente de accesibilidad para que no interfiera en la navegación
+     envelopeScreen.setAttribute('aria-hidden', 'true');
+     envelopeTrigger?.setAttribute('tabindex', '-1');
+-    startAutoTourAfterReveal();
++    restoreHeroHome();
++
+   }, timing.finish);
+ }
+ 
+@@ -85,16 +123,6 @@ if (envelopeTrigger) {
+   });
+ }
+ 
+-if (envelopePrompt) {
+-  envelopePrompt.addEventListener('click', openEnvelopeSequence);
+-  envelopePrompt.addEventListener('keydown', (e) => {
+-    if (e.key === 'Enter' || e.key === ' ') {
+-      e.preventDefault();
+-      openEnvelopeSequence();
+-    }
+-  });
+-}
+-
+ // Ruta de previsualización para control visual local: no altera la experiencia
+ // normal de los invitados ni intenta reproducir audio sin un gesto del usuario.
+ if (new URLSearchParams(window.location.search).get('preview') === 'open') {
+@@ -193,11 +221,11 @@ const calendarBtn = document.getElementById('calendar');
+ if (calendarBtn) {
+   calendarBtn.addEventListener('click', (e) => {
+     e.preventDefault();
+-    const title = encodeURIComponent('Matrimonio de Hector y Elisbe');
+-    const dates = '20270109/20270110';
+-    const details = encodeURIComponent('Celebración de nuestro matrimonio. Horarios por confirmar.');
+-    const location = encodeURIComponent('Capilla Inmaculada Corazón de María / Quincho Ayuwun, Puerto Montt');
+-    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
++    const title = encodeURIComponent('Matrimonio de Hector & Elisbe');
++    const dates = '20270109T153000/20270110T000000';
++    const details = encodeURIComponent('Ceremonia religiosa · 15:30 hrs\nCapilla Inmaculada Corazón de María\nVolcán Michimavida 296–310, Puerto Montt\n\nCelebración · 17:40 hrs\nQuincho Ayuwun\nQuillaipe km 22, Carretera Austral, Puerto Montt');
++    const location = encodeURIComponent('Capilla Inmaculada Corazón de María y Quincho Ayuwun, Puerto Montt, Chile');
++    const calendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}&ctz=America%2FSantiago`;
+     window.open(calendarUrl, '_blank', 'noopener');
+   });
+ }
+@@ -272,7 +300,6 @@ if (audio && mb) {
+ // ============================================================================
+ // RECORRIDO AUTOMÁTICO — INDEPENDIENTE DE LA MÚSICA
+ // ============================================================================
+-const autoTourButton = document.getElementById('autoTourButton');
+ let autoTourFrame = 0;
+ let autoTourStartTimer = 0;
+ let autoTourLastFrame = 0;
+@@ -282,29 +309,6 @@ let autoTourFinished = false;
+ let autoTourScrolling = false;
+ let autoTourPosition = 0;
+ 
+-function updateAutoTourControl() {
+-  if (!autoTourButton) return;
+-
+-  const canUseAutoTour = autoTourReady && !reduceEnvelopeMotion;
+-  autoTourButton.hidden = !canUseAutoTour;
+-  autoTourButton.disabled = autoTourFinished;
+-  autoTourButton.classList.toggle('is-active', autoTourActive);
+-  autoTourButton.classList.toggle('is-paused', !autoTourActive);
+-  autoTourButton.classList.toggle('is-finished', autoTourFinished);
+-  autoTourButton.setAttribute('aria-pressed', String(autoTourActive));
+-
+-  if (autoTourFinished) {
+-    autoTourButton.setAttribute('aria-label', 'Recorrido automático finalizado');
+-    autoTourButton.setAttribute('title', 'Recorrido automático finalizado');
+-  } else if (autoTourActive) {
+-    autoTourButton.setAttribute('aria-label', 'Pausar recorrido automático');
+-    autoTourButton.setAttribute('title', 'Pausar recorrido automático');
+-  } else {
+-    autoTourButton.setAttribute('aria-label', 'Reanudar recorrido automático');
+-    autoTourButton.setAttribute('title', 'Reanudar recorrido automático');
+-  }
+-}
+-
+ function autoTourLimit() {
+   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+ }
+@@ -324,7 +328,6 @@ function pauseAutoTour() {
+   autoTourActive = false;
+   cancelAnimationFrame(autoTourFrame);
+   autoTourFrame = 0;
+-  updateAutoTourControl();
+ }
+ 
+ function finishAutoTour() {
+@@ -332,7 +335,6 @@ function finishAutoTour() {
+   autoTourFinished = true;
+   cancelAnimationFrame(autoTourFrame);
+   autoTourFrame = 0;
+-  updateAutoTourControl();
+ }
+ 
+ function runAutoTour(now) {
+@@ -363,14 +365,12 @@ function resumeAutoTour() {
+   autoTourActive = true;
+   autoTourPosition = window.scrollY;
+   autoTourLastFrame = performance.now();
+-  updateAutoTourControl();
+   autoTourFrame = requestAnimationFrame(runAutoTour);
+ }
+ 
+ function startAutoTourAfterReveal() {
+   if (reduceEnvelopeMotion || autoTourReady) return;
+   autoTourReady = true;
+-  updateAutoTourControl();
+   clearTimeout(autoTourStartTimer);
+   // La portada permanece en calma dos segundos antes de iniciar el recorrido.
+   autoTourStartTimer = window.setTimeout(resumeAutoTour, 2000);
+@@ -382,14 +382,9 @@ function isInteractiveTourTarget(target) {
+   ));
+ }
+ 
+-autoTourButton?.addEventListener('click', (event) => {
+-  event.stopPropagation();
+-  if (autoTourActive) pauseAutoTour();
+-  else resumeAutoTour();
+-});
+-
+-// Un toque libre alterna pausa/reanudación. Los controles y enlaces siguen
+-// siendo completamente suyos: sólo detienen el recorrido, nunca su acción.
++// Un toque libre con el dedo alterna pausa/reanudación. Los controles y
++// enlaces siguen siendo completamente suyos: sólo detienen el recorrido,
++// nunca su acción.
+ document.addEventListener('click', (event) => {
+   if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
+   if (autoTourActive) pauseAutoTour();
+diff --git a/supabase/functions/_shared/supabase.ts b/supabase/functions/_shared/supabase.ts
+index ebcf03c..02907cb 100644
+--- a/supabase/functions/_shared/supabase.ts
++++ b/supabase/functions/_shared/supabase.ts
+@@ -120,6 +120,7 @@ export function databaseErrorResponse(error: unknown): AppError | null {
+     ADMIN_CAPACITY_BELOW_ASSIGNED_PASSES: [409, "ADMIN_CAPACITY_BELOW_ASSIGNED_PASSES"],
+     ADMIN_INVITATION_ARGUMENT_INVALID: [400, "ADMIN_INVITATION_ARGUMENT_INVALID"],
+     ADMIN_TABLE_ARGUMENT_INVALID: [400, "ADMIN_TABLE_ARGUMENT_INVALID"],
++    ADMIN_GIFT_ARGUMENT_INVALID: [400, "ADMIN_GIFT_ARGUMENT_INVALID"],
+     ADMIN_ATTENDEE_ARGUMENT_INVALID: [400, "ADMIN_ATTENDEE_ARGUMENT_INVALID"],
+     ADMIN_SEAT_ARGUMENT_INVALID: [400, "ADMIN_SEAT_ARGUMENT_INVALID"],
+     ADMIN_SEAT_NOT_FOUND: [404, "ADMIN_SEAT_NOT_FOUND"],
+@@ -130,6 +131,11 @@ export function databaseErrorResponse(error: unknown): AppError | null {
+     ADMIN_TABLE_NOT_FOUND: [404, "ADMIN_TABLE_NOT_FOUND"],
+     ADMIN_TABLE_CAPACITY_INVALID: [400, "ADMIN_TABLE_CAPACITY_INVALID"],
+     ADMIN_TABLE_CAPACITY_OCCUPIED: [409, "ADMIN_TABLE_CAPACITY_OCCUPIED"],
++    GIFT_PAYLOAD_INVALID: [400, "GIFT_PAYLOAD_INVALID"],
++    GIFT_NAME_INVALID: [400, "GIFT_NAME_INVALID"],
++    GIFT_MESSAGE_INVALID: [400, "GIFT_MESSAGE_INVALID"],
++    GIFT_TRANSFER_INVALID: [400, "GIFT_TRANSFER_INVALID"],
++    GIFT_NOT_PENDING_VERIFICATION: [409, "GIFT_NOT_PENDING_VERIFICATION"],
+   };
+ 
+   const mapped = known[error.message];
+diff --git a/supabase/functions/admin-rsvp/index.ts b/supabase/functions/admin-rsvp/index.ts
+index c8cee7d..548d092 100644
+--- a/supabase/functions/admin-rsvp/index.ts
++++ b/supabase/functions/admin-rsvp/index.ts
+@@ -115,6 +115,17 @@ Deno.serve(async (request) => {
+       return json({ data }, 200, headers);
+     }
+ 
++    if (action === "listGifts") {
++      const gifts = await rpc<unknown>(config, "gift_admin_list", { p_actor_user_id: adminUserId });
++      return json({ gifts }, 200, headers);
++    }
++
++    if (action === "verifyGift") {
++      const giftId = requireUuid(body.giftId, "ADMIN_GIFT_ARGUMENT_INVALID");
++      const gifts = await rpc<unknown>(config, "gift_admin_verify", { p_gift_id: giftId, p_actor_user_id: adminUserId });
++      return json({ gifts }, 200, headers);
++    }
++
+     if (action === "assignSeat") {
+       const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+       const attendeeId = requireUuid(body.attendeeId, "ADMIN_ATTENDEE_ARGUMENT_INVALID");
+diff --git a/supabase/functions/public-rsvp/index.ts b/supabase/functions/public-rsvp/index.ts
+index a8bb82b..68fb200 100644
+--- a/supabase/functions/public-rsvp/index.ts
++++ b/supabase/functions/public-rsvp/index.ts
+@@ -14,6 +14,7 @@ import { databaseErrorResponse, rpc } from "../_shared/supabase.ts";
+ 
+ const RESOLVE_LIMIT = 30;
+ const SUBMIT_LIMIT = 8;
++const GIFT_LIMIT = 6;
+ const RATE_WINDOW_SECONDS = 600;
+ 
+ function validateSubmission(body: Record<string, unknown>): {
+@@ -47,6 +48,26 @@ function validateSubmission(body: Record<string, unknown>): {
+   };
+ }
+ 
++function validateGift(body: Record<string, unknown>, kind: "message" | "transfer") {
++  if (body.token !== null && body.token !== undefined && typeof body.token !== "string"
++    || typeof body.submissionId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.submissionId)
++    || (body.giverName !== null && body.giverName !== undefined && typeof body.giverName !== "string")) {
++    throw new AppError(400, "GIFT_PAYLOAD_INVALID");
++  }
++  if (kind === "message" && typeof body.message !== "string") throw new AppError(400, "GIFT_MESSAGE_INVALID");
++  if (kind === "transfer" && (typeof body.transferSender !== "string" || typeof body.transferDate !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(body.transferDate))) {
++    throw new AppError(400, "GIFT_TRANSFER_INVALID");
++  }
++  return {
++    token: typeof body.token === "string" ? body.token : null,
++    submissionId: body.submissionId,
++    giverName: typeof body.giverName === "string" ? body.giverName : null,
++    message: kind === "message" ? body.message as string : null,
++    transferSender: kind === "transfer" ? body.transferSender as string : null,
++    transferDate: kind === "transfer" ? body.transferDate as string : null,
++  };
++}
++
+ Deno.serve(async (request) => {
+   let headers: HeadersInit = { "Content-Type": "application/json; charset=utf-8" };
+   try {
+@@ -56,21 +77,23 @@ Deno.serve(async (request) => {
+ 
+     const body = await readJson(request);
+     const action = body.action;
+-    if (action !== "resolve" && action !== "submit") {
++    if (action !== "resolve" && action !== "submit" && action !== "giftMessage" && action !== "giftTransfer") {
+       throw new AppError(400, "REQUEST_INVALID");
+     }
+ 
+-    const token = requireInvitationToken(body.token);
+-    const tokenHash = await sha256Hex(token);
++    const giftAction = action === "giftMessage" || action === "giftTransfer";
++    const gift = giftAction ? validateGift(body, action === "giftMessage" ? "message" : "transfer") : null;
++    const token = giftAction ? gift?.token : requireInvitationToken(body.token);
++    const tokenHash = token ? await sha256Hex(token) : null;
+     const config = loadRuntimeConfig();
+ 
+     // La clave de límite se hashea antes de llegar a PostgreSQL. No persiste la
+     // IP ni el token en texto plano, y los registros de función no reciben el body.
+-    const rateKey = await sha256Hex(`${action}:${clientIdentifier(request)}:${tokenHash}`);
++    const rateKey = await sha256Hex(`${action}:${clientIdentifier(request)}:${tokenHash ?? "anonymous"}`);
+     const allowed = await rpc<boolean>(config, "rsvp_take_rate_limit", {
+       p_scope: `public_rsvp:${action}`,
+       p_key_hash: rateKey,
+-      p_limit: action === "resolve" ? RESOLVE_LIMIT : SUBMIT_LIMIT,
++      p_limit: action === "resolve" ? RESOLVE_LIMIT : giftAction ? GIFT_LIMIT : SUBMIT_LIMIT,
+       p_window_seconds: RATE_WINDOW_SECONDS,
+     });
+     if (allowed !== true) {
+@@ -83,6 +106,16 @@ Deno.serve(async (request) => {
+       return json({ invitation }, 200, headers);
+     }
+ 
++    if (giftAction && gift) {
++      if (gift.token) requireInvitationToken(gift.token);
++      const result = await rpc<{ status: string }>(config, "gift_submit", {
++        p_token_hash: tokenHash, p_submission_id: gift.submissionId, p_giver_name: gift.giverName,
++        p_message: gift.message, p_transfer_sender: gift.transferSender, p_transfer_date: gift.transferDate,
++        p_kind: action === "giftMessage" ? "message" : "transfer",
++      });
++      return json(result, 200, headers);
++    }
++
+     const submission = validateSubmission(body);
+     const invitation = await rpc<unknown>(config, "rsvp_submit", {
+       p_token_hash: tokenHash,
+diff --git a/tests/verify-stage1.sh b/tests/verify-stage1.sh
+index 3db9019..62ffb07 100644
+--- a/tests/verify-stage1.sh
++++ b/tests/verify-stage1.sh
+@@ -86,9 +86,11 @@ fi
+ # La integración no puede retirar los elementos de la invitación aprobada.
+ rg -q 'id="envelopeScreen"' index.html
+ rg -q 'id="musicButton"' index.html
+-rg -q 'id="autoTourButton"' index.html
++! rg -q 'id="autoTourButton"' index.html
++! rg -q 'Descubrir nuestra invitación' index.html
+ rg -q 'assets/musica.mp3' index.html
+ rg -q 'pauseAutoTour' js/app.js
++rg -Fq "document.addEventListener('click'" js/app.js
+ rg -q 'RSVP_API.publicRequest' js/rsvp.js
+ rg -q 'admin-rsvp' js/rsvp-config.js
+ if rg -q 'wa\.me' js/app.js; then
