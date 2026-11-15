@@ -265,7 +265,7 @@ function autoTourSpeed() {
     const rect = section.getBoundingClientRect();
     return rect.top < window.innerHeight * .6 && rect.bottom > window.innerHeight * .35;
   });
-  return currentSection?.classList.contains('alternate') ? 19 : 24;
+  return currentSection?.classList.contains('alternate') ? 22.8 : 28.8;
 }
 
 function pauseAutoTour() {

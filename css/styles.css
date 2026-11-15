@@ -987,8 +987,7 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-ribbon { position: absolute; z-index: 3; background: linear-gradient(90deg, #c69f5d, #f1d28b, #b88b43); box-shadow: 0 1px 1px #5a703f88; pointer-events: none; }
 .gift-ribbon-v { width: 15%; height: 100%; left: 42.5%; top: 0; }
 .gift-ribbon-h { width: 110%; height: 13%; left: -5%; top: 40%; }
-.gift-bow { position: absolute; z-index: 4; width: 39%; height: 21%; left: 30.5%; top: -24%; border: 9px solid #d7b26e; border-radius: 50% 50% 45% 45%; transform: rotate(-10deg); pointer-events: none; transition: transform .65s ease; }
-.gift-bow::after { content: ''; position: absolute; width: 85%; height: 100%; left: 62%; top: -9px; border: 9px solid #d7b26e; border-radius: 50%; }
+.gift-bow { position: absolute; z-index: 4; width: 39%; height: 21%; left: 30.5%; top: -24%; transform: rotate(-10deg); pointer-events: none; transition: transform .65s ease; }
 .gift-box-label { position: absolute; z-index: 4; inset: auto 12px 12px; font: 600 .85rem 'DM Sans', sans-serif; letter-spacing: .08em; text-transform: uppercase; text-shadow: 0 1px 2px #20371e99; }
 .gift-experience.is-open .gift-box { transform: translateY(5px) scale(.96); }
 .gift-experience.is-open .gift-lid { transform: rotateX(108deg) rotateZ(-8deg); }
@@ -2006,9 +2005,6 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-ribbon-v { left: 43%; top: -1px; width: 14%; height: calc(100% + 265%); }
 .gift-ribbon-h { left: -3%; top: 42%; width: 106%; height: 17%; }
 .gift-bow { position: absolute; z-index: 6; top: -21%; left: 50%; width: 45%; height: 36%; pointer-events: none; transform: translateX(-50%); transition: transform .72s cubic-bezier(.2,.78,.2,1); }
-.gift-loop { position: absolute; top: 9%; width: 56%; height: 57%; border: 9px solid #d7c096; border-radius: 56% 46% 54% 46%; background: linear-gradient(145deg, rgba(248,235,202,.9), rgba(188,157,105,.76)); box-shadow: inset 2px 2px rgba(255,255,255,.6), 0 5px 7px rgba(82,65,36,.16); }
-.gift-loop-left { left: 0; transform: rotate(-25deg) skewX(-9deg); }
-.gift-loop-right { right: 0; transform: rotate(25deg) skewX(9deg); }
 .gift-knot { position: absolute; z-index: 2; left: 38%; top: 27%; width: 25%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 34% 29%, #fff4ce, #d7bb83 47%, #ac8955); box-shadow: inset 1px 1px rgba(255,255,255,.72), 0 3px 5px rgba(74,59,31,.2); }
 .gift-tail { position: absolute; top: 50%; width: 18%; height: 54%; background: linear-gradient(90deg, #aa8a58, #e8d1a2 50%, #b79763); filter: drop-shadow(0 3px 2px rgba(68,53,28,.14)); clip-path: polygon(0 0,100% 12%,78% 100%,48% 79%,18% 100%); }
 .gift-tail-left { left: 30%; transform: rotate(18deg); }
@@ -2028,24 +2024,28 @@ body.invitation-revealed .hero { opacity:1; }
 @media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card { animation: none; } }
 @media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
 
-/* Fecha y contador: ajustes focalizados, sin modificar otras secciones. */
-.wedding-date-section { padding: clamp(64px, 9vw, 96px) 0; }
-.wedding-date-section .wrap { width: min(680px, 90%); }
-.wedding-date-section h2 { margin-bottom: 21px; }
-.wedding-date { display: grid; grid-template-columns: auto auto auto; align-items: end; justify-content: center; gap: clamp(10px, 2.4vw, 24px); color: #1d4b33; font-family: 'Cormorant Garamond', serif; }
-.wedding-date-day { font-size: clamp(4.3rem, 10vw, 7rem); font-weight: 500; line-height: .72; }
-.wedding-date-month, .wedding-date-year { padding-bottom: .12em; color: #b78937; font: 600 clamp(.9rem, 2vw, 1.15rem)/1 'DM Sans', sans-serif; letter-spacing: .17em; }
-.wedding-date-year { color: #31553d; }
-.wedding-date-weekday { margin: 24px auto 4px; color: #355640; font: italic 500 1.2rem/1.4 'Cormorant Garamond', serif; }
-.wedding-date-place { margin: 0; color: #9b7a48; font: 600 .78rem/1.4 'DM Sans', sans-serif; letter-spacing: .13em; text-transform: uppercase; }
-
 .count { width: min(100%, 600px); margin-block: 34px 27px; gap: clamp(9px, 2.7vw, 25px); }
 .count div { padding: 10px 4px; }
 .count strong { font-size: clamp(2.65rem, 8.6vw, 4.25rem); line-height: .95; }
 .count small { margin-top: 7px; font-size: clamp(.59rem, 2.5vw, .76rem); }
 
+.dress-note { margin-top: 24px !important; padding: 15px 16px; border: 1px solid rgba(193, 138, 34, .6); border-radius: 10px; background: rgba(255, 253, 248, .78); color: #4d604b !important; font-size: .94rem; line-height: 1.58; }
+.dress-note strong { color: #9b7a48; }
+
 @media (max-width: 600px) {
-  .wedding-date-section { padding: 65px 0; }
-  .wedding-date { gap: 10px; }
-  .wedding-date-month, .wedding-date-year { font-size: .7rem; letter-spacing: .1em; }
+  .dress-note { text-align: left; }
+}
+
+/* Fotografías verticales: siempre completas, sin recorte ni marco añadido. */
+.wedding-photo-section { padding: clamp(18px, 4vw, 42px) 0 clamp(56px, 8vw, 88px); background: #f7f4ec; }
+.wedding-photo, .closing-family-photo { width: min(100% - 32px, 440px); margin: 0 auto; }
+.wedding-photo img, .closing-family-photo img, .story-photo-companion img { display: block; width: 100%; height: auto; object-fit: contain; }
+.wedding-photo img { border: 0; border-radius: 0; box-shadow: none; }
+.story-photo-companion { width: min(100%, 390px); margin: 34px auto 0; }
+.closing-family-photo-section { padding: clamp(42px, 7vw, 74px) 0; background: #f7f4ec; }
+.closing-family-photo img { border-radius: 12px; box-shadow: 0 12px 28px rgba(48, 68, 47, .10); }
+
+@media (max-width: 600px) {
+  .wedding-photo, .closing-family-photo { width: min(100% - 22px, 390px); }
+  .story-photo-companion { width: min(100%, 350px); margin-top: 26px; }
 }
