@@ -251,7 +251,6 @@ let autoTourLastFrame = 0;
 let autoTourActive = false;
 let autoTourReady = false;
 let autoTourFinished = false;
-let autoTourScrolling = false;
 let autoTourPosition = 0;
 let autoTourHoldPointer = null;
 let autoTourHolding = false;
@@ -275,6 +274,7 @@ function pauseAutoTour() {
   autoTourActive = false;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
+  document.documentElement.classList.remove('auto-tour-active');
 }
 
 function finishAutoTour() {
@@ -282,6 +282,7 @@ function finishAutoTour() {
   autoTourFinished = true;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
+  document.documentElement.classList.remove('auto-tour-active');
 }
 
 function runAutoTour(now) {
@@ -297,9 +298,7 @@ function runAutoTour(now) {
   autoTourLastFrame = now;
   autoTourPosition = Math.min(limit, autoTourPosition + autoTourSpeed() * elapsed);
 
-  autoTourScrolling = true;
   window.scrollTo(0, autoTourPosition);
-  requestAnimationFrame(() => { autoTourScrolling = false; });
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
@@ -312,6 +311,7 @@ function resumeAutoTour() {
   autoTourActive = true;
   autoTourPosition = window.scrollY;
   autoTourLastFrame = performance.now();
+  document.documentElement.classList.add('auto-tour-active');
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
@@ -347,24 +347,30 @@ function endAutoTourHold() {
 
 if ('PointerEvent' in window) {
   document.addEventListener('pointerdown', (event) => {
-    if (!event.isPrimary || isInteractiveTourTarget(event.target)) return;
+    if (!event.isPrimary || event.pointerType === 'touch' || isInteractiveTourTarget(event.target)) return;
     autoTourHoldPointer = event.pointerId;
     beginAutoTourHold();
   }, { passive: true });
 
   const releasePointerHold = (event) => {
-    if (autoTourHoldPointer !== null && event.pointerId !== autoTourHoldPointer) return;
+    if (event.pointerType === 'touch' || autoTourHoldPointer !== event.pointerId) return;
     endAutoTourHold();
   };
   window.addEventListener('pointerup', releasePointerHold, { passive: true });
   window.addEventListener('pointercancel', releasePointerHold, { passive: true });
-} else {
-  document.addEventListener('touchstart', (event) => {
-    if (isInteractiveTourTarget(event.target)) return;
-    beginAutoTourHold();
-  }, { passive: true });
-  window.addEventListener('touchend', endAutoTourHold, { passive: true });
-  window.addEventListener('touchcancel', endAutoTourHold, { passive: true });
 }
+
+document.addEventListener('touchstart', (event) => {
+  if (isInteractiveTourTarget(event.target)) return;
+  autoTourHoldPointer = 'touch';
+  beginAutoTourHold();
+}, { passive: true });
+
+const releaseTouchHold = () => {
+  if (autoTourHoldPointer !== 'touch') return;
+  endAutoTourHold();
+};
+window.addEventListener('touchend', releaseTouchHold, { passive: true });
+window.addEventListener('touchcancel', releaseTouchHold, { passive: true });
 
 
