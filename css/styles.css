@@ -26,9 +26,6 @@ html {
   overflow-x: hidden;
 }
 
-/* Evita que Android acumule animaciones smooth en cada cuadro del recorrido. */
-html.auto-tour-active { scroll-behavior: auto; }
-
 body {
   margin: 0;
   background-color: var(--white);
@@ -1776,7 +1773,7 @@ body.invitation-revealed .hero { opacity:1; }
 
 .envelope-wrapper { width:min(510px, 86vw); height:285px; filter:drop-shadow(0 18px 20px rgba(101,61,7,.18)); }
 .envelope-box { border:1px solid rgba(196,132,18,.5); border-radius:1px; background:linear-gradient(145deg,#fffaf0,#f4e7d3); box-shadow:0 16px 22px rgba(97,57,6,.2); }
-.envelope-box::before, .envelope-box::after { content:''; position:absolute; pointer-events:none; background-image:url('../assets/referencia-floral-el-isbe-hector.png'); background-repeat:no-repeat; background-size:500px auto; z-index:9; }
+.envelope-box::before, .envelope-box::after { content:''; position:absolute; pointer-events:none; background-image:url('../assets/floral-acuarela-eucalipto-v3.png'); background-repeat:no-repeat; background-size:500px auto; z-index:9; }
 .envelope-box::before { width:190px; height:150px; left:-50px; top:-54px; background-position:0 0; transform:rotate(-3deg); }
 .envelope-box::after { width:165px; height:145px; right:-49px; bottom:-58px; background-position:100% 100%; transform:rotate(3deg); }
 .envelope-paper-grain { opacity:.22; z-index:1; background-image:radial-gradient(rgba(152,107,40,.25) .45px, transparent .72px); }
@@ -1798,7 +1795,7 @@ body.invitation-revealed .hero { opacity:1; }
 .letter-names i { color:#d89418; }
 .letter-date { color:#a56a09; }
 .letter-botanical { display:none; }
-.letter-border::before { opacity:.3; background-image:url('../assets/referencia-floral-el-isbe-hector.png'); background-size:470px auto; background-position:0 0; }
+.letter-border::before { opacity:.3; background-image:url('../assets/floral-acuarela-eucalipto-v3.png'); background-size:470px auto; background-position:0 0; }
 
 /* La portada repite el papel, oro y flores de la referencia. */
 .hero { background:#fbf3e7; }

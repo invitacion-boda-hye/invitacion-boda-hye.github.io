@@ -8,11 +8,13 @@
     groupName: document.getElementById('rsvpGroupName'), passes: document.getElementById('rsvpPasses'),
     attendingFields: document.getElementById('rsvpAttendingFields'), people: document.getElementById('people'),
     attendees: document.getElementById('attendeeFields'), comment: document.getElementById('message'),
+    memberFields: document.getElementById('rsvpMemberFields'), choice: form.querySelector('.rsvp-choice'),
     warning: document.getElementById('rsvpCommentWarning'), submit: document.getElementById('rsvpSubmit'),
     help: document.getElementById('rsvpHelp'), thanks: document.getElementById('rsvpThanks')
   };
   let invitation = null;
   let token = '';
+  let memberMode = false;
 
   const messages = {
     INVITATION_INVALID: 'Este enlace de invitación no es válido o fue revocado.',
@@ -73,12 +75,35 @@
     if (attending && !elements.attendees.children.length) renderAttendees(Number(elements.people.value || 1));
   }
 
+  function renderMemberStates(members) {
+    elements.memberFields.replaceChildren();
+    members.forEach((member) => {
+      const label = document.createElement('label');
+      const select = document.createElement('select');
+      select.dataset.memberId = member.id;
+      [['pending', 'Aún no decidimos'], ['attending', 'Sí asistirá'], ['declined', 'No asistirá']].forEach(([value, name]) => {
+        const option = document.createElement('option'); option.value = value; option.textContent = name; select.append(option);
+      });
+      select.value = ['pending', 'attending', 'declined'].includes(member.state) ? member.state : 'pending';
+      label.append(document.createTextNode(member.fullName), select);
+      elements.memberFields.append(label);
+    });
+  }
+
   function applyInvitation(data) {
     invitation = data;
     const { invitation: group, response } = data;
+    memberMode = Array.isArray(data.members) && data.members.length > 0;
     elements.groupName.textContent = group.groupName;
     elements.passes.textContent = `Esta invitación incluye hasta ${group.maxPasses} ${group.maxPasses === 1 ? 'persona' : 'personas'}.`;
     populatePeople(group.maxPasses);
+    elements.choice.hidden = memberMode;
+    elements.attendingFields.hidden = memberMode;
+    elements.memberFields.hidden = !memberMode;
+    if (memberMode) {
+      renderMemberStates(data.members);
+      elements.submit.textContent = 'Guardar confirmaciones';
+    }
     if (response) {
       const choice = form.querySelector(`input[name="attendance"][value="${response.isAttending ? 'yes' : 'no'}"]`);
       if (choice) choice.checked = true;
@@ -88,7 +113,7 @@
     } else {
       renderAttendees(1);
     }
-    applyAttendanceState();
+    if (!memberMode) applyAttendanceState();
     if (!group.canModify) {
       form.querySelectorAll('input, select, textarea, button').forEach((field) => { field.disabled = true; });
       elements.help.textContent = 'El plazo de confirmación ya finalizó.';
@@ -122,7 +147,7 @@
 
   form.addEventListener('change', (event) => {
     pauseTourForRsvp();
-    if (event.target.name === 'attendance') applyAttendanceState();
+    if (!memberMode && event.target.name === 'attendance') applyAttendanceState();
     if (event.target === elements.people) renderAttendees(Number(elements.people.value));
   });
   form.addEventListener('focusin', pauseTourForRsvp);
@@ -141,6 +166,19 @@
     event.preventDefault();
     pauseTourForRsvp();
     elements.error.hidden = true;
+    if (memberMode) {
+      elements.submit.disabled = true;
+      elements.submit.textContent = 'Guardando…';
+      try {
+        const members = [...elements.memberFields.querySelectorAll('select')].map((select) => ({ id: select.dataset.memberId, state: select.value }));
+        const result = await RSVP_API.publicRequest({ action: 'submitMembers', token, members, comment: elements.comment.value.trim() || null });
+        applyInvitation(result.invitation);
+        elements.thanks.replaceChildren(Object.assign(document.createElement('strong'), { textContent: '¡Gracias por responder!' }));
+        elements.thanks.hidden = false;
+      } catch (error) { showError(error.message); }
+      finally { elements.submit.disabled = false; elements.submit.textContent = 'Guardar confirmaciones'; }
+      return;
+    }
     const isAttending = selectedAttendance() === 'yes';
     if (!selectedAttendance()) return showError('RSVP_PAYLOAD_INVALID');
     const confirmedCount = isAttending ? Number(elements.people.value) : 0;
