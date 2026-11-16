@@ -251,8 +251,9 @@ let autoTourLastFrame = 0;
 let autoTourActive = false;
 let autoTourReady = false;
 let autoTourFinished = false;
-let autoTourScrolling = false;
 let autoTourPosition = 0;
+let autoTourHoldPointer = null;
+let autoTourHolding = false;
 
 function autoTourLimit() {
   return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
@@ -273,6 +274,7 @@ function pauseAutoTour() {
   autoTourActive = false;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
+  document.documentElement.classList.remove('auto-tour-active');
 }
 
 function finishAutoTour() {
@@ -280,6 +282,7 @@ function finishAutoTour() {
   autoTourFinished = true;
   cancelAnimationFrame(autoTourFrame);
   autoTourFrame = 0;
+  document.documentElement.classList.remove('auto-tour-active');
 }
 
 function runAutoTour(now) {
@@ -295,14 +298,12 @@ function runAutoTour(now) {
   autoTourLastFrame = now;
   autoTourPosition = Math.min(limit, autoTourPosition + autoTourSpeed() * elapsed);
 
-  autoTourScrolling = true;
   window.scrollTo(0, autoTourPosition);
-  requestAnimationFrame(() => { autoTourScrolling = false; });
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
 function resumeAutoTour() {
-  if (reduceEnvelopeMotion || autoTourFinished || autoTourActive) return;
+  if (reduceEnvelopeMotion || autoTourFinished || autoTourActive || autoTourHolding) return;
   if (window.scrollY >= autoTourLimit() - 1) {
     finishAutoTour();
     return;
@@ -310,6 +311,7 @@ function resumeAutoTour() {
   autoTourActive = true;
   autoTourPosition = window.scrollY;
   autoTourLastFrame = performance.now();
+  document.documentElement.classList.add('auto-tour-active');
   autoTourFrame = requestAnimationFrame(runAutoTour);
 }
 
@@ -327,26 +329,48 @@ function isInteractiveTourTarget(target) {
   ));
 }
 
-// Un toque libre con el dedo alterna pausa/reanudación. Los controles y
-// enlaces siguen siendo completamente suyos: sólo detienen el recorrido,
-// nunca su acción.
-document.addEventListener('click', (event) => {
-  if (!autoTourReady || autoTourFinished || isInteractiveTourTarget(event.target)) return;
-  if (autoTourActive) pauseAutoTour();
-  else resumeAutoTour();
-});
+// Pausar antes de que el navegador procese un arrastre evita que el recorrido
+// programático compita con el desplazamiento nativo. Los listeners son
+// pasivos: nunca cancelan el gesto ni modifican la apertura del sobre.
+function beginAutoTourHold() {
+  if (!autoTourReady || autoTourFinished || autoTourHolding) return;
+  autoTourHolding = true;
+  pauseAutoTour();
+}
 
-document.addEventListener('wheel', () => pauseAutoTour(), { passive: true });
-document.addEventListener('touchmove', () => pauseAutoTour(), { passive: true });
-document.addEventListener('keydown', (event) => {
+function endAutoTourHold() {
+  if (!autoTourHolding) return;
+  autoTourHolding = false;
+  autoTourHoldPointer = null;
+  resumeAutoTour();
+}
+
+if ('PointerEvent' in window) {
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.isPrimary || event.pointerType === 'touch' || isInteractiveTourTarget(event.target)) return;
+    autoTourHoldPointer = event.pointerId;
+    beginAutoTourHold();
+  }, { passive: true });
+
+  const releasePointerHold = (event) => {
+    if (event.pointerType === 'touch' || autoTourHoldPointer !== event.pointerId) return;
+    endAutoTourHold();
+  };
+  window.addEventListener('pointerup', releasePointerHold, { passive: true });
+  window.addEventListener('pointercancel', releasePointerHold, { passive: true });
+}
+
+document.addEventListener('touchstart', (event) => {
   if (isInteractiveTourTarget(event.target)) return;
-  if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
-    pauseAutoTour();
-  }
-});
-
-window.addEventListener('scroll', () => {
-  if (autoTourReady && autoTourActive && !autoTourScrolling) pauseAutoTour();
+  autoTourHoldPointer = 'touch';
+  beginAutoTourHold();
 }, { passive: true });
+
+const releaseTouchHold = () => {
+  if (autoTourHoldPointer !== 'touch') return;
+  endAutoTourHold();
+};
+window.addEventListener('touchend', releaseTouchHold, { passive: true });
+window.addEventListener('touchcancel', releaseTouchHold, { passive: true });
 
 

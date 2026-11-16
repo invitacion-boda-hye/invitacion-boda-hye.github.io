@@ -26,6 +26,9 @@ html {
   overflow-x: hidden;
 }
 
+/* Evita que Android acumule animaciones smooth en cada cuadro del recorrido. */
+html.auto-tour-active { scroll-behavior: auto; }
+
 body {
   margin: 0;
   background-color: var(--white);
