@@ -22,7 +22,7 @@
     RSVP_CAPACITY_EXCEEDED: 'Por el momento no quedan cupos suficientes para esta confirmación.',
     RSVP_PASSES_EXCEEDED: 'La cantidad indicada supera los pases asignados a tu familia.',
     RSVP_COUNT_MISMATCH: 'Revisa que la cantidad elegida coincida con los nombres ingresados.',
-    RSVP_ATTENDEE_NAME_INVALID: 'Ingresa nombre y apellido para cada asistente.',
+    RSVP_ATTENDEE_NAME_INVALID: 'Ingresa un nombre válido para cada asistente.',
     RATE_LIMITED: 'Hiciste varios intentos. Espera unos minutos antes de volver a intentarlo.',
     RSVP_NOT_CONFIGURED: 'La confirmación estará disponible muy pronto.'
   };
@@ -185,7 +185,7 @@
     const attendees = isAttending
       ? [...elements.attendees.querySelectorAll('input')].map((input) => ({ full_name: input.value.trim() }))
       : [];
-    if (isAttending && attendees.some((attendee) => !/\S+\s+\S+/.test(attendee.full_name))) {
+    if (isAttending && attendees.some((attendee) => !/\S/.test(attendee.full_name))) {
       return showError('RSVP_ATTENDEE_NAME_INVALID');
     }
     elements.submit.disabled = true;
