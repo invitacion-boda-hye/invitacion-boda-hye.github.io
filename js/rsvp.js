@@ -10,7 +10,8 @@
     attendees: document.getElementById('attendeeFields'), comment: document.getElementById('message'),
     memberFields: document.getElementById('rsvpMemberFields'), choice: form.querySelector('.rsvp-choice'),
     warning: document.getElementById('rsvpCommentWarning'), submit: document.getElementById('rsvpSubmit'),
-    help: document.getElementById('rsvpHelp'), thanks: document.getElementById('rsvpThanks')
+    help: document.getElementById('rsvpHelp'), confirmation: document.getElementById('rsvpConfirmation'),
+    edit: document.getElementById('rsvpEdit')
   };
   let invitation = null;
   let token = '';
@@ -90,6 +91,44 @@
     });
   }
 
+  function memberStateLabel(state) {
+    return state === 'attending' ? 'Asistirá' : state === 'declined' ? 'No asistirá' : 'Aún no decide';
+  }
+
+  function hasSavedResponse(data) {
+    return Boolean(data.response) || (Array.isArray(data.members) && data.members.some((member) => member.state !== 'pending'));
+  }
+
+  function renderConfirmation(data) {
+    const { response, members = [] } = data;
+    const title = document.createElement('strong');
+    const detail = document.createElement('span');
+    const states = document.createElement('ul');
+
+    if (memberMode) {
+      const someoneAttending = members.some((member) => member.state === 'attending');
+      title.textContent = someoneAttending ? 'Tu asistencia está confirmada' : 'Has indicado que no asistirás';
+      detail.textContent = 'Estas son las respuestas registradas para tu invitación:';
+      members.forEach((member) => {
+        const item = document.createElement('li');
+        item.textContent = `${member.fullName}: ${memberStateLabel(member.state)}`;
+        states.append(item);
+      });
+    } else if (response?.isAttending) {
+      title.textContent = 'Tu asistencia está confirmada';
+      const names = (response.attendees || []).map((attendee) => attendee.fullName).filter(Boolean);
+      detail.textContent = names.length ? `Registramos: ${names.join(', ')}.` : 'Tu respuesta fue registrada.';
+    } else {
+      title.textContent = 'Has indicado que no asistirás';
+      detail.textContent = 'Tu respuesta fue registrada.';
+    }
+
+    elements.confirmation.replaceChildren(title, detail, memberMode ? states : document.createDocumentFragment());
+    elements.confirmation.hidden = false;
+    elements.edit.hidden = !data.invitation.canModify;
+    form.hidden = true;
+  }
+
   function applyInvitation(data) {
     invitation = data;
     const { invitation: group, response } = data;
@@ -100,6 +139,9 @@
     elements.choice.hidden = memberMode;
     elements.attendingFields.hidden = memberMode;
     elements.memberFields.hidden = !memberMode;
+    elements.confirmation.hidden = true;
+    elements.edit.hidden = true;
+    form.hidden = false;
     if (memberMode) {
       renderMemberStates(data.members);
       elements.submit.textContent = 'Guardar confirmaciones';
@@ -118,6 +160,7 @@
       form.querySelectorAll('input, select, textarea, button').forEach((field) => { field.disabled = true; });
       elements.help.textContent = 'El plazo de confirmación ya finalizó.';
     }
+    if (hasSavedResponse(data)) renderConfirmation(data);
     elements.loading.hidden = true;
     elements.experience.hidden = false;
   }
@@ -162,6 +205,13 @@
       : '';
   });
 
+  elements.edit.addEventListener('click', () => {
+    elements.confirmation.hidden = true;
+    elements.edit.hidden = true;
+    form.hidden = false;
+    pauseTourForRsvp();
+  });
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     pauseTourForRsvp();
@@ -173,8 +223,6 @@
         const members = [...elements.memberFields.querySelectorAll('select')].map((select) => ({ id: select.dataset.memberId, state: select.value }));
         const result = await RSVP_API.publicRequest({ action: 'submitMembers', token, members, comment: elements.comment.value.trim() || null });
         applyInvitation(result.invitation);
-        elements.thanks.replaceChildren(Object.assign(document.createElement('strong'), { textContent: '¡Gracias por responder!' }));
-        elements.thanks.hidden = false;
       } catch (error) { showError(error.message); }
       finally { elements.submit.disabled = false; elements.submit.textContent = 'Guardar confirmaciones'; }
       return;
@@ -195,18 +243,6 @@
         action: 'submit', token, isAttending, confirmedCount, attendees, comment: elements.comment.value.trim() || null
       });
       applyInvitation(result.invitation);
-      const response = result.invitation.response;
-      const title = document.createElement('strong');
-      const detail = document.createElement('span');
-      if (response.isAttending) {
-        title.textContent = '¡Gracias por confirmar!';
-        detail.textContent = `Nos llena de alegría saber que nos acompañarán. Registramos: ${response.attendees.map((item) => item.fullName).join(', ')}.`;
-      } else {
-        title.textContent = 'Gracias por responder.';
-        detail.textContent = 'Los llevaremos con cariño en este día tan especial.';
-      }
-      elements.thanks.replaceChildren(title, detail);
-      elements.thanks.hidden = false;
     } catch (error) {
       showError(error.message);
     } finally {
