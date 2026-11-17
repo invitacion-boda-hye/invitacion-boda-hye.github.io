@@ -4,18 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#a3b18a">
-  <meta name="description" content="Nuestra boda — Hector & Elisbe · 09/01/2027.">
+  <meta name="description" content="Una invitación especial de Hector & Elisbe.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://invitacion-boda-hye.github.io/">
-  <meta property="og:title" content="Nuestra boda | Hector & Elisbe">
-  <meta property="og:description" content="Nuestra boda — 09/01/2027.">
-  <meta property="og:image" content="https://invitacion-boda-hye.github.io/assets/referencia-floral-el-isbe-hector.png">
-  <meta property="og:image:alt" content="Invitación de boda de Hector y Elisbe">
+  <meta property="og:title" content="Hector & Elisbe">
+  <meta property="og:description" content="Una invitación especial">
+  <meta property="og:image" content="https://invitacion-boda-hye.github.io/assets/og-hector-elisbe.png">
+  <meta property="og:image:alt" content="Hector & Elisbe · Una invitación especial">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Nuestra boda | Hector & Elisbe">
-  <meta name="twitter:description" content="Nuestra boda — 09/01/2027.">
-  <meta name="twitter:image" content="https://invitacion-boda-hye.github.io/assets/referencia-floral-el-isbe-hector.png">
-  <title>Nuestra boda | Hector & Elisbe</title>
+  <meta name="twitter:title" content="Hector & Elisbe">
+  <meta name="twitter:description" content="Una invitación especial">
+  <meta name="twitter:image" content="https://invitacion-boda-hye.github.io/assets/og-hector-elisbe.png">
+  <title>Hector & Elisbe | Una invitación especial</title>
 
   <!-- Tipografías de Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -261,43 +261,6 @@
       </div>
     </section>
 
-    <!-- Sección: Regalos -->
-    <section class="center gifts-section" id="regalos">
-      <div class="wrap reveal">
-        <h2>Regalo</h2>
-        <div class="gift-experience" id="giftExperience">
-          <button class="gift-box" id="giftBox" type="button" aria-expanded="false" aria-controls="giftCard" aria-label="Abrir caja de regalo">
-            <span class="gift-shadow" aria-hidden="true"></span>
-            <span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span>
-            <span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span>
-            <span class="gift-bow" aria-hidden="true"><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span>
-            <span class="gift-tag" aria-hidden="true">H &amp; E</span>
-          </button>
-          <div class="gift-backdrop" id="giftBackdrop" hidden></div>
-          <div class="gift-card" id="giftCard" role="dialog" aria-modal="true" aria-label="Regalos" hidden>
-            <button class="gift-close" id="giftClose" type="button" aria-label="Cerrar">×</button>
-            <div class="gift-intro" id="giftIntro">
-              <p class="gift-open-description">Tu presencia en nuestro matrimonio es el mejor regalo. Si deseas tener un detalle adicional con nosotros, puedes hacerlo mediante una transferencia.</p>
-              <form class="form gift-form" id="giftForm" novalidate>
-                <label for="giftGiverName">Nombre de quien realiza el regalo <span>(opcional)</span></label>
-                <input id="giftGiverName" maxlength="160" autocomplete="name" placeholder="Tu nombre">
-                <label for="giftMessage">Mensaje para los novios <span>(opcional)</span></label>
-                <textarea id="giftMessage" maxlength="500" placeholder="Escribe unas palabras para los novios"></textarea>
-                <div class="gift-actions"><button class="button outline" id="giftMessageSubmit" type="button">Enviar dedicatoria</button><button class="button" type="submit">Continuar al regalo</button></div>
-                <p class="gift-status" id="giftStatus" role="status" aria-live="polite"></p>
-              </form>
-            </div>
-            <div class="gift-bank" id="giftBank" hidden>
-              <dl><div><dt>Titular</dt><dd>Elisbe Sanchez</dd></div><div><dt>Banco</dt><dd>BancoEstado</dd></div><div><dt>Tipo de cuenta</dt><dd>CuentaRUT</dd></div><div><dt>Número de cuenta</dt><dd>27299305</dd></div><div><dt>RUT</dt><dd>27.299.305-K</dd></div><div><dt>Correo</dt><dd><a href="mailto:elisbesanchez@gmail.com">elisbesanchez@gmail.com</a></dd></div></dl>
-              <button class="button outline" id="copyBank" type="button">Copiar datos bancarios</button>
-              <p class="gift-status" id="copyBankStatus" role="status" aria-live="polite"></p>
-              <details class="transfer-report"><summary>Ya realicé mi transferencia</summary><p>Si lo deseas, avísanos para poder revisarla. Quedará pendiente de verificación.</p><label for="transferSender">Nombre del remitente</label><input id="transferSender" maxlength="160" autocomplete="name"><label for="transferDate">Fecha de transferencia</label><input id="transferDate" type="date"><button class="button outline" id="reportTransfer" type="button">Informar transferencia</button><p class="gift-status" id="transferStatus" role="status" aria-live="polite"></p></details>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Sección: Confirmación de Asistencia (RSVP) -->
     <section class="alternate center" id="confirmar">
       <div class="wrap reveal">
@@ -317,12 +280,17 @@
             <span id="rsvpPasses">Esta invitación incluye hasta 1 persona.</span>
           </div>
 
+          <div class="rsvp-thanks" id="rsvpConfirmation" hidden aria-live="polite"></div>
+          <button class="button" id="rsvpEdit" type="button" hidden>Modificar confirmación</button>
+
           <form class="form rsvp-form" id="rsvp" novalidate>
             <fieldset class="rsvp-choice">
               <legend>¿Nos acompañarán en nuestro matrimonio?</legend>
               <label><input type="radio" name="attendance" value="yes" required> Sí, asistiremos.</label>
               <label><input type="radio" name="attendance" value="no" required> No podremos asistir.</label>
             </fieldset>
+
+            <div id="rsvpMemberFields" class="rsvp-attendees" hidden aria-live="polite"></div>
 
             <div id="rsvpAttendingFields" hidden>
               <label for="people">Personas que asistirán</label>
@@ -337,8 +305,18 @@
             <button class="button" id="rsvpSubmit" type="submit">Confirmar nuestra asistencia</button>
             <p class="note" id="rsvpHelp">Podrás volver a este enlace para modificar tu respuesta mientras el plazo esté vigente.</p>
           </form>
+        </div>
+      </div>
+    </section>
 
-          <div class="rsvp-thanks" id="rsvpThanks" hidden aria-live="polite"></div>
+    <!-- Sección: Regalos -->
+    <section class="center gifts-section" id="regalos">
+      <div class="wrap reveal">
+        <h2>Regalo</h2><p>Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle con nosotros, puedes hacerlo aquí.</p>
+        <div class="gift-experience" id="giftExperience">
+          <button class="gift-box" id="giftBox" type="button" aria-expanded="false" aria-controls="giftCard" aria-label="Abrir opciones de regalo"><span class="gift-shadow" aria-hidden="true"></span><span class="gift-base" aria-hidden="true"><span class="gift-front"></span><span class="gift-side"></span></span><span class="gift-lid" aria-hidden="true"><span class="gift-ribbon gift-ribbon-v"></span><span class="gift-ribbon gift-ribbon-h"></span></span><span class="gift-bow" aria-hidden="true"><span class="gift-knot"></span><span class="gift-tail gift-tail-left"></span><span class="gift-tail gift-tail-right"></span></span><span class="gift-tag" aria-hidden="true">H &amp; E</span></button>
+          <button class="button gift-open-button" id="giftOpenButton" type="button">🎁 Enviar regalo</button><div class="gift-backdrop" id="giftBackdrop" hidden></div>
+          <div class="gift-card" id="giftCard" role="dialog" aria-modal="true" aria-label="Regalos" hidden><button class="gift-close" id="giftClose" type="button" aria-label="Cerrar">×</button><div class="gift-intro" id="giftIntro"><form class="form gift-form" id="giftForm" novalidate><label for="giftGiverName">Nombre de quien realiza el regalo <span>(opcional)</span></label><input id="giftGiverName" maxlength="160" autocomplete="name" placeholder="Tu nombre"><label for="giftMessage">Mensaje para los novios <span>(opcional)</span></label><textarea id="giftMessage" maxlength="500" placeholder="Escribe unas palabras para los novios"></textarea><div class="gift-actions"><button class="button outline" id="giftMessageSubmit" type="button">Enviar dedicatoria</button><button class="button" type="submit">Continuar al regalo</button></div><p class="gift-status" id="giftStatus" role="status" aria-live="polite"></p></form></div><div class="gift-bank" id="giftBank" hidden><dl><div><dt>Titular</dt><dd>Elisbe Sanchez</dd></div><div><dt>Banco</dt><dd>BancoEstado</dd></div><div><dt>Tipo de cuenta</dt><dd>CuentaRUT</dd></div><div><dt>Número de cuenta</dt><dd>27299305</dd></div><div><dt>RUT</dt><dd>27.299.305-K</dd></div><div><dt>Correo</dt><dd><a href="mailto:elisbesanchez@gmail.com">elisbesanchez@gmail.com</a></dd></div></dl><button class="button outline" id="copyBank" type="button">Copiar datos bancarios</button><p class="gift-status" id="copyBankStatus" role="status" aria-live="polite"></p><details class="transfer-report"><summary>Ya realicé mi transferencia</summary><p>Si lo deseas, avísanos para poder revisarla. Quedará pendiente de verificación.</p><label for="transferSender">Nombre del remitente</label><input id="transferSender" maxlength="160" autocomplete="name"><label for="transferDate">Fecha de transferencia</label><input id="transferDate" type="date"><button class="button outline" id="reportTransfer" type="button">Informar transferencia</button><p class="gift-status" id="transferStatus" role="status" aria-live="polite"></p></details></div></div>
         </div>
       </div>
     </section>
@@ -363,6 +341,6 @@
   <script src="js/app.js?v=opening-hero-direct-v1"></script>
   <script src="js/rsvp-client.js?v=20261111-rsvp"></script>
   <script src="js/rsvp.js?v=20261111-rsvp"></script>
-  <script src="js/gifts.js?v=20261113-gifts-premium"></script>
+  <script src="js/gifts.js?v=20261116-final"></script>
 </body>
 </html>

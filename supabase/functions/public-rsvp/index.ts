@@ -48,6 +48,21 @@ function validateSubmission(body: Record<string, unknown>): {
   };
 }
 
+function validateMemberStates(body: Record<string, unknown>): { members: Array<{ id: string; state: string }>; comment: string | null } {
+  if (!Array.isArray(body.members) || body.members.length > 1000
+    || (body.comment !== undefined && body.comment !== null && typeof body.comment !== "string")) {
+    throw new AppError(400, "RSVP_MEMBER_STATE_INVALID");
+  }
+  const members = body.members.map((member) => {
+    if (!isJsonRecord(member) || typeof member.id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(member.id)
+      || (member.state !== "pending" && member.state !== "attending" && member.state !== "declined")) {
+      throw new AppError(400, "RSVP_MEMBER_STATE_INVALID");
+    }
+    return { id: member.id, state: member.state };
+  });
+  return { members, comment: typeof body.comment === "string" ? body.comment : null };
+}
+
 function validateGift(body: Record<string, unknown>, kind: "message" | "transfer") {
   if (body.token !== null && body.token !== undefined && typeof body.token !== "string"
     || typeof body.submissionId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.submissionId)
@@ -77,7 +92,7 @@ Deno.serve(async (request) => {
 
     const body = await readJson(request);
     const action = body.action;
-    if (action !== "resolve" && action !== "submit" && action !== "giftMessage" && action !== "giftTransfer") {
+    if (action !== "resolve" && action !== "submit" && action !== "submitMembers" && action !== "giftMessage" && action !== "giftTransfer") {
       throw new AppError(400, "REQUEST_INVALID");
     }
 
@@ -101,7 +116,7 @@ Deno.serve(async (request) => {
     }
 
     if (action === "resolve") {
-      const invitation = await rpc<unknown>(config, "rsvp_resolve_invitation", { p_token_hash: tokenHash });
+      const invitation = await rpc<unknown>(config, "rsvp_resolve_invitation_members", { p_token_hash: tokenHash });
       if (invitation === null) throw new AppError(404, "INVITATION_INVALID");
       return json({ invitation }, 200, headers);
     }
@@ -116,6 +131,13 @@ Deno.serve(async (request) => {
       return json(result, 200, headers);
     }
 
+    if (action === "submitMembers") {
+      const submission = validateMemberStates(body);
+      const invitation = await rpc<unknown>(config, "rsvp_submit_member_states", {
+        p_token_hash: tokenHash, p_members: submission.members, p_comment: submission.comment,
+      });
+      return json({ invitation }, 200, headers);
+    }
     const submission = validateSubmission(body);
     const invitation = await rpc<unknown>(config, "rsvp_submit", {
       p_token_hash: tokenHash,
