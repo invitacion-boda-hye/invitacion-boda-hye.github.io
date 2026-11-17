@@ -1998,13 +1998,13 @@ body.invitation-revealed .hero { opacity:1; }
 .gifts-section .wrap > p { max-width: 620px; margin: 0 auto; }
 .gift-experience { margin-top: 48px; padding-top: 52px; gap: 0; }
 .gift-open-button { width: auto; min-width: 190px; margin-top: 24px; background: #70866a; border-color: #b79a69; box-shadow: 0 7px 16px rgba(79, 103, 72, .18); animation: gift-soft-pulse 4.5s ease-in-out infinite; }
-.gift-box { width: min(74vw, 310px); aspect-ratio: 1.22; margin: 0 auto; padding: 0; border: 0; border-radius: 28px 28px 20px 20px; background: transparent; box-shadow: none; transform: none; perspective: 900px; isolation: isolate; }
+.gift-box { width: min(76vw, 320px); aspect-ratio: 1.26; margin: 0 auto; padding: 0; border: 0; border-radius: 28px 28px 20px 20px; background: transparent; box-shadow: none; transform: none; perspective: 900px; isolation: isolate; }
 .gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: none; outline-color: #b59a6b; }
-.gift-shadow { position: absolute; z-index: -2; inset: auto 9% -10% 9%; height: 17%; border-radius: 50%; background: rgba(74, 91, 68, .2); filter: blur(13px); transform: scaleX(.9); }
-.gift-base { position: absolute; z-index: 1; inset: 23% 4% 0; overflow: hidden; border-radius: 19px 19px 24px 24px; background: linear-gradient(135deg, #afc0a7 0%, #8fa88a 34%, #789473 73%, #698766 100%); box-shadow: inset 1px 1px rgba(255,255,255,.62), inset -12px -16px 24px rgba(60,83,58,.18), 0 17px 24px rgba(55,75,51,.2); }
+.gift-shadow { position: absolute; z-index: -2; inset: auto 12% -8% 12%; height: 14%; border-radius: 50%; background: rgba(74, 91, 68, .2); filter: blur(13px); transform: scaleX(.9); }
+.gift-base { position: absolute; z-index: 1; inset: 30% 5% 2%; overflow: hidden; border-radius: 16px 16px 24px 24px; background: linear-gradient(135deg, #b5c5ad 0%, #91aa8b 44%, #708b6b 100%); box-shadow: inset 1px 1px rgba(255,255,255,.62), inset -12px -16px 24px rgba(60,83,58,.18), 0 17px 24px rgba(55,75,51,.2); }
 .gift-front { position: absolute; inset: 0; background: linear-gradient(110deg, rgba(255,255,255,.25), transparent 32%, rgba(55,78,50,.12) 88%); }
 .gift-side { position: absolute; right: 0; top: 0; width: 17%; height: 100%; background: linear-gradient(90deg, rgba(76,101,71,.05), rgba(57,81,54,.26)); }
-.gift-lid { position: absolute; z-index: 3; inset: 12% 0 auto; height: 30%; overflow: visible; border-radius: 21px 21px 13px 13px; background: linear-gradient(145deg, #c4d0bc 0%, #a9bda2 42%, #8fa98a 100%); box-shadow: inset 1px 1px rgba(255,255,255,.78), inset -11px -11px 17px rgba(66,91,61,.13), 0 7px 11px rgba(55,75,51,.18); transform-origin: 10% 100%; transition: transform .72s cubic-bezier(.2,.78,.2,1), box-shadow .5s ease; }
+.gift-lid { position: absolute; z-index: 3; inset: 20% 0 auto; height: 27%; overflow: visible; border-radius: 18px 18px 12px 12px; background: linear-gradient(145deg, #c4d0bc 0%, #a9bda2 42%, #8fa98a 100%); box-shadow: inset 1px 1px rgba(255,255,255,.78), inset -11px -11px 17px rgba(66,91,61,.13), 0 7px 11px rgba(55,75,51,.18); transform-origin: 10% 100%; transition: transform .72s cubic-bezier(.2,.78,.2,1), box-shadow .5s ease; }
 .gift-ribbon { position: absolute; z-index: 4; display: block; background: linear-gradient(90deg, #b79a69, #e8d5ad 42%, #c7a977 67%, #a98b5c); box-shadow: inset 1px 0 rgba(255,255,255,.45), 0 1px 2px rgba(99,76,38,.18); }
 .gift-ribbon-v { left: 43%; top: -1px; width: 14%; height: calc(100% + 265%); }
 .gift-ribbon-h { left: -3%; top: 42%; width: 106%; height: 17%; }
@@ -2014,6 +2014,10 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-tail-left { left: 30%; transform: rotate(18deg); }
 .gift-tail-right { right: 30%; transform: rotate(-18deg) scaleX(-1); }
 .gift-tag { position: absolute; z-index: 7; right: 8%; bottom: 9%; display: grid; width: 23%; aspect-ratio: 1.34; place-items: center; border: 1px solid rgba(149,119,70,.58); border-radius: 4px; background: linear-gradient(135deg, #fffdf8, #eee4d1); color: #7e6842; box-shadow: 0 4px 8px rgba(70,58,37,.15); font: 600 clamp(.64rem, 2.3vw, .83rem) 'Cormorant Garamond', serif; letter-spacing: .08em; transform: rotate(7deg); }
+.gift-box::before, .gift-box::after { position: absolute; z-index: 8; color: #e9cf93; content: '✦'; opacity: 0; pointer-events: none; text-shadow: 0 0 8px rgba(232,207,147,.7); animation: gift-sparkle 4.8s ease-in-out infinite; }
+.gift-box::before { top: 12%; right: 6%; font-size: 1.05rem; }
+.gift-box::after { bottom: 20%; left: 5%; font-size: .7rem; animation-delay: 1.4s; }
+.gift-experience:not(.is-open) .gift-lid { animation: gift-lid-cycle 4.8s ease-in-out infinite; }
 .gift-experience.is-open .gift-box { transform: translateY(2px) scale(.985); }
 .gift-experience.is-open .gift-lid { transform: rotateX(112deg) rotateZ(-7deg) translateY(-7px); box-shadow: 0 0 0 transparent; }
 .gift-experience.is-open .gift-bow { transform: translateX(-50%) translateY(-18px) rotate(-9deg); }
@@ -2026,7 +2030,9 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-open-description { margin: 0 38px 22px 0 !important; color: #5c6b58; line-height: 1.65; }
 .gift-dialog-open { overflow: hidden; }
 @keyframes gift-soft-pulse { 0%,100% { box-shadow: 0 7px 16px rgba(79,103,72,.18); filter: brightness(1); } 50% { box-shadow: 0 8px 22px rgba(183,154,105,.38); filter: brightness(1.04); } }
-@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card, .gift-open-button { animation: none; } }
+@keyframes gift-lid-cycle { 0%, 100% { transform: rotateX(0) translateY(0); } 42%, 58% { transform: rotateX(13deg) translateY(-4px); } }
+@keyframes gift-sparkle { 0%, 32%, 100% { opacity: 0; transform: scale(.65) rotate(0); } 43%, 56% { opacity: .92; transform: scale(1) rotate(20deg); } 68% { opacity: 0; transform: scale(1.25) rotate(42deg); } }
+@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card, .gift-open-button, .gift-experience:not(.is-open) .gift-lid, .gift-box::before, .gift-box::after { animation: none; } }
 @media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
 
 .count { width: min(100%, 600px); margin-block: 34px 27px; gap: clamp(9px, 2.7vw, 25px); }
