@@ -1,0 +1,4 @@
+# Respaldos locales que contienen datos personales del RSVP.
+respaldos/produccion-prepublicacion-*/
+scripts/private-import-output/
+*.guest-links.csv

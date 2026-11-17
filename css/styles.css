@@ -1997,6 +1997,7 @@ body.invitation-revealed .hero { opacity:1; }
 .gifts-section .wrap > h2 { margin-bottom: 14px; }
 .gifts-section .wrap > p { max-width: 620px; margin: 0 auto; }
 .gift-experience { margin-top: 48px; padding-top: 52px; gap: 0; }
+.gift-open-button { width: auto; min-width: 190px; margin-top: 24px; background: #70866a; border-color: #b79a69; box-shadow: 0 7px 16px rgba(79, 103, 72, .18); animation: gift-soft-pulse 4.5s ease-in-out infinite; }
 .gift-box { width: min(74vw, 310px); aspect-ratio: 1.22; margin: 0 auto; padding: 0; border: 0; border-radius: 28px 28px 20px 20px; background: transparent; box-shadow: none; transform: none; perspective: 900px; isolation: isolate; }
 .gift-box:hover, .gift-box:focus-visible { transform: translateY(-4px); box-shadow: none; outline-color: #b59a6b; }
 .gift-shadow { position: absolute; z-index: -2; inset: auto 9% -10% 9%; height: 17%; border-radius: 50%; background: rgba(74, 91, 68, .2); filter: blur(13px); transform: scaleX(.9); }
@@ -2024,7 +2025,8 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-card .form { max-width: none; }
 .gift-open-description { margin: 0 38px 22px 0 !important; color: #5c6b58; line-height: 1.65; }
 .gift-dialog-open { overflow: hidden; }
-@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card { animation: none; } }
+@keyframes gift-soft-pulse { 0%,100% { box-shadow: 0 7px 16px rgba(79,103,72,.18); filter: brightness(1); } 50% { box-shadow: 0 8px 22px rgba(183,154,105,.38); filter: brightness(1.04); } }
+@media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card, .gift-open-button { animation: none; } }
 @media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
 
 .count { width: min(100%, 600px); margin-block: 34px 27px; gap: clamp(9px, 2.7vw, 25px); }

@@ -137,6 +137,24 @@ Deno.serve(async (request) => {
       return json({ members }, 200, headers);
     }
 
+    if (action === "listInvitationTracking") {
+      const tracking = await rpc<unknown>(config, "rsvp_admin_list_invitation_tracking", { p_actor_user_id: adminUserId });
+      return json({ tracking }, 200, headers);
+    }
+
+    if (action === "setInvitationDelivery") {
+      const invitationId = requireUuid(body.invitationId, "ADMIN_INVITATION_ARGUMENT_INVALID");
+      if (typeof body.sent !== "boolean") throw new AppError(400, "REQUEST_INVALID");
+      const delivery = await rpc<unknown>(config, "rsvp_admin_set_invitation_delivery", { p_invitation_id: invitationId, p_sent: body.sent, p_actor_user_id: adminUserId });
+      return json({ delivery }, 200, headers);
+    }
+
+    if (action === "recordReminder") {
+      const invitationId = requireUuid(body.invitationId, "ADMIN_INVITATION_ARGUMENT_INVALID");
+      const tracking = await rpc<unknown>(config, "rsvp_admin_record_reminder", { p_invitation_id: invitationId, p_actor_user_id: adminUserId });
+      return json({ tracking }, 200, headers);
+    }
+
     if (action === "updateMember") {
       const memberId = requireUuid(body.memberId, "ADMIN_MEMBER_ARGUMENT_INVALID");
       const fullName = cleanGroupName(body.fullName);
@@ -230,6 +248,25 @@ Deno.serve(async (request) => {
         p_table_id: tableId, p_seat_number: body.seatNumber, p_actor_user_id: adminUserId,
       });
       return json({ data }, 200, headers);
+    }
+
+    if (action === "moveAttendee") {
+      const attendeeId = requireUuid(body.attendeeId, "ADMIN_ATTENDEE_ARGUMENT_INVALID");
+      const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+      if (!Number.isInteger(body.seatNumber)) throw new AppError(400, "ADMIN_SEAT_ARGUMENT_INVALID");
+      const data = await rpc<unknown>(config, "rsvp_admin_move_attendee", {
+        p_attendee_id: attendeeId, p_table_id: tableId, p_seat_number: body.seatNumber, p_actor_user_id: adminUserId,
+      });
+      return json({ data }, 200, headers);
+    }
+
+    if (action === "moveMemberPlannedTable") {
+      const memberId = requireUuid(body.memberId, "ADMIN_MEMBER_ARGUMENT_INVALID");
+      const tableId = requireUuid(body.tableId, "ADMIN_TABLE_ARGUMENT_INVALID");
+      const members = await rpc<unknown>(config, "rsvp_admin_move_member_planned_table", {
+        p_member_id: memberId, p_table_id: tableId, p_actor_user_id: adminUserId,
+      });
+      return json({ members }, 200, headers);
     }
 
     if (action === "updateTableCapacity") {

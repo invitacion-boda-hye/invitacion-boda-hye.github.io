@@ -3,6 +3,7 @@
   if (!box || typeof RSVP_API === 'undefined') return;
 
   const experience = document.getElementById('giftExperience');
+  const openButton = document.getElementById('giftOpenButton');
   const card = document.getElementById('giftCard');
   const backdrop = document.getElementById('giftBackdrop');
   const close = document.getElementById('giftClose');
@@ -74,6 +75,7 @@
   }
 
   box.addEventListener('click', openGift);
+  openButton?.addEventListener('click', openGift);
   close.addEventListener('click', closeGift);
   backdrop.addEventListener('click', closeGift);
   document.addEventListener('keydown', (event) => {
