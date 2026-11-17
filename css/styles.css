@@ -2098,3 +2098,53 @@ body.invitation-revealed .hero { opacity:1; }
   }
 }
 /* FIN AJUSTE FINAL ANIMACION REGALOS */
+
+
+/* REDISENO FINAL CAJA REGALOS */
+.gift-experience {
+  gap: 0;
+  padding-top: 48px;
+}
+
+.gift-box {
+  width: min(74vw, 290px);
+  aspect-ratio: 1.08;
+  perspective: 1000px;
+}
+
+.gift-lid {
+  transform-origin: 12% 100%;
+}
+
+.gift-ribbon-v {
+  height: 100%;
+  top: 0;
+}
+
+.gift-bow {
+  top: 5%;
+  left: 50%;
+  width: 36%;
+  height: 23%;
+  transform: translateX(-50%);
+}
+
+.gift-experience.is-open .gift-bow {
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.gift-open-button {
+  margin-top: 54px;
+  min-width: 205px;
+}
+
+@media (max-width: 600px) {
+  .gift-box {
+    width: min(80vw, 280px);
+  }
+
+  .gift-open-button {
+    margin-top: 48px;
+  }
+}
+/* FIN REDISENO FINAL CAJA REGALOS */
