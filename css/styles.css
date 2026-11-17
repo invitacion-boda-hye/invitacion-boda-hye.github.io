@@ -2251,3 +2251,104 @@ body.invitation-revealed .hero { opacity:1; }
 }
 
 /* FIN LAZO ELEGANTE REGALOS V3 */
+
+
+/* CIERRE FAMILIAR BODA H&E */
+
+.gifts-section h2 {
+  margin-bottom: 12px;
+}
+
+.gifts-section h2 + p {
+  margin-top: 0;
+}
+
+.family-finale {
+  width: min(90%, 650px);
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.family-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  max-width: 260px;
+  margin: 0 auto 35px;
+}
+
+.family-divider span:not(.family-divider-symbol) {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #b99a63
+  );
+}
+
+.family-divider span:last-child {
+  background: linear-gradient(
+    90deg,
+    #b99a63,
+    transparent
+  );
+}
+
+.family-divider-symbol {
+  color: #b99a63;
+  font-size: 19px;
+}
+
+.family-finale h2 {
+  color: #607b60;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.family-finale-message {
+  max-width: 600px;
+  margin: 30px auto 50px;
+  padding: 0 22px;
+  text-align: center;
+}
+
+.family-finale-message p {
+  color: #60715d;
+  line-height: 1.8;
+}
+
+.family-finale-signature {
+  margin-top: 22px;
+  font-style: italic;
+  font-size: 1.35rem;
+  color: #607b60 !important;
+}
+
+.family-finale-date {
+  font-size: .85rem;
+  letter-spacing: .22em;
+  color: #b99a63 !important;
+}
+
+@media (max-width: 600px) {
+  .family-finale {
+    margin-bottom: 24px;
+  }
+
+  .family-finale h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  .family-divider {
+    margin-bottom: 28px;
+  }
+
+  .family-finale-message {
+    margin-top: 25px;
+  }
+}
+
+/* FIN CIERRE FAMILIAR */
