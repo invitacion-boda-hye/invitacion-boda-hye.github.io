@@ -2352,3 +2352,30 @@ body.invitation-revealed .hero { opacity:1; }
 }
 
 /* FIN CIERRE FAMILIAR */
+
+
+/* AJUSTE ESPACIO REGALOS FINAL */
+
+/* Acercar la caja al texto */
+.gifts-section .gift-experience {
+  margin-top: 4px;
+  padding-top: 0;
+}
+
+/* Conservar separación del botón */
+.gifts-section .gift-open-button {
+  margin-top: 54px;
+}
+
+@media (max-width: 600px) {
+  .gifts-section .gift-experience {
+    margin-top: 4px;
+    padding-top: 0;
+  }
+
+  .gifts-section .gift-open-button {
+    margin-top: 48px;
+  }
+}
+
+/* FIN AJUSTE ESPACIO REGALOS FINAL */
