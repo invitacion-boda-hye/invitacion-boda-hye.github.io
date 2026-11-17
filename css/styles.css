@@ -2030,8 +2030,8 @@ body.invitation-revealed .hero { opacity:1; }
 .gift-open-description { margin: 0 38px 22px 0 !important; color: #5c6b58; line-height: 1.65; }
 .gift-dialog-open { overflow: hidden; }
 @keyframes gift-soft-pulse { 0%,100% { box-shadow: 0 7px 16px rgba(79,103,72,.18); filter: brightness(1); } 50% { box-shadow: 0 8px 22px rgba(183,154,105,.38); filter: brightness(1.04); } }
-@keyframes gift-lid-cycle { 0%, 100% { transform: rotateX(0) translateY(0); } 42%, 58% { transform: rotateX(13deg) translateY(-4px); } }
-@keyframes gift-sparkle { 0%, 32%, 100% { opacity: 0; transform: scale(.65) rotate(0); } 43%, 56% { opacity: .92; transform: scale(1) rotate(20deg); } 68% { opacity: 0; transform: scale(1.25) rotate(42deg); } }
+@keyframes gift-lid-cycle { 0%, 100% { transform: rotateX(0) translateY(0); } 40%, 60% { transform: rotateX(22deg) translateY(-9px); } }
+@keyframes gift-sparkle { 0%, 28%, 100% { opacity: 0; transform: scale(.65) rotate(0); } 40%, 60% { opacity: 1; transform: scale(1.12) rotate(26deg); } 72% { opacity: 0; transform: scale(1.4) rotate(50deg); } }
 @media (prefers-reduced-motion: reduce) { .gift-lid, .gift-bow, .gift-experience.is-open .gift-box { transition: none; transform: none; } .gift-card, .gift-open-button, .gift-experience:not(.is-open) .gift-lid, .gift-box::before, .gift-box::after { animation: none; } }
 @media (max-width: 600px) { .gift-experience { margin-top: 38px; padding-top: 46px; } .gift-box { width: min(82vw, 300px); } .gift-card { width: min(100vw - 20px, 620px); max-height: calc(100dvh - 20px); border-radius: 16px; } .gift-close { top: -27px; margin-right: -7px; } }
 
