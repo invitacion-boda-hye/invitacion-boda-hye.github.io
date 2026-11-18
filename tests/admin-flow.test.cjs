@@ -15,7 +15,7 @@ function setup({ failure, response } = {}) {
       replaceChildren(...children) { this.children = children; },
       addEventListener(name, callback) { this.listeners[name] = callback; },
       querySelector() { return this.button ||= element(); },
-      reset() { this.resets += 1; }
+      reset() { this.resets += 1; }, showModal() { this.open = true; }, close() { this.open = false; }, click() {}
     };
   }
   function get(id) {
@@ -26,7 +26,7 @@ function setup({ failure, response } = {}) {
   const storage = new Map();
   get('adminDashboard').hidden = true;
   const context = vm.createContext({
-    document: { getElementById: get, createElement: element, querySelectorAll: () => [] },
+    document: { body: { insertAdjacentHTML() {} }, getElementById: get, createElement: element, querySelectorAll: () => [] },
     confirm: () => true, prompt: () => null, window: { print() {} }, URL: { createObjectURL: () => 'blob:synthetic', revokeObjectURL() {} }, Blob: class {},
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
@@ -34,9 +34,13 @@ function setup({ failure, response } = {}) {
       adminRequest: async (action) => {
         calls.push(action);
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
-        if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0 } };
-        if (action === 'createInvitation') return { invitationUrl: 'https://example.invalid/#i=synthetic' };
-        return { data: { invitations: [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
+        if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0, assignedPasses: 3 } };
+        if (action === 'createInvitation') return { invitation: { id: '11111111-1111-4111-8111-111111111111' }, invitationUrl: 'https://example.invalid/#i=synthetic' };
+        if (action === 'listInvitations') return { data: { invitations: [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
+        if (action === 'listMembers') return { members: [] };
+        if (action === 'listInvitationTracking') return { tracking: [] };
+        if (action === 'listGifts') return { gifts: [] };
+        return {};
       }
     }
   });
@@ -56,18 +60,18 @@ function setup({ failure, response } = {}) {
 test('login exitoso carga métricas y familias tras finalizar el despacho del evento', async () => {
   const app = setup();
   await app.submit('loginForm');
-  assert.deepEqual(app.calls, ['summary', 'listInvitations']);
+  assert.deepEqual(app.calls, ['summary', 'listInvitations', 'listMembers', 'listInvitationTracking']);
   assert.equal(app.get('adminDashboard').hidden, false);
   assert.equal(app.get('adminLogin').hidden, true);
   assert.equal(app.get('loginMessage').textContent, '');
   assert.equal(app.get('loginForm').resets, 1);
-  assert.equal(app.get('adminMetrics').children.length, 5);
+  assert.equal(app.get('adminMetrics').children.length, 9);
 });
 
 test('crear familia refresca el panel después del await', async () => {
   const app = setup();
   await app.submit('createInvitationForm');
-  assert.deepEqual(app.calls, ['createInvitation', 'summary', 'listInvitations']);
+  assert.deepEqual(app.calls, ['createInvitation', 'summary', 'listInvitations', 'listMembers', 'listInvitationTracking']);
   assert.equal(app.get('createInvitationForm').resets, 1);
   assert.equal(app.get('dashboardMessage').textContent, '');
 });
