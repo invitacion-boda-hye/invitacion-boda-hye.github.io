@@ -6,7 +6,7 @@ const path = require('node:path');
 const { URL: NodeURL, URLSearchParams } = require('node:url');
 const root = path.resolve(__dirname, '..');
 
-function setup({ failure, response, tracking = [], links = {} } = {}) {
+function setup({ failure, response, tracking = [], links = {}, invitations, members } = {}) {
   const elements = new Map();
   function element() {
     return {
@@ -28,6 +28,7 @@ function setup({ failure, response, tracking = [], links = {} } = {}) {
   storage.set('rsvp-invitation-links', JSON.stringify(links));
   let openedUrl = '';
   get('adminDashboard').hidden = true;
+  get('familyFilter').value = 'all'; get('deliveryFilter').value = 'all'; get('invitationScope').value = 'active'; get('reminderInterval').value = '10';
   class TestURL extends NodeURL {}
   TestURL.createObjectURL = () => 'blob:synthetic'; TestURL.revokeObjectURL = () => {};
   const context = vm.createContext({
@@ -41,8 +42,8 @@ function setup({ failure, response, tracking = [], links = {} } = {}) {
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
         if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0, assignedPasses: 3 } };
         if (action === 'createInvitation') return { invitation: { id: '11111111-1111-4111-8111-111111111111' }, invitationUrl: 'https://example.invalid/#i=synthetic' };
-        if (action === 'listInvitations') return { data: { invitations: [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
-        if (action === 'listMembers') return { members: [] };
+        if (action === 'listInvitations') return { data: { invitations: invitations || [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
+        if (action === 'listMembers') return { members: members || [] };
         if (action === 'listInvitationTracking') return { tracking };
         if (action === 'listGifts') return { gifts: [] };
         return {};
@@ -91,6 +92,20 @@ test('la carga de familias usa la respuesta administrativa normalizada', async (
   const app = setup();
   await app.submit('loginForm');
   assert.equal(app.get('familyList').children.length, 1);
+});
+
+test('familias muestra vigentes por defecto y mantiene las inactivas solo en historial', async () => {
+  const activeId = '11111111-1111-4111-8111-111111111111', inactiveId = '22222222-2222-4222-8222-222222222222';
+  const app = setup({ invitations: [
+    { id: activeId, groupName: 'Familia actual', maxPasses: 2, isActive: true, state: 'pending', response: null },
+    { id: inactiveId, groupName: 'Invitación anterior', maxPasses: 1, isActive: false, state: 'pending', response: null }
+  ], members: [{ id: '33333333-3333-4333-8333-333333333333', invitationId: activeId, fullName: 'Ana Actual', isFamilyHead: true, tableNumber: 2, memberState: 'pending' }] });
+  await app.submit('loginForm');
+  assert.equal(app.get('familyList').children.length, 1);
+  assert.equal(app.get('adminMetrics').children[1].children[0].textContent, 1);
+  app.get('invitationScope').value = 'inactive'; app.get('invitationScope').listeners.change();
+  assert.equal(app.get('familyList').children.length, 1);
+  assert.ok(findByText(app.get('familyList'), 'Invitación anterior'));
 });
 
 test('un 403 de membresía se distingue de un fallo local y cierra el acceso', async () => {
