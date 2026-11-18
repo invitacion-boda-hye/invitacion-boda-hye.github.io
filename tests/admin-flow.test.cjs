@@ -126,15 +126,15 @@ test('resumen no mezcla personas, pases, familias ni estados de envío', async (
   assert.equal(secondary[0], 72);
   assert.equal(secondary[1], 0);
   assert.equal(secondary[2], 6);
-  assert.equal(secondary[3], 30);
-  assert.equal(secondary[4], 1);
-  assert.equal(secondary[6], 1);
+  assert.equal(secondary[4], 30);
+  assert.equal(secondary[5], 1);
+  assert.equal(secondary[7], 1);
   app.get('adminMetrics').children[3].listeners.click();
   assert.match(app.get('summaryBreakdownTitle').textContent, /Personas sin responder · 44 personas en 31 familias/);
   assert.equal(app.get('summaryBreakdownList').children.length, 31);
   app.get('summaryBreakdownSearch').value = 'Pendiente 0'; app.get('summaryBreakdownSearch').listeners.input();
   assert.equal(app.get('summaryBreakdownList').children.length, 1);
-  app.get('adminSecondaryMetrics').children[3].listeners.click();
+  app.get('adminSecondaryMetrics').children[4].listeners.click();
   assert.match(app.get('summaryBreakdownTitle').textContent, /Familias pendientes · 30/);
   app.get('adminSecondaryMetrics').children[0].listeners.click();
   assert.match(app.get('summaryBreakdownTitle').textContent, /Pases vigentes · 72 pases en 31 invitaciones/);
@@ -217,10 +217,10 @@ test('preparar invitación no usa un enlace guardado que no corresponde a la fam
   const app = setup({ links: { [id]: link }, resolvedInvitationId: '22222222-2222-4222-8222-222222222222' });
   await app.submit('loginForm');
   await findByText(app.get('familyList'), 'Preparar invitación').listeners.click();
-  assert.equal(app.get('reminderLinkDialog').open, true);
+  assert.equal(app.get('messagePreviewDialog').open, true);
   assert.equal(app.openedUrl(), '');
   assert.equal(app.storage.get('rsvp-invitation-links'), '{}');
-  assert.match(app.get('reminderLinkError').textContent, /no se regenerará/i);
+  assert.match(app.get('messagePreviewText').value, /Enlace personalizado pendiente/);
 });
 
 function client(fetch) {
