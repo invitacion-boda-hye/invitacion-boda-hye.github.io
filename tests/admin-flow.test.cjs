@@ -26,14 +26,14 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
   const calls = [];
   const storage = new Map();
   storage.set('rsvp-invitation-links', JSON.stringify(links));
-  let openedUrl = '';
+  let openedUrl = '', copiedText = '';
   get('adminDashboard').hidden = true;
   get('familyView').value = 'active'; get('reminderInterval').value = '10';
   class TestURL extends NodeURL {}
   TestURL.createObjectURL = () => 'blob:synthetic'; TestURL.revokeObjectURL = () => {};
   const context = vm.createContext({
     document: { body: { insertAdjacentHTML() {} }, getElementById: get, createElement: element, querySelectorAll: () => [] },
-    confirm: () => true, prompt: () => null, window: { print() {}, open: (url) => { openedUrl = url; return {}; } }, URL: TestURL, URLSearchParams, Blob: class {},
+    confirm: () => true, prompt: () => null, window: { print() {}, open: (url) => { openedUrl = url; return {}; } }, navigator: { clipboard: { writeText: async (value) => { copiedText = value; } } }, URL: TestURL, URLSearchParams, Blob: class {},
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
       signIn: async () => ({ access_token: 'synthetic-session' }),
@@ -61,7 +61,7 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
     event.currentTarget = null;
     await pending;
   }
-  return { get, calls, submit, storage, openedUrl: () => openedUrl };
+  return { get, calls, submit, storage, openedUrl: () => openedUrl, copiedText: () => copiedText };
 }
 
 function findByText(node, value) {
@@ -88,6 +88,8 @@ test('crear familia refresca el panel después del await', async () => {
   assert.equal(app.get('createInvitationForm').resets, 1);
   assert.equal(app.get('generatedLink').value, 'https://example.invalid/#i=synthetic');
   assert.equal(app.get('linkResult').hidden, false);
+  assert.equal(app.get('messagePreviewDialog').open, true);
+  assert.match(app.get('messagePreviewText').value, /https:\/\/example\.invalid\/\#i=synthetic/);
   assert.equal(app.get('dashboardMessage').textContent, '');
 });
 
@@ -193,24 +195,28 @@ test('recordatorios permiten registrar localmente un enlace original sin regener
   assert.equal(app.calls.includes('recordReminder'), false);
 });
 
-test('preparar envío valida un enlace existente y abre WhatsApp sin cambiar su estado', async () => {
+test('preparar invitación valida un enlace existente y prepara el mensaje completo sin cambiar su estado', async () => {
   const id = '11111111-1111-4111-8111-111111111111';
   const link = `https://example.invalid/#i=${'C'.repeat(43)}`;
   const app = setup({ links: { [id]: link } });
   await app.submit('loginForm');
-  await findByText(app.get('familyList'), 'Preparar envío').listeners.click();
-  assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
-  assert.match(decodeURIComponent(app.openedUrl()), /#i=C{43}/);
+  await findByText(app.get('familyList'), 'Preparar invitación').listeners.click();
+  assert.equal(app.get('messagePreviewDialog').open, true);
+  assert.match(app.get('messagePreviewText').value, /#i=C{43}/);
+  assert.equal(app.get('copyPreviewMessage').textContent, 'Copiar mensaje + enlace');
+  await app.get('copyPreviewMessage').listeners.click();
+  assert.match(app.copiedText(), /#i=C{43}/);
+  assert.equal(app.openedUrl(), '');
   assert.equal(app.calls.includes('setInvitationDelivery'), false);
   assert.equal(app.calls.includes('regenerateInvitation'), false);
 });
 
-test('preparar envío no usa un enlace guardado que no corresponde a la familia', async () => {
+test('preparar invitación no usa un enlace guardado que no corresponde a la familia', async () => {
   const id = '11111111-1111-4111-8111-111111111111';
   const link = `https://example.invalid/#i=${'D'.repeat(43)}`;
   const app = setup({ links: { [id]: link }, resolvedInvitationId: '22222222-2222-4222-8222-222222222222' });
   await app.submit('loginForm');
-  await findByText(app.get('familyList'), 'Preparar envío').listeners.click();
+  await findByText(app.get('familyList'), 'Preparar invitación').listeners.click();
   assert.equal(app.get('reminderLinkDialog').open, true);
   assert.equal(app.openedUrl(), '');
   assert.equal(app.storage.get('rsvp-invitation-links'), '{}');
