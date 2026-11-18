@@ -112,15 +112,28 @@ test('familias muestra vigentes por defecto y mantiene las inactivas solo en his
 });
 
 test('resumen no mezcla personas, pases, familias ni estados de envío', async () => {
-  const members = [...Array(66)].map((_, index) => ({ id: String(index), invitationId: '11111111-1111-4111-8111-111111111111', fullName: `Invitado ${index}`, memberState: index < 8 ? 'declined' : 'pending' }));
-  const app = setup({ members, summary: { capacity: 63, confirmedPeople: 22, availableCapacity: 41, pendingFamilies: 30, declinedFamilies: 8, assignedPasses: 72 }, tracking: [{ deliveryStatus: 'sent' }, { deliveryStatus: 'unregistered' }] });
+  const pendingIds = [...Array(30)].map((_, index) => `00000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`);
+  const confirmedId = '11111111-1111-4111-8111-111111111111';
+  const invitations = [...pendingIds.map((id, index) => ({ id, groupName: `Familia pendiente ${index + 1}`, maxPasses: index < 17 ? 2 : 1, isActive: true, state: 'pending', response: null })), { id: confirmedId, groupName: 'Familia parcial', maxPasses: 25, isActive: true, state: 'attending', response: { confirmedCount: 22 } }, { id: '22222222-2222-4222-8222-222222222222', groupName: 'Histórica', maxPasses: 9, isActive: false, state: 'pending', response: null }];
+  const members = [...Array(41)].map((_, index) => ({ id: `p${index}`, invitationId: pendingIds[index % pendingIds.length], fullName: `Pendiente ${index}`, memberState: 'pending' })).concat([...Array(22)].map((_, index) => ({ id: `a${index}`, invitationId: confirmedId, fullName: `Confirmado ${index}`, memberState: 'attending' })), [...Array(3)].map((_, index) => ({ id: `q${index}`, invitationId: confirmedId, fullName: `Parcial ${index}`, memberState: 'pending' })));
+  const app = setup({ invitations, members, summary: { capacity: 63, confirmedPeople: 22, availableCapacity: 41, pendingFamilies: 30, declinedFamilies: 0, assignedPasses: 72 }, tracking: [{ deliveryStatus: 'sent' }, { deliveryStatus: 'unregistered' }] });
   await app.submit('loginForm');
   const primary = app.get('adminMetrics').children.map((card) => card.children[0].textContent);
-  assert.deepEqual(primary, [66, 22, 8, 36]);
+  assert.deepEqual(primary, [66, 22, 0, 44]);
   const secondary = app.get('adminSecondaryMetrics').children.map((card) => card.children[0].textContent);
   assert.equal(secondary[0], 72);
+  assert.equal(secondary[1], 30);
   assert.equal(secondary[2], 1);
   assert.equal(secondary[4], 1);
+  app.get('adminMetrics').children[3].listeners.click();
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Personas sin responder · 44 personas en 31 familias/);
+  assert.equal(app.get('summaryBreakdownList').children.length, 31);
+  app.get('summaryBreakdownSearch').value = 'Pendiente 0'; app.get('summaryBreakdownSearch').listeners.input();
+  assert.equal(app.get('summaryBreakdownList').children.length, 1);
+  app.get('adminSecondaryMetrics').children[1].listeners.click();
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Familias pendientes · 30/);
+  app.get('adminSecondaryMetrics').children[0].listeners.click();
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Pases vigentes · 31/);
 });
 
 test('un 403 de membresía se distingue de un fallo local y cierra el acceso', async () => {

@@ -12,7 +12,7 @@
   const errorText = { ADMIN_FORBIDDEN: 'Tu cuenta no está autorizada como administradora.', ADMIN_AUTH_REQUIRED: 'Tu sesión no es válida. Vuelve a iniciar sesión.', ORIGIN_NOT_ALLOWED: 'Este origen no está autorizado para usar el panel.', ADMIN_INVITATION_NOT_FOUND: 'Esta invitación ya no está activa. Actualiza el panel antes de continuar.', ADMIN_SEAT_OCCUPIED: 'Esa silla acaba de ser ocupada.', ADMIN_ATTENDEE_ALREADY_SEATED: 'Este invitado ya tiene una silla.', ADMIN_ATTENDEE_NOT_ELIGIBLE: 'Este invitado ya no está confirmado.', ADMIN_TABLE_CAPACITY_OCCUPIED: 'No puedes reducir una mesa con sillas ocupadas.', ADMIN_SEAT_EMPTY: 'Esta silla ya está libre.', ADMIN_REMINDER_NOT_ELIGIBLE: 'Solo puedes registrar recordatorios de invitaciones enviadas y activas.', ADMIN_GIFT_NOT_FOUND: 'Ese registro ya no existe.', NETWORK_ERROR: 'No se pudo conectar con el servidor.', DATABASE_ERROR: 'No se pudo consultar el evento.' };
   const tell = (target, error) => { const code = typeof error?.message === 'string' && /^[A-Z][A-Z0-9_]{0,79}$/.test(error.message) ? error.message : ''; target.textContent = error ? (errorText[code] || (code ? `No fue posible completar la operación (${code}).` : 'No fue posible completar la operación. Revisa tu conexión e inténtalo nuevamente.')) : ''; target.classList.toggle('is-error', Boolean(error)); };
   const text = (tag, value, className = '') => { const node = document.createElement(tag); node.textContent = value; if (className) node.className = className; return node; };
-  const metric = (label, value) => { const card = document.createElement('div'); card.className = 'metric'; card.append(text('strong', value), text('span', label)); return card; };
+  const metric = (label, value, breakdown) => { const card = document.createElement(breakdown ? 'button' : 'div'); card.className = `metric${breakdown ? ' metric-link' : ''}`; if (breakdown) { card.type = 'button'; card.addEventListener('click', () => openBreakdown(breakdown)); } card.append(text('strong', value), text('span', label)); return card; };
   const dateForInput = (value) => value ? new Date(value).toISOString().slice(0, 16) : '';
   const status = (invitation) => invitation.state === 'declined' ? 'declined' : invitation.state === 'pending' ? 'pending' : (invitation.response?.confirmedCount < invitation.maxPasses ? 'partial' : 'attending');
   const statusName = (value) => ({ attending: 'Confirmada', partial: 'Parcial', pending: 'Pendiente', declined: 'Rechazada' })[value] || 'Pendiente';
@@ -55,20 +55,48 @@
   async function loadGifts() { const result = await api('listGifts'); state.gifts = result.gifts || []; state.giftsLoaded = true; renderGifts(); renderSummary(); }
   const trackingFor = (id) => state.tracking.find((item) => item.invitationId === id);
   const activeInvitations = () => state.data.invitations.filter((invitation) => invitation.isActive);
-  function render() { renderSummary(); renderFamilies(); renderMembers(); renderTables(); renderReminders(); renderMessages(); renderGifts(); renderPrintBoards(); }
+  const activeMembers = () => { const ids = new Set(activeInvitations().map((invitation) => invitation.id)); return state.members.filter((member) => ids.has(member.invitationId)); };
+  let breakdownMode = '';
+  function render() { renderSummary(); renderFamilies(); renderMembers(); renderTables(); renderReminders(); renderMessages(); renderGifts(); renderPrintBoards(); renderBreakdown(); }
   function renderSummary() {
     const s = state.summary; if (!s) return;
-    const people = state.members.length || s.assignedPasses;
+    const members = activeMembers(), people = members.length || s.assignedPasses;
     const sent = state.tracking.filter(x => x.deliveryStatus === 'sent').length, pendingDelivery = state.tracking.filter(x => x.deliveryStatus === 'pending').length, unknown = state.tracking.filter(x => x.deliveryStatus === 'unregistered').length;
     const comments = activeInvitations().filter((invitation) => invitation.response?.comment).length;
-    const declinedPeople = state.members.filter((member) => member.memberState === 'declined').length;
-    const unansweredPeople = Math.max(0, people - s.confirmedPeople - declinedPeople);
-    $('adminMetrics').replaceChildren(metric('Invitados', people), metric('Confirmados', s.confirmedPeople), metric('No asistirán', declinedPeople), metric('Sin responder', unansweredPeople));
-    $('adminSecondaryMetrics').replaceChildren(metric('Pases vigentes', s.assignedPasses), metric('Familias pendientes', s.pendingFamilies), metric('Envíos registrados', sent), metric('Marcadas pendientes', pendingDelivery), metric('Sin registro de envío', unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
+    const confirmedPeople = members.length ? members.filter((member) => member.memberState === 'attending').length : s.confirmedPeople;
+    const declinedPeople = members.filter((member) => member.memberState === 'declined').length;
+    const unansweredPeople = members.length ? members.filter((member) => member.memberState === 'pending').length : Math.max(0, people - s.confirmedPeople - declinedPeople);
+    const passes = activeInvitations().reduce((total, invitation) => total + Number(invitation.maxPasses || 0), 0) || s.assignedPasses;
+    const pendingFamilies = activeInvitations().filter((invitation) => status(invitation) === 'pending').length;
+    $('adminMetrics').replaceChildren(metric('Invitados', people), metric('Confirmados', confirmedPeople), metric('No asistirán', declinedPeople), metric('Sin responder', unansweredPeople, 'pending-people'));
+    $('adminSecondaryMetrics').replaceChildren(metric('Pases vigentes', passes, 'passes'), metric('Familias pendientes', pendingFamilies, 'pending-families'), metric('Envíos registrados', sent), metric('Marcadas pendientes', pendingDelivery), metric('Sin registro de envío', unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
+    const mismatch = members.length && (confirmedPeople !== s.confirmedPeople || pendingFamilies !== s.pendingFamilies || passes !== s.assignedPasses);
+    $('summaryConsistency').textContent = mismatch ? `Revisa el desglose: integrantes (${confirmedPeople} confirmados), familias (${pendingFamilies} pendientes) y pases (${passes}) no coinciden con el resumen del servidor.` : '';
     const pct = s.capacity ? Math.min(100, Math.round(s.confirmedPeople * 100 / s.capacity)) : 0;
     $('occupancyText').textContent = `${s.confirmedPeople} de ${s.capacity} personas · ${pct}%`;
     $('occupancyBar').style.width = `${pct}%`; $('eventCapacity').value = s.capacity; $('rsvpDeadline').value = dateForInput(s.rsvpDeadline); $('rsvpCapacity').textContent = s.capacity;
     $('physicalCapacity').textContent = state.data.tables.reduce((sum, table) => sum + Number(table.capacity || 0), 0);
+  }
+  function openBreakdown(mode) { breakdownMode = mode; $('summaryBreakdownSearch').value = ''; activate('breakdown'); renderBreakdown(); }
+  function renderBreakdown() {
+    if (!breakdownMode) return;
+    const query = $('summaryBreakdownSearch').value.trim().toLocaleLowerCase(), invitations = activeInvitations(), members = activeMembers();
+    const membersFor = (id) => members.filter((member) => member.invitationId === id);
+    let title = '', description = '', rows = [];
+    if (breakdownMode === 'pending-people') {
+      title = 'Personas sin responder'; description = 'Integrantes vigentes con estado individual «Sin responder», incluidos los de confirmaciones parciales.';
+      rows = invitations.map((invitation) => ({ invitation, members: membersFor(invitation.id).filter((member) => member.memberState === 'pending') })).filter((row) => row.members.length).map((row) => ({ name: row.invitation.groupName, detail: row.members.map((member) => member.fullName).join(', '), count: row.members.length, meta: `${row.members.length} persona${row.members.length === 1 ? '' : 's'} sin responder · ${statusName(status(row.invitation))} · ${row.invitation.maxPasses} pases` }));
+    } else if (breakdownMode === 'pending-families') {
+      title = 'Familias pendientes'; description = 'Invitaciones vigentes sin ninguna confirmación RSVP. Las confirmaciones parciales no se incluyen aquí.';
+      rows = invitations.filter((invitation) => status(invitation) === 'pending').map((invitation) => { const familyMembers = membersFor(invitation.id); return { name: invitation.groupName, detail: familyMembers.map((member) => member.fullName).join(', ') || 'Sin integrantes registrados', meta: `${familyMembers.filter((member) => member.memberState === 'pending').length} persona${familyMembers.filter((member) => member.memberState === 'pending').length === 1 ? '' : 's'} sin responder · ${invitation.maxPasses} pases` }; });
+    } else if (breakdownMode === 'passes') {
+      title = 'Pases vigentes'; description = 'Pases de invitaciones activas. «Adicionales» son pases por encima de los integrantes registrados, no personas confirmadas.';
+      rows = invitations.map((invitation) => { const registered = membersFor(invitation.id).length, difference = Number(invitation.maxPasses || 0) - registered; return { name: invitation.groupName, detail: membersFor(invitation.id).map((member) => member.fullName).join(', ') || 'Sin integrantes registrados', meta: `${invitation.maxPasses} pases · ${registered} personas registradas · ${difference >= 0 ? `${difference} pase${difference === 1 ? '' : 's'} adicional${difference === 1 ? '' : 'es'}` : `${Math.abs(difference)} persona${Math.abs(difference) === 1 ? '' : 's'} sin pase`}` }; });
+    }
+    const filtered = rows.filter((row) => !query || [row.name, row.detail, row.meta].join(' ').toLocaleLowerCase().includes(query));
+    const count = breakdownMode === 'pending-people' ? rows.reduce((total, row) => total + row.count, 0) : rows.length;
+    $('summaryBreakdownTitle').textContent = `${title} · ${count}${breakdownMode === 'pending-people' ? ` personas en ${rows.length} familias` : ''}`; $('summaryBreakdownDescription').textContent = description;
+    $('summaryBreakdownList').replaceChildren(...(filtered.length ? filtered.map((row) => { const item = document.createElement('article'); item.className = 'family-row'; item.append(text('strong', row.name), text('p', row.detail, 'family-meta'), text('p', row.meta, 'family-meta')); return item; }) : [text('p', 'No hay coincidencias para esta búsqueda.')]));
   }
   function memberStateLabel(state) { return ({ attending: 'Asiste', declined: 'No asiste', pending: 'Sin responder' })[state] || 'Sin responder'; }
   function renderMessages() {
@@ -229,6 +257,6 @@
     } catch (error) { $('familyGroupError').textContent = errorText[error.message] || error.message || 'No se pudo agrupar.'; }
     finally { button.disabled = false; }
   });
-  $('familySearch').addEventListener('input', renderFamilies); $('familyView').addEventListener('change', renderFamilies); $('reminderInterval').addEventListener('change', renderReminders); $('memberSearch').addEventListener('input', renderMembers); $('tableSearch').addEventListener('input', renderTables); document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => activate(button.dataset.view))); $('exportCsv').addEventListener('click', exportCsv); $('printGeneral').addEventListener('click', () => { state.printMode = 'general'; window.print(); }); $('printByTable').addEventListener('click', () => { state.printMode = 'tables'; window.print(); }); $('printIncludePending').addEventListener('change', renderPrintBoards); $('printIncludeDeclined').addEventListener('change', renderPrintBoards);
+  $('familySearch').addEventListener('input', renderFamilies); $('familyView').addEventListener('change', renderFamilies); $('summaryBreakdownSearch').addEventListener('input', renderBreakdown); $('reminderInterval').addEventListener('change', renderReminders); $('memberSearch').addEventListener('input', renderMembers); $('tableSearch').addEventListener('input', renderTables); document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => activate(button.dataset.view))); $('exportCsv').addEventListener('click', exportCsv); $('printGeneral').addEventListener('click', () => { state.printMode = 'general'; window.print(); }); $('printByTable').addEventListener('click', () => { state.printMode = 'tables'; window.print(); }); $('printIncludePending').addEventListener('change', renderPrintBoards); $('printIncludeDeclined').addEventListener('change', renderPrintBoards);
   if (state.token) showDashboard();
 })();
