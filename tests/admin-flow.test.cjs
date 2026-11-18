@@ -37,6 +37,7 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
       signIn: async () => ({ access_token: 'synthetic-session' }),
+      publicRequest: async () => ({ invitation: { invitation: { id: '11111111-1111-4111-8111-111111111111' } } }),
       adminRequest: async (action) => {
         calls.push(action);
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
@@ -72,7 +73,7 @@ function findByText(node, value) {
 test('login exitoso carga métricas y familias tras finalizar el despacho del evento', async () => {
   const app = setup();
   await app.submit('loginForm');
-  assert.deepEqual(app.calls, ['summary', 'listInvitations', 'listMembers', 'listInvitationTracking']);
+  assert.deepEqual(app.calls, ['summary', 'listInvitations', 'listMembers', 'listInvitationTracking', 'listGifts']);
   assert.equal(app.get('adminDashboard').hidden, false);
   assert.equal(app.get('adminLogin').hidden, true);
   assert.equal(app.get('loginMessage').textContent, '');
@@ -102,7 +103,7 @@ test('familias muestra vigentes por defecto y mantiene las inactivas solo en his
   ], members: [{ id: '33333333-3333-4333-8333-333333333333', invitationId: activeId, fullName: 'Ana Actual', isFamilyHead: true, tableNumber: 2, memberState: 'pending' }] });
   await app.submit('loginForm');
   assert.equal(app.get('familyList').children.length, 1);
-  assert.equal(app.get('adminMetrics').children[1].children[0].textContent, 1);
+  assert.equal(app.get('adminMetrics').children[0].children[0].textContent, 1);
   app.get('invitationScope').value = 'inactive'; app.get('invitationScope').listeners.change();
   assert.equal(app.get('familyList').children.length, 1);
   assert.ok(findByText(app.get('familyList'), 'Invitación anterior'));
@@ -137,7 +138,7 @@ test('recordatorios permiten registrar localmente un enlace original sin regener
   findByText(app.get('reminderList'), 'Abrir WhatsApp').listeners.click();
   assert.equal(app.get('reminderLinkDialog').open, true);
   app.get('reminderOriginalLink').value = link;
-  app.get('reminderLinkForm').listeners.submit({ preventDefault() {} });
+  await app.get('reminderLinkForm').listeners.submit({ preventDefault() {} });
   assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
   assert.match(app.storage.get('rsvp-invitation-links'), /B{43}/);
   assert.equal(app.calls.includes('recordReminder'), false);
