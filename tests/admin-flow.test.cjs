@@ -6,7 +6,7 @@ const path = require('node:path');
 const { URL: NodeURL, URLSearchParams } = require('node:url');
 const root = path.resolve(__dirname, '..');
 
-function setup({ failure, response, tracking = [], links = {}, invitations, members, summary } = {}) {
+function setup({ failure, response, tracking = [], links = {}, invitations, members, summary, resolvedInvitationId } = {}) {
   const elements = new Map();
   function element() {
     return {
@@ -37,7 +37,7 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
       signIn: async () => ({ access_token: 'synthetic-session' }),
-      publicRequest: async () => ({ invitation: { invitation: { id: '11111111-1111-4111-8111-111111111111' } } }),
+      publicRequest: async () => ({ invitation: { invitation: { id: resolvedInvitationId || '11111111-1111-4111-8111-111111111111' } } }),
       adminRequest: async (action) => {
         calls.push(action);
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
@@ -86,6 +86,8 @@ test('crear familia refresca el panel después del await', async () => {
   await app.submit('createInvitationForm');
   assert.deepEqual(app.calls, ['createInvitation', 'summary', 'listInvitations', 'listMembers', 'listInvitationTracking']);
   assert.equal(app.get('createInvitationForm').resets, 1);
+  assert.equal(app.get('generatedLink').value, 'https://example.invalid/#i=synthetic');
+  assert.equal(app.get('linkResult').hidden, false);
   assert.equal(app.get('dashboardMessage').textContent, '');
 });
 
@@ -154,6 +156,30 @@ test('recordatorios permiten registrar localmente un enlace original sin regener
   assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
   assert.match(app.storage.get('rsvp-invitation-links'), /B{43}/);
   assert.equal(app.calls.includes('recordReminder'), false);
+});
+
+test('preparar envío valida un enlace existente y abre WhatsApp sin cambiar su estado', async () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  const link = `https://example.invalid/#i=${'C'.repeat(43)}`;
+  const app = setup({ links: { [id]: link } });
+  await app.submit('loginForm');
+  await findByText(app.get('familyList'), 'Preparar envío').listeners.click();
+  assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
+  assert.match(decodeURIComponent(app.openedUrl()), /#i=C{43}/);
+  assert.equal(app.calls.includes('setInvitationDelivery'), false);
+  assert.equal(app.calls.includes('regenerateInvitation'), false);
+});
+
+test('preparar envío no usa un enlace guardado que no corresponde a la familia', async () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  const link = `https://example.invalid/#i=${'D'.repeat(43)}`;
+  const app = setup({ links: { [id]: link }, resolvedInvitationId: '22222222-2222-4222-8222-222222222222' });
+  await app.submit('loginForm');
+  await findByText(app.get('familyList'), 'Preparar envío').listeners.click();
+  assert.equal(app.get('reminderLinkDialog').open, true);
+  assert.equal(app.openedUrl(), '');
+  assert.equal(app.storage.get('rsvp-invitation-links'), '{}');
+  assert.match(app.get('reminderLinkError').textContent, /no se regenerará/i);
 });
 
 function client(fetch) {
