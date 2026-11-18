@@ -56,6 +56,7 @@
   const trackingFor = (id) => state.tracking.find((item) => item.invitationId === id);
   const activeInvitations = () => state.data.invitations.filter((invitation) => invitation.isActive);
   const activeMembers = () => { const ids = new Set(activeInvitations().map((invitation) => invitation.id)); return state.members.filter((member) => ids.has(member.invitationId)); };
+  const membersForInvitation = (id) => activeMembers().filter((member) => member.invitationId === id);
   let breakdownMode = '';
   function render() { renderSummary(); renderFamilies(); renderMembers(); renderTables(); renderReminders(); renderMessages(); renderGifts(); renderPrintBoards(); renderBreakdown(); }
   function renderSummary() {
@@ -66,12 +67,15 @@
     const confirmedPeople = members.length ? members.filter((member) => member.memberState === 'attending').length : s.confirmedPeople;
     const declinedPeople = members.filter((member) => member.memberState === 'declined').length;
     const unansweredPeople = members.length ? members.filter((member) => member.memberState === 'pending').length : Math.max(0, people - s.confirmedPeople - declinedPeople);
-    const passes = activeInvitations().reduce((total, invitation) => total + Number(invitation.maxPasses || 0), 0) || s.assignedPasses;
+    const invitations = activeInvitations();
+    const passes = invitations.reduce((total, invitation) => total + Number(invitation.maxPasses || 0), 0) || s.assignedPasses;
     const pendingFamilies = activeInvitations().filter((invitation) => status(invitation) === 'pending').length;
+    const withoutMembers = invitations.filter((invitation) => !membersForInvitation(invitation.id).length);
+    const passesWithoutPerson = invitations.reduce((total, invitation) => total + Math.max(0, Number(invitation.maxPasses || 0) - membersForInvitation(invitation.id).length), 0);
     $('adminMetrics').replaceChildren(metric('Invitados', people), metric('Confirmados', confirmedPeople), metric('No asistirán', declinedPeople), metric('Sin responder', unansweredPeople, 'pending-people'));
-    $('adminSecondaryMetrics').replaceChildren(metric('Pases vigentes', passes, 'passes'), metric('Familias pendientes', pendingFamilies, 'pending-families'), metric('Envíos registrados', sent), metric('Marcadas pendientes', pendingDelivery), metric('Sin registro de envío', unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
+    $('adminSecondaryMetrics').replaceChildren(metric('Pases vigentes', passes, 'passes'), metric('Sin integrantes', withoutMembers.length, 'unregistered-invitations'), metric('Pases sin persona', passesWithoutPerson, 'unassociated-passes'), metric('Familias pendientes', pendingFamilies, 'pending-families'), metric('Envíos registrados', sent), metric('Marcadas pendientes', pendingDelivery), metric('Sin registro de envío', unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
     const mismatch = members.length && (confirmedPeople !== s.confirmedPeople || pendingFamilies !== s.pendingFamilies || passes !== s.assignedPasses);
-    $('summaryConsistency').textContent = mismatch ? `Revisa el desglose: integrantes (${confirmedPeople} confirmados), familias (${pendingFamilies} pendientes) y pases (${passes}) no coinciden con el resumen del servidor.` : '';
+    $('summaryConsistency').textContent = [withoutMembers.length ? `Revisión requerida: ${withoutMembers.length} ${withoutMembers.length === 1 ? 'invitación activa tiene' : 'invitaciones activas tienen'} ${withoutMembers.reduce((total, invitation) => total + Number(invitation.maxPasses || 0), 0)} pase${withoutMembers.reduce((total, invitation) => total + Number(invitation.maxPasses || 0), 0) === 1 ? '' : 's'} sin integrantes; no se cuenta${withoutMembers.length === 1 ? '' : 'n'} como personas pendientes.` : '', mismatch ? 'El desglose local no coincide con el resumen del servidor.' : ''].filter(Boolean).join(' ');
     const pct = s.capacity ? Math.min(100, Math.round(s.confirmedPeople * 100 / s.capacity)) : 0;
     $('occupancyText').textContent = `${s.confirmedPeople} de ${s.capacity} personas · ${pct}%`;
     $('occupancyBar').style.width = `${pct}%`; $('eventCapacity').value = s.capacity; $('rsvpDeadline').value = dateForInput(s.rsvpDeadline); $('rsvpCapacity').textContent = s.capacity;
@@ -91,11 +95,18 @@
       rows = invitations.filter((invitation) => status(invitation) === 'pending').map((invitation) => { const familyMembers = membersFor(invitation.id); return { name: invitation.groupName, detail: familyMembers.map((member) => member.fullName).join(', ') || 'Sin integrantes registrados', meta: `${familyMembers.filter((member) => member.memberState === 'pending').length} persona${familyMembers.filter((member) => member.memberState === 'pending').length === 1 ? '' : 's'} sin responder · ${invitation.maxPasses} pases` }; });
     } else if (breakdownMode === 'passes') {
       title = 'Pases vigentes'; description = 'Pases de invitaciones activas. «Adicionales» son pases por encima de los integrantes registrados, no personas confirmadas.';
-      rows = invitations.map((invitation) => { const registered = membersFor(invitation.id).length, difference = Number(invitation.maxPasses || 0) - registered; return { name: invitation.groupName, detail: membersFor(invitation.id).map((member) => member.fullName).join(', ') || 'Sin integrantes registrados', meta: `${invitation.maxPasses} pases · ${registered} personas registradas · ${difference >= 0 ? `${difference} pase${difference === 1 ? '' : 's'} adicional${difference === 1 ? '' : 'es'}` : `${Math.abs(difference)} persona${Math.abs(difference) === 1 ? '' : 's'} sin pase`}` }; });
+      rows = invitations.map((invitation) => { const registered = membersFor(invitation.id).length, difference = Number(invitation.maxPasses || 0) - registered; return { name: invitation.groupName, detail: membersFor(invitation.id).map((member) => member.fullName).join(', ') || 'Requiere revisión: sin integrantes registrados', count: Number(invitation.maxPasses || 0), meta: `${invitation.maxPasses} pases · ${registered} personas registradas · ${difference >= 0 ? `${difference} pase${difference === 1 ? '' : 's'} sin persona asociada` : `${Math.abs(difference)} persona${Math.abs(difference) === 1 ? '' : 's'} sin pase`}` }; });
+    } else if (breakdownMode === 'unregistered-invitations') {
+      title = 'Casos que requieren revisión'; description = 'Invitaciones vigentes con pases pero sin integrantes registrados. No se consideran personas pendientes ni se modifican automáticamente.';
+      rows = invitations.filter((invitation) => !membersFor(invitation.id).length).map((invitation) => ({ name: invitation.groupName, detail: status(invitation) === 'pending' ? 'Invitación pendiente sin integrantes registrados' : `Estado RSVP: ${statusName(status(invitation))} · sin integrantes registrados`, meta: `${invitation.maxPasses} pases sin persona asociada` }));
+    } else if (breakdownMode === 'unassociated-passes') {
+      title = 'Pases sin persona asociada'; description = 'Diferencia positiva entre pases vigentes e integrantes registrados. Incluye por separado los pases de invitaciones sin integrantes.';
+      rows = invitations.map((invitation) => { const registered = membersFor(invitation.id).length, difference = Math.max(0, Number(invitation.maxPasses || 0) - registered); return { name: invitation.groupName, detail: registered ? `${registered} personas registradas` : 'Requiere revisión: sin integrantes registrados', count: difference, meta: `${difference} pase${difference === 1 ? '' : 's'} sin persona asociada · ${invitation.maxPasses} pases vigentes` }; }).filter((row) => row.count);
     }
     const filtered = rows.filter((row) => !query || [row.name, row.detail, row.meta].join(' ').toLocaleLowerCase().includes(query));
-    const count = breakdownMode === 'pending-people' ? rows.reduce((total, row) => total + row.count, 0) : rows.length;
-    $('summaryBreakdownTitle').textContent = `${title} · ${count}${breakdownMode === 'pending-people' ? ` personas en ${rows.length} familias` : ''}`; $('summaryBreakdownDescription').textContent = description;
+    const count = ['pending-people', 'passes', 'unassociated-passes'].includes(breakdownMode) ? rows.reduce((total, row) => total + row.count, 0) : rows.length;
+    const suffix = breakdownMode === 'pending-people' ? ` personas en ${rows.length} familias` : breakdownMode === 'passes' ? ` pases en ${rows.length} invitaciones` : breakdownMode === 'unassociated-passes' ? ' pases' : '';
+    $('summaryBreakdownTitle').textContent = `${title} · ${count}${suffix}`; $('summaryBreakdownDescription').textContent = description;
     $('summaryBreakdownList').replaceChildren(...(filtered.length ? filtered.map((row) => { const item = document.createElement('article'); item.className = 'family-row'; item.append(text('strong', row.name), text('p', row.detail, 'family-meta'), text('p', row.meta, 'family-meta')); return item; }) : [text('p', 'No hay coincidencias para esta búsqueda.')]));
   }
   function memberStateLabel(state) { return ({ attending: 'Asiste', declined: 'No asiste', pending: 'Sin responder' })[state] || 'Sin responder'; }

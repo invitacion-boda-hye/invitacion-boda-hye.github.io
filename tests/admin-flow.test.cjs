@@ -122,18 +122,40 @@ test('resumen no mezcla personas, pases, familias ni estados de envío', async (
   assert.deepEqual(primary, [66, 22, 0, 44]);
   const secondary = app.get('adminSecondaryMetrics').children.map((card) => card.children[0].textContent);
   assert.equal(secondary[0], 72);
-  assert.equal(secondary[1], 30);
-  assert.equal(secondary[2], 1);
+  assert.equal(secondary[1], 0);
+  assert.equal(secondary[2], 6);
+  assert.equal(secondary[3], 30);
   assert.equal(secondary[4], 1);
+  assert.equal(secondary[6], 1);
   app.get('adminMetrics').children[3].listeners.click();
   assert.match(app.get('summaryBreakdownTitle').textContent, /Personas sin responder · 44 personas en 31 familias/);
   assert.equal(app.get('summaryBreakdownList').children.length, 31);
   app.get('summaryBreakdownSearch').value = 'Pendiente 0'; app.get('summaryBreakdownSearch').listeners.input();
   assert.equal(app.get('summaryBreakdownList').children.length, 1);
-  app.get('adminSecondaryMetrics').children[1].listeners.click();
+  app.get('adminSecondaryMetrics').children[3].listeners.click();
   assert.match(app.get('summaryBreakdownTitle').textContent, /Familias pendientes · 30/);
   app.get('adminSecondaryMetrics').children[0].listeners.click();
-  assert.match(app.get('summaryBreakdownTitle').textContent, /Pases vigentes · 31/);
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Pases vigentes · 72 pases en 31 invitaciones/);
+});
+
+test('separa invitaciones vacías y pases sin persona de personas pendientes', async () => {
+  const liliana = '11111111-1111-4111-8111-111111111111', patricia = '22222222-2222-4222-8222-222222222222', ana = '33333333-3333-4333-8333-333333333333';
+  const app = setup({ invitations: [
+    { id: liliana, groupName: 'Liliana', maxPasses: 2, isActive: true, state: 'pending', response: null },
+    { id: patricia, groupName: 'Patricia', maxPasses: 4, isActive: true, state: 'pending', response: null },
+    { id: ana, groupName: 'Ana', maxPasses: 1, isActive: true, state: 'pending', response: null }
+  ], members: [{ id: 'member-ana', invitationId: ana, fullName: 'Ana', memberState: 'pending' }], summary: { capacity: 63, confirmedPeople: 0, availableCapacity: 63, pendingFamilies: 3, declinedFamilies: 0, assignedPasses: 7 } });
+  await app.submit('loginForm');
+  assert.deepEqual(app.get('adminMetrics').children.map((card) => card.children[0].textContent), [1, 0, 0, 1]);
+  assert.equal(app.get('adminSecondaryMetrics').children[1].children[0].textContent, 2);
+  assert.equal(app.get('adminSecondaryMetrics').children[2].children[0].textContent, 6);
+  assert.match(app.get('summaryConsistency').textContent, /2 invitaciones activas tienen 6 pases sin integrantes/);
+  app.get('adminSecondaryMetrics').children[1].listeners.click();
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Casos que requieren revisión · 2/);
+  assert.ok(findByText(app.get('summaryBreakdownList'), 'Liliana'));
+  assert.ok(findByText(app.get('summaryBreakdownList'), 'Patricia'));
+  app.get('adminSecondaryMetrics').children[2].listeners.click();
+  assert.match(app.get('summaryBreakdownTitle').textContent, /Pases sin persona asociada · 6 pases/);
 });
 
 test('un 403 de membresía se distingue de un fallo local y cierra el acceso', async () => {
