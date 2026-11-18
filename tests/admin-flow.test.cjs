@@ -3,9 +3,10 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
+const { URL: NodeURL, URLSearchParams } = require('node:url');
 const root = path.resolve(__dirname, '..');
 
-function setup({ failure, response } = {}) {
+function setup({ failure, response, tracking = [], links = {} } = {}) {
   const elements = new Map();
   function element() {
     return {
@@ -24,10 +25,14 @@ function setup({ failure, response } = {}) {
   }
   const calls = [];
   const storage = new Map();
+  storage.set('rsvp-invitation-links', JSON.stringify(links));
+  let openedUrl = '';
   get('adminDashboard').hidden = true;
+  class TestURL extends NodeURL {}
+  TestURL.createObjectURL = () => 'blob:synthetic'; TestURL.revokeObjectURL = () => {};
   const context = vm.createContext({
     document: { body: { insertAdjacentHTML() {} }, getElementById: get, createElement: element, querySelectorAll: () => [] },
-    confirm: () => true, prompt: () => null, window: { print() {} }, URL: { createObjectURL: () => 'blob:synthetic', revokeObjectURL() {} }, Blob: class {},
+    confirm: () => true, prompt: () => null, window: { print() {}, open: (url) => { openedUrl = url; return {}; } }, URL: TestURL, URLSearchParams, Blob: class {},
     sessionStorage: { getItem: key => storage.get(key), setItem: (k, v) => storage.set(k, v), removeItem: k => storage.delete(k) },
     RSVP_API: {
       signIn: async () => ({ access_token: 'synthetic-session' }),
@@ -38,7 +43,7 @@ function setup({ failure, response } = {}) {
         if (action === 'createInvitation') return { invitation: { id: '11111111-1111-4111-8111-111111111111' }, invitationUrl: 'https://example.invalid/#i=synthetic' };
         if (action === 'listInvitations') return { data: { invitations: [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
         if (action === 'listMembers') return { members: [] };
-        if (action === 'listInvitationTracking') return { tracking: [] };
+        if (action === 'listInvitationTracking') return { tracking };
         if (action === 'listGifts') return { gifts: [] };
         return {};
       }
@@ -54,7 +59,13 @@ function setup({ failure, response } = {}) {
     event.currentTarget = null;
     await pending;
   }
-  return { get, calls, submit, storage };
+  return { get, calls, submit, storage, openedUrl: () => openedUrl };
+}
+
+function findByText(node, value) {
+  if (node.textContent === value) return node;
+  for (const child of node.children || []) { const found = findByText(child, value); if (found) return found; }
+  return null;
 }
 
 test('login exitoso carga métricas y familias tras finalizar el despacho del evento', async () => {
@@ -88,6 +99,33 @@ test('un 403 de membresía se distingue de un fallo local y cierra el acceso', a
   assert.match(app.get('loginMessage').textContent, /no está autorizada/);
   assert.equal(app.storage.has('rsvp-admin-access-token'), false);
   assert.equal(app.get('adminDashboard').hidden, true);
+});
+
+test('recordatorios abren WhatsApp con enlace recordado y no habilitan registro antes de plazo', async () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  const link = `https://example.invalid/#i=${'A'.repeat(43)}`;
+  const app = setup({ links: { [id]: link }, tracking: [{ invitationId: id, groupName: 'Familia de prueba', sentAt: '2026-11-01T12:00:00Z', lastReminderAt: new Date().toISOString(), members: [{ fullName: 'Ana Prueba', state: 'pending' }] }] });
+  await app.submit('loginForm');
+  const prepare = findByText(app.get('reminderList'), 'Abrir WhatsApp');
+  const mark = findByText(app.get('reminderList'), 'Marcar recordatorio como enviado');
+  prepare.listeners.click();
+  assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
+  assert.match(decodeURIComponent(app.openedUrl()), /#i=A{43}/);
+  assert.equal(mark.disabled, true);
+});
+
+test('recordatorios permiten registrar localmente un enlace original sin regenerarlo', async () => {
+  const id = '11111111-1111-4111-8111-111111111111';
+  const link = `https://example.invalid/#i=${'B'.repeat(43)}`;
+  const app = setup({ tracking: [{ invitationId: id, groupName: 'Familia de prueba', sentAt: '2026-11-01T12:00:00Z', lastReminderAt: null, members: [{ fullName: 'Ana Prueba', state: 'pending' }] }] });
+  await app.submit('loginForm');
+  findByText(app.get('reminderList'), 'Abrir WhatsApp').listeners.click();
+  assert.equal(app.get('reminderLinkDialog').open, true);
+  app.get('reminderOriginalLink').value = link;
+  app.get('reminderLinkForm').listeners.submit({ preventDefault() {} });
+  assert.match(app.openedUrl(), /^https:\/\/wa\.me\/\?text=/);
+  assert.match(app.storage.get('rsvp-invitation-links'), /B{43}/);
+  assert.equal(app.calls.includes('recordReminder'), false);
 });
 
 function client(fetch) {
