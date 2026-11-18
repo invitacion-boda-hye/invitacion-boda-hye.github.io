@@ -6,7 +6,7 @@ const path = require('node:path');
 const { URL: NodeURL, URLSearchParams } = require('node:url');
 const root = path.resolve(__dirname, '..');
 
-function setup({ failure, response, tracking = [], links = {}, invitations, members } = {}) {
+function setup({ failure, response, tracking = [], links = {}, invitations, members, summary } = {}) {
   const elements = new Map();
   function element() {
     return {
@@ -28,7 +28,7 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
   storage.set('rsvp-invitation-links', JSON.stringify(links));
   let openedUrl = '';
   get('adminDashboard').hidden = true;
-  get('familyFilter').value = 'all'; get('deliveryFilter').value = 'all'; get('invitationScope').value = 'active'; get('reminderInterval').value = '10';
+  get('familyView').value = 'active'; get('reminderInterval').value = '10';
   class TestURL extends NodeURL {}
   TestURL.createObjectURL = () => 'blob:synthetic'; TestURL.revokeObjectURL = () => {};
   const context = vm.createContext({
@@ -41,7 +41,7 @@ function setup({ failure, response, tracking = [], links = {}, invitations, memb
       adminRequest: async (action) => {
         calls.push(action);
         if (failure) throw Object.assign(new Error(failure), { status: 403 });
-        if (action === 'summary') return { summary: { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0, assignedPasses: 3 } };
+        if (action === 'summary') return { summary: summary || { capacity: 50, confirmedPeople: 2, availableCapacity: 48, pendingFamilies: 1, declinedFamilies: 0, assignedPasses: 3 } };
         if (action === 'createInvitation') return { invitation: { id: '11111111-1111-4111-8111-111111111111' }, invitationUrl: 'https://example.invalid/#i=synthetic' };
         if (action === 'listInvitations') return { data: { invitations: invitations || [{ id: '11111111-1111-4111-8111-111111111111', groupName: 'Familia de prueba', maxPasses: 3, isActive: true, state: 'attending', response: { isAttending: true, confirmedCount: 2, attendees: response ? [{ id: '22222222-2222-4222-8222-222222222222', fullName: 'Ana Prueba' }] : [] } }], tables: [] } };
         if (action === 'listMembers') return { members: members || [] };
@@ -78,7 +78,7 @@ test('login exitoso carga métricas y familias tras finalizar el despacho del ev
   assert.equal(app.get('adminLogin').hidden, true);
   assert.equal(app.get('loginMessage').textContent, '');
   assert.equal(app.get('loginForm').resets, 1);
-  assert.equal(app.get('adminMetrics').children.length, 9);
+  assert.equal(app.get('adminMetrics').children.length, 4);
 });
 
 test('crear familia refresca el panel después del await', async () => {
@@ -104,9 +104,21 @@ test('familias muestra vigentes por defecto y mantiene las inactivas solo en his
   await app.submit('loginForm');
   assert.equal(app.get('familyList').children.length, 1);
   assert.equal(app.get('adminMetrics').children[0].children[0].textContent, 1);
-  app.get('invitationScope').value = 'inactive'; app.get('invitationScope').listeners.change();
+  app.get('familyView').value = 'inactive'; app.get('familyView').listeners.change();
   assert.equal(app.get('familyList').children.length, 1);
   assert.ok(findByText(app.get('familyList'), 'Invitación anterior'));
+});
+
+test('resumen no mezcla personas, pases, familias ni estados de envío', async () => {
+  const members = [...Array(66)].map((_, index) => ({ id: String(index), invitationId: '11111111-1111-4111-8111-111111111111', fullName: `Invitado ${index}`, memberState: index < 8 ? 'declined' : 'pending' }));
+  const app = setup({ members, summary: { capacity: 63, confirmedPeople: 22, availableCapacity: 41, pendingFamilies: 30, declinedFamilies: 8, assignedPasses: 72 }, tracking: [{ deliveryStatus: 'sent' }, { deliveryStatus: 'unregistered' }] });
+  await app.submit('loginForm');
+  const primary = app.get('adminMetrics').children.map((card) => card.children[0].textContent);
+  assert.deepEqual(primary, [66, 22, 8, 36]);
+  const secondary = app.get('adminSecondaryMetrics').children.map((card) => card.children[0].textContent);
+  assert.equal(secondary[0], 72);
+  assert.equal(secondary[2], 1);
+  assert.equal(secondary[4], 1);
 });
 
 test('un 403 de membresía se distingue de un fallo local y cierra el acceso', async () => {

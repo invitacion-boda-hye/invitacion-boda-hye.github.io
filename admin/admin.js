@@ -9,7 +9,7 @@
   }
   installGuestDialogs();
   const errorText = { ADMIN_FORBIDDEN: 'Tu cuenta no está autorizada como administradora.', ADMIN_AUTH_REQUIRED: 'Tu sesión no es válida. Vuelve a iniciar sesión.', ORIGIN_NOT_ALLOWED: 'Este origen no está autorizado para usar el panel.', ADMIN_INVITATION_NOT_FOUND: 'Esta invitación ya no está activa. Actualiza el panel antes de continuar.', ADMIN_SEAT_OCCUPIED: 'Esa silla acaba de ser ocupada.', ADMIN_ATTENDEE_ALREADY_SEATED: 'Este invitado ya tiene una silla.', ADMIN_ATTENDEE_NOT_ELIGIBLE: 'Este invitado ya no está confirmado.', ADMIN_TABLE_CAPACITY_OCCUPIED: 'No puedes reducir una mesa con sillas ocupadas.', ADMIN_SEAT_EMPTY: 'Esta silla ya está libre.', ADMIN_REMINDER_NOT_ELIGIBLE: 'Solo puedes registrar recordatorios de invitaciones enviadas y activas.', ADMIN_GIFT_NOT_FOUND: 'Ese registro ya no existe.', NETWORK_ERROR: 'No se pudo conectar con el servidor.', DATABASE_ERROR: 'No se pudo consultar el evento.' };
-  const tell = (target, error) => { target.textContent = error ? (errorText[error.message] || 'No fue posible completar la operación.') : ''; target.classList.toggle('is-error', Boolean(error)); };
+  const tell = (target, error) => { const code = typeof error?.message === 'string' && /^[A-Z][A-Z0-9_]{0,79}$/.test(error.message) ? error.message : ''; target.textContent = error ? (errorText[code] || (code ? `No fue posible completar la operación (${code}).` : 'No fue posible completar la operación. Revisa tu conexión e inténtalo nuevamente.')) : ''; target.classList.toggle('is-error', Boolean(error)); };
   const text = (tag, value, className = '') => { const node = document.createElement(tag); node.textContent = value; if (className) node.className = className; return node; };
   const metric = (label, value) => { const card = document.createElement('div'); card.className = 'metric'; card.append(text('strong', value), text('span', label)); return card; };
   const dateForInput = (value) => value ? new Date(value).toISOString().slice(0, 16) : '';
@@ -53,10 +53,13 @@
   function render() { renderSummary(); renderFamilies(); renderMembers(); renderTables(); renderReminders(); renderMessages(); renderGifts(); renderPrintBoards(); }
   function renderSummary() {
     const s = state.summary; if (!s) return;
-    const invitations = activeInvitations().length, people = state.members.length || s.assignedPasses;
+    const people = state.members.length || s.assignedPasses;
     const sent = state.tracking.filter(x => x.deliveryStatus === 'sent').length, pendingDelivery = state.tracking.filter(x => x.deliveryStatus === 'pending').length, unknown = state.tracking.filter(x => x.deliveryStatus === 'unregistered').length;
     const comments = activeInvitations().filter((invitation) => invitation.response?.comment).length;
-    $('adminMetrics').replaceChildren(metric('Personas invitadas', people), metric('Pases vigentes', s.assignedPasses), metric('Confirmados', s.confirmedPeople), metric('Familias sin responder', s.pendingFamilies), metric('No asistirán', s.declinedFamilies), metric('Invitaciones enviadas', sent), metric('Pendientes de envío', pendingDelivery + unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
+    const declinedPeople = state.members.filter((member) => member.memberState === 'declined').length;
+    const unansweredPeople = Math.max(0, people - s.confirmedPeople - declinedPeople);
+    $('adminMetrics').replaceChildren(metric('Invitados', people), metric('Confirmados', s.confirmedPeople), metric('No asistirán', declinedPeople), metric('Sin responder', unansweredPeople));
+    $('adminSecondaryMetrics').replaceChildren(metric('Pases vigentes', s.assignedPasses), metric('Familias pendientes', s.pendingFamilies), metric('Envíos registrados', sent), metric('Marcadas pendientes', pendingDelivery), metric('Sin registro de envío', unknown), metric('Mensajes RSVP', comments), metric('Regalos y mensajes', state.giftsLoaded ? state.gifts.length : '—'));
     const pct = s.capacity ? Math.min(100, Math.round(s.confirmedPeople * 100 / s.capacity)) : 0;
     $('occupancyText').textContent = `${s.confirmedPeople} de ${s.capacity} personas · ${pct}%`;
     $('occupancyBar').style.width = `${pct}%`; $('eventCapacity').value = s.capacity; $('rsvpDeadline').value = dateForInput(s.rsvpDeadline); $('rsvpCapacity').textContent = s.capacity;
@@ -72,12 +75,12 @@
     $('rsvpMessageList').replaceChildren(...(rows.length ? rows : [text('p', 'Aún no hay observaciones RSVP.') ]));
   }
   function renderFamilies() {
-    const query = $('familySearch').value.trim().toLocaleLowerCase(); const filter = $('familyFilter').value, delivery = $('deliveryFilter').value, scope = $('invitationScope')?.value || 'active';
+    const query = $('familySearch').value.trim().toLocaleLowerCase(), filter = $('familyView').value || 'active';
     const rows = state.data.invitations.filter((invitation) => {
       const haystack = [invitation.groupName, ...(invitation.response?.attendees || []).map(a => a.fullName)].join(' ').toLocaleLowerCase();
       const track = trackingFor(invitation.id); const deliveryState = track?.deliveryStatus || 'unknown';
-      const matchesScope = scope === 'all' || (scope === 'active' ? invitation.isActive : !invitation.isActive);
-      return matchesScope && (!query || haystack.includes(query)) && (filter === 'all' || status(invitation) === filter) && (delivery === 'all' || delivery === deliveryState);
+      const matches = filter === 'all' || (filter === 'active' ? invitation.isActive : filter === 'inactive' ? !invitation.isActive : filter === 'sent' ? deliveryState === 'sent' : filter === 'delivery-pending' ? deliveryState === 'pending' : filter === 'delivery-unknown' ? deliveryState === 'unknown' : status(invitation) === filter);
+      return matches && (!query || haystack.includes(query));
     }).map((invitation) => {
       const row = document.createElement('article'); row.className = 'family-row'; const current = status(invitation);
       const main = document.createElement('div'); main.className = 'family-main'; const left = document.createElement('div'); const activity = invitation.isActive ? '' : ' · enlace inactivo'; left.append(text('strong', invitation.groupName), text('div', `${invitation.response?.confirmedCount || 0} confirmados de ${invitation.maxPasses} pases${activity}`, 'family-meta')); if (invitation.response?.comment) left.append(text('div', `RSVP: ${invitation.response.comment}`, 'family-meta')); main.append(left, text('span', statusName(current), `status ${current}`));
@@ -221,6 +224,6 @@
     } catch (error) { $('familyGroupError').textContent = errorText[error.message] || error.message || 'No se pudo agrupar.'; }
     finally { button.disabled = false; }
   });
-  $('familySearch').addEventListener('input', renderFamilies); $('familyFilter').addEventListener('change', renderFamilies); $('deliveryFilter').addEventListener('change', renderFamilies); $('invitationScope').addEventListener('change', renderFamilies); $('reminderInterval').addEventListener('change', renderReminders); $('memberSearch').addEventListener('input', renderMembers); $('tableSearch').addEventListener('input', renderTables); document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => activate(button.dataset.view))); $('exportCsv').addEventListener('click', exportCsv); $('printGeneral').addEventListener('click', () => { state.printMode = 'general'; renderPrintBoards(); window.print(); }); $('printByTable').addEventListener('click', () => { state.printMode = 'tables'; renderPrintBoards(); window.print(); }); $('printIncludePending').addEventListener('change', renderPrintBoards); $('printIncludeDeclined').addEventListener('change', renderPrintBoards);
+  $('familySearch').addEventListener('input', renderFamilies); $('familyView').addEventListener('change', renderFamilies); $('reminderInterval').addEventListener('change', renderReminders); $('memberSearch').addEventListener('input', renderMembers); $('tableSearch').addEventListener('input', renderTables); document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => activate(button.dataset.view))); $('exportCsv').addEventListener('click', exportCsv); $('printGeneral').addEventListener('click', () => { state.printMode = 'general'; window.print(); }); $('printByTable').addEventListener('click', () => { state.printMode = 'tables'; window.print(); }); $('printIncludePending').addEventListener('change', renderPrintBoards); $('printIncludeDeclined').addEventListener('change', renderPrintBoards);
   if (state.token) showDashboard();
 })();
