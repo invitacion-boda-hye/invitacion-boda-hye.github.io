@@ -1,0 +1,15 @@
+# La función pública no requiere JWT porque los invitados no crean una cuenta.
+# Aun así, valida en servidor el token familiar aleatorio, su hash, vigencia,
+# límite de solicitudes y todas las reglas de capacidad antes de leer o guardar.
+# La función administrativa valida internamente el JWT y la fila rsvp_admins.
+# verify_jwt queda desactivado para que la función devuelva errores controlados;
+# el handler rechaza cualquier solicitud sin un JWT válido.
+
+[functions.public-rsvp]
+verify_jwt = false
+
+[functions.admin-rsvp]
+verify_jwt = false
+
+[functions.photo-album]
+verify_jwt = false

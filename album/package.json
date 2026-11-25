@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "heic2any": "0.0.4",
+    "jszip": "3.10.2",
+    "qrcode": "1.5.4"
+  }
+}
